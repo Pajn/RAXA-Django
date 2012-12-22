@@ -1,0 +1,10 @@
+{% extends "mobile/base.html" %}
+{% load url from future %}
+
+{% block content %}
+    {% for scenario in scenario_list %}
+        <div data-role="controlgroup">
+            <a href="{% url 'mobile.views.scenario' scenario_id=scenario.id %}" data-role="button">{{ scenario.name }}</a>
+        </div>
+    {% endfor %}
+{% endblock %}
