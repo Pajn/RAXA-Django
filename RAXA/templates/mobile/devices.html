@@ -7,10 +7,10 @@
             <h3>{{  device.name }}</h3>
         </div>
         <div align="center" class="devicediv" data-role="controlgroup" data-type="horizontal" >
-            <a href="{% url 'mobile.views.device' device_id=device.id action="on" %}" data-role="button" rel="external">
+            <a href="{% url 'mobile.views.device' device=device.id action="on" %}" data-role="button" rel="external">
                 <img src="/static/images/on.png" class="onoffimg" />
             </a>
-            <a href="{% url 'mobile.views.device' device_id=device.id action="off" %}" data-role="button" rel="external">
+            <a href="{% url 'mobile.views.device' device=device.id action="off" %}" data-role="button" rel="external">
                 <img src="/static/images/off.png" class="onoffimg" />
             </a>
             {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
@@ -18,19 +18,23 @@
                     <img src="/static/images/dim.png" class="onoffimg" />
                 </a>
             {% elif 'dim' in device.object.SUPPORTED_ACTIONS %}
-                <a href="{% url 'mobile.views.device' device_id=device.id action="dim" %}" data-role="button" rel="external">
+                <a href="{% url 'mobile.views.device' device=device.id action="dim" %}" data-role="button" rel="external">
                     <img src="/static/images/dim.png" class="onoffimg" />
                 </a>
             {% endif %}
         </div>
         {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
             <div id="slidedim{{ device.id }}" class="hide" align="center">
-                <input type="range" class="slider" value="{{ device.action }}"
-                       min="{{ device.object.DIM_MIN }}" max="{{ device.object.DIM_MAX }}"
-                       style="height: 15px; width: 30px;" />
+                <label>
+                    <input type="range" class="slider" value="{{ device.action }}"
+                           min="{{ device.object.DIM_MIN }}" max="{{ device.object.DIM_MAX }}"
+                           style="height: 15px; width: 30px;"/>
+                </label>
                 <button>Dim</button>
             </div>
         {% endif %}
+    {% empty %}
+        <div align="center">No devices yet</div>
     {% endfor %}
     <script>
         $(document).ready(function() {

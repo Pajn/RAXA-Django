@@ -2,9 +2,11 @@
 {% load url from future %}
 
 {% block content %}
+    <div data-role="controlgroup">
     {% for scenario in scenario_list %}
-        <div data-role="controlgroup">
-            <a href="{% url 'mobile.views.scenario' scenario_id=scenario.id %}" data-role="button">{{ scenario.name }}</a>
-        </div>
+        <a href="{% url 'mobile.views.scenario' scenario=scenario.id %}" data-role="button">{{ scenario.name }}</a>
+    {% empty %}
+        <div align="center">No scenarios yet</div>
     {% endfor %}
+    </div>
 {% endblock %}
