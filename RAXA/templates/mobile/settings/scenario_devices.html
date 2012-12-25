@@ -1,0 +1,21 @@
+{% extends "mobile/base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block header %}
+    <a href="{% url 'mobile.views.scenario' id=id %}" data-icon="arrow-l" data-direction="reverse" data-prefetch>{% trans "Back" %}</a>
+    <h1>{{ list.0.scenario.name }}{% trans "Devices" %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div data-role="controlgroup">
+        <a href="{% url 'mobile.views.edit_scenario_device' id=id scenariodevice=0 %}" data-role="button" data-rel="dialog" data-transition="pop">{% trans "Add" %}</a>
+    </div>
+    <div data-role="controlgroup">
+        {% for scenariodevice in list %}
+            <a href="{% url 'mobile.views.edit_scenario_device' id=id scenariodevice=scenariodevice.id %}" data-role="button" data-rel="dialog" data-transition="pop">{{ scenariodevice.device.name }}</a>
+        {% empty %}
+            <div align="center">{% blocktrans %}No devices yet{% endblocktrans %}</div>
+        {% endfor %}
+    </div>
+{% endblock %}

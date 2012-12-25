@@ -1,14 +1,15 @@
 {% extends "mobile/base.html" %}
+{% load i18n %}
 {% load url from future %}
 
 {% block content %}
-                <div data-role="controlgroup">
-                    <a href="{% url 'mobile.views.devices' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>Devices</a>
-                    <a href="{% url 'mobile.views.scenarios' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>Scenarios</a>
-                    <a href="{% url 'mobile.views.rooms' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>Rooms</a>
-                </div>
-                <div data-role="controlgroup">
-                    <a href="https://play.google.com/store/apps/details?id=se.pajn.raxa" data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">Android App</a>
-                    <a href="/?desktop" data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">Desktop</a>
-                </div>
+    <div data-role="controlgroup">
+        <a href="{% url 'mobile.views.devices' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>{% trans "Devices" %}</a>
+        <a href="{% url 'mobile.views.scenarios' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>{% trans "Scenarios" %}</a>
+        <a href="{% url 'mobile.views.rooms' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>{% trans "Rooms" %}</a>
+    </div>
+    <div data-role="controlgroup">
+        <a href="https://play.google.com/store/apps/details?id=se.pajn.raxa" data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">{% blocktrans %}Android App{% endblocktrans %}</a>
+        <a href="/?desktop" data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">{% trans "Desktop" %}</a>
+    </div>
 {% endblock %}

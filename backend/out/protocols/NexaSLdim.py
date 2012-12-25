@@ -1,8 +1,19 @@
+from django.forms import HiddenInput, Widget
 from backend.models.Device import Device
 from backend.out.protocols.Protocol import Protocol
+from string import Template
+from django.utils.safestring import mark_safe
+
+class SliderWidget(Widget):
+    def render(self, name, value, attrs=None):
+        tpl = Template(u'<input name="$name" type="range" class="slider" value="$value" min="0" max="15" />')
+        return mark_safe(tpl.substitute(name=name, value=value))
 
 class NexaSLdim(Protocol):
     CONNECTOR_TYPE = "Tellstick"
+
+    CODE_WIDGET = HiddenInput
+    ACTION_WIDGET = SliderWidget
 
     DIM_MIN = 0
     DIM_MAX = 15

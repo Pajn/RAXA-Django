@@ -1,45 +1,62 @@
 {% extends "mobile/base.html" %}
+{% load i18n %}
 {% load url from future %}
 
+{% block header %}
+    {% if not room %}
+        <a href="{% url 'mobile.views.index' %}" data-icon="arrow-l" data-direction="reverse" data-prefetch>{% trans "Back" %}</a>
+    {% else %}
+        <a href="{% url 'mobile.views.rooms' %}" data-icon="arrow-l" data-direction="reverse" data-prefetch>{% trans "Back" %}</a>
+    {% endif %}
+    <h1>{% trans "Devices" %}</h1>
+{% endblock %}
+
 {% block content %}
-    {% for device in device_list %}
+    {% for device in list %}
         <div align="center">
             <h3>{{  device.name }}</h3>
         </div>
         <div align="center" class="devicediv" data-role="controlgroup" data-type="horizontal" >
-            <a href="{% url 'mobile.views.device' device=device.id action="on" %}" data-role="button" rel="external">
-                <img src="/static/images/on.png" class="onoffimg" />
+            <a href="{% url 'mobile.views.device' id=device.id action="on" %}" data-role="button">
+                <img src="{{ STATIC_URL }}mobile/images/on.png" class="onoffimg" />
             </a>
-            <a href="{% url 'mobile.views.device' device=device.id action="off" %}" data-role="button" rel="external">
-                <img src="/static/images/off.png" class="onoffimg" />
+            <a href="{% url 'mobile.views.device' id=device.id action="off" %}" data-role="button">
+                <img src="{{ STATIC_URL }}mobile/images/off.png" class="onoffimg" />
             </a>
             {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
-                <a id="dim{{ device.id }}" data-role="button" class="dim" rel="external">
-                    <img src="/static/images/dim.png" class="onoffimg" />
-                </a>
+                <button id="dim{{ device.id }}" data-role="button" class="dim" rel="external">
+                    <img src="{{ STATIC_URL }}mobile/images/dim.png" class="onoffimg" />
+                </button>
             {% elif 'dim' in device.object.SUPPORTED_ACTIONS %}
-                <a href="{% url 'mobile.views.device' device=device.id action="dim" %}" data-role="button" rel="external">
-                    <img src="/static/images/dim.png" class="onoffimg" />
+                <a href="{% url 'mobile.views.device' id=device.id action="dim" %}" data-role="button">
+                    <img src="{{ STATIC_URL }}mobile/images/dim.png" class="onoffimg" />
                 </a>
             {% endif %}
         </div>
         {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
-            <div id="slidedim{{ device.id }}" class="hide" align="center">
+            <div id="slidedim{{ device.id }}" class="hide dimbox" align="center">
                 <label>
                     <input type="range" class="slider" value="{{ device.action }}"
                            min="{{ device.object.DIM_MIN }}" max="{{ device.object.DIM_MAX }}"
                            style="height: 15px; width: 30px;"/>
                 </label>
-                <button>Dim</button>
+                <button>{% trans "Dim" %}</button>
             </div>
         {% endif %}
     {% empty %}
-        <div align="center">No devices yet</div>
+        <div align="center">{% blocktrans %}No devices yet{% endblocktrans %}</div>
     {% endfor %}
-    <script>
+{% endblock %}
+
+{% block extrajs %}
+    <script type="text/javascript">
         $(document).ready(function() {
             $('.dim').off('click').on('click', function() {
                 $('#slide'+$(this).attr("id")).slideToggle('fast');
+                return false;
+            });
+            $('.devicediv a').off('click').on('click', function() {
+                $.get($(this).attr('href'))
                 return false;
             });
         });

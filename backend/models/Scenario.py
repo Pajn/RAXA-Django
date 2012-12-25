@@ -1,10 +1,12 @@
 from django.db import models
+from django.forms import ModelForm
+from django.utils.translation import ugettext as _
 from . import Device
 
 class Scenario(models.Model):
-    name = models.CharField(max_length=30)
-    is_hidden = models.BooleanField()
-    order = models.IntegerField()
+    name = models.CharField(_('Name'), max_length=30)
+    is_hidden = models.BooleanField(_('Is hidden'))
+    order = models.IntegerField(_('Order'), default=1)
 
     class Meta:
         app_label = 'backend'
@@ -27,3 +29,8 @@ class ScenarioDevice(models.Model):
 
     class Meta:
         app_label = 'backend'
+
+class ScenarioForm(ModelForm):
+    class Meta:
+        model = Scenario
+        exclude = ('order',)

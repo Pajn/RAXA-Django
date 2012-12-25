@@ -1,0 +1,19 @@
+{% extends "mobile/base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block header %}
+    <a href="{% url 'mobile.views.settings' %}" data-icon="arrow-l" data-direction="reverse" data-prefetch>{% trans "Back" %}</a>
+    <h1>{% trans "Scenarios" %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div data-role="controlgroup">
+        <a href="{% url 'mobile.views.edit_timer' id=0 %}" data-role="button" data-rel="dialog" data-transition="pop">{% trans "New" %}</a>
+    </div>
+    <div data-role="controlgroup">
+    {% for timer in list %}
+        <a href="{% url 'mobile.views.edit_timer' id=timer.id %}" data-role="button" data-rel="dialog" data-transition="pop">{{ timer.name }}</a>
+    {% endfor %}
+    </div>
+{% endblock %}

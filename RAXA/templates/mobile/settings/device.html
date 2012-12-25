@@ -1,0 +1,15 @@
+{% extends "mobile/dialog.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block header %}
+    <h1>{% trans "Device" %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'mobile.views.edit_device' id=object.id %}" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="{% trans "Save" %}" data-theme="b" />
+        <input type="submit" value="{% trans "Delete" %}" data-theme="c" />
+    </form>
+{% endblock %}

@@ -1,8 +1,12 @@
+from django.forms import HiddenInput
 from backend.models.Device import Device
 from backend.out.protocols.Protocol import Protocol
 
 class NexaSLonoff(Protocol):
     CONNECTOR_TYPE = "Tellstick"
+
+    CODE_WIDGET = HiddenInput
+    ACTION_WIDGET = HiddenInput
 
     def initialize(self, device):
         assert isinstance(device, Device)

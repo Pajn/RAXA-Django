@@ -1,12 +1,18 @@
 {% extends "mobile/base.html" %}
+{% load i18n %}
 {% load url from future %}
+
+{% block header %}
+    <a href="{% url 'mobile.views.index' %}" data-icon="arrow-l" data-direction="reverse" data-prefetch>{% trans "Back" %}</a>
+    <h1>{% trans "Scenarios" %}</h1>
+{% endblock %}
 
 {% block content %}
     <div data-role="controlgroup">
-    {% for scenario in scenario_list %}
-        <a href="{% url 'mobile.views.scenario' scenario=scenario.id %}" data-role="button">{{ scenario.name }}</a>
+    {% for scenario in list %}
+        <a href="{% url 'mobile.views.scenario' id=scenario.id %}" data-role="button">{{ scenario.name }}</a>
     {% empty %}
-        <div align="center">No scenarios yet</div>
+        <div align="center">{% blocktrans %}No scenarios yet{% endblocktrans %}</div>
     {% endfor %}
     </div>
 {% endblock %}

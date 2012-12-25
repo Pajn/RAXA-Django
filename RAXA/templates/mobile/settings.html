@@ -1,18 +1,19 @@
 {% extends "mobile/base.html" %}
+{% load i18n %}
 {% load url from future %}
 
 {% block header %}
-    <div data-role="controlgroup">
-        <a href="settings/devices/" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch><?php echo $lang->{'devices'};?></a>
-        <a href="settings/connectors/" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch><?php echo $lang->{'connectors'};?></a>
-        <a href="settings/inputs/" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch><?php echo $lang->{'inputs'};?></a>
-    </div>
+    <a href="{% url 'mobile.views.index' %}" data-icon="arrow-l" data-direction="reverse" data-prefetch>{% trans "Back" %}</a>
+    <h1>{% trans "Settings" %}</h1>
 {% endblock %}
 
 {% block content %}
     <div data-role="controlgroup">
-        <a href="settings/devices/" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch><?php echo $lang->{'devices'};?></a>
-        <a href="settings/connectors/" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch><?php echo $lang->{'connectors'};?></a>
-        <a href="settings/inputs/" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch><?php echo $lang->{'inputs'};?></a>
+        <a href="{% url 'mobile.views.devices_settings' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>{% trans "Devices" %}</a>
+        <a href="{% url 'mobile.views.scenarios_settings' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>{% trans "Scenarios" %}</a>
+        <a href="{% url 'mobile.views.rooms_settings' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>{% trans "Rooms" %}</a>
+        <a href="{% url 'mobile.views.connectors_settings' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>{% trans "Connectors" %}</a>
+        <a href="{% url 'mobile.views.inputs_settings' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>{% trans "Inputs" %}</a>
+        <a href="{% url 'mobile.views.timers_settings' %}" data-role="button" data-icon="arrow-r" data-iconpos="right" data-prefetch>{% trans "Timers" %}</a>
     </div>
 {% endblock %}

@@ -1,17 +1,26 @@
-from django.conf.urls import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-admin.autodiscover()
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('mobile.views',
     url(r'^$', 'index'),
     url(r'^devices/$', 'devices'),
     url(r'^devices/(?P<room>\d+)/$', 'devices'),
-    url(r'^device/(?P<device>\d+)/cmd/(?P<action>[a-zA-Z0-9_]+)/$', 'device'),
-    url(r'^device/(?P<device>\d+)/$', 'edit_device'),
+    url(r'^device/(?P<id>\d+)/cmd/(?P<action>[a-zA-Z0-9_]+)/$', 'device'),
     url(r'^scenarios/$', 'scenarios'),
-    url(r'^scenario/(?P<scenario>\d+)/$', 'scenario'),
+    url(r'^scenario/(?P<id>\d+)/$', 'scenario'),
     url(r'^rooms/$', 'rooms'),
     url(r'^settings/$', 'settings'),
+    url(r'^settings/devices/$', 'devices_settings'),
+    url(r'^settings/device/(?P<id>\d+)/$', 'edit_device'),
+    url(r'^settings/scenarios/$', 'scenarios_settings'),
+    url(r'^settings/scenario/(?P<id>\d+)/$', 'edit_scenario'),
+    url(r'^settings/scenario/(?P<id>\d+)/devices$', 'edit_scenario_devices'),
+    url(r'^settings/scenario/(?P<id>\d+)/device/(?P<scenariodevice>\d+)$', 'edit_scenario_device'),
+    url(r'^settings/rooms/$', 'rooms_settings'),
+    url(r'^settings/room/(?P<id>\d+)/$', 'edit_room'),
+    url(r'^settings/connectors/$', 'connectors_settings'),
+    url(r'^settings/connector/scan/$', 'scan_connectors'),
+    url(r'^settings/connector/(?P<id>\d+)/$', 'edit_connector'),
+    url(r'^settings/inputs/$', 'inputs_settings'),
+    url(r'^settings/timers/$', 'timers_settings'),
+    url(r'^settings/device/(?P<device>\d+)/$', 'edit_device'),
 )
