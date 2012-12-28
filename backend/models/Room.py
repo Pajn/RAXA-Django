@@ -5,6 +5,10 @@ from django.utils.translation import ugettext as _
 class Floor(models.Model):
     name = models.CharField(_('Name'), max_length=30)
 
+    def num_rooms(self):
+        return self.room_set.all().__len__()
+    num_rooms.short_description = _('Number of rooms')
+
     class Meta:
         app_label = 'backend'
 
