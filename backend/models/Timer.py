@@ -128,4 +128,4 @@ class TimerForm(ModelForm):
         widgets = {'time': Time()}
 
 class TimerFormNew(Form):
-    device_scenario = CharField(widget=DeviceScenario(), label=_('Device or scenario the timer to trigger'))
+    device_scenario = CharField(widget=DeviceScenario(), label=_('Device or scenario for the timer to trigger'))
