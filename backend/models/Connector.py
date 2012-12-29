@@ -9,6 +9,8 @@ class Connector(models.Model):
     type = models.CharField(_('Type'), max_length=30)
     code = models.CharField(_('Code'), max_length=30)
 
+    object = None
+
     class Meta:
         app_label = 'backend'
 

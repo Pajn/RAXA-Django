@@ -9,6 +9,7 @@
         <a href="{% url 'mobile.views.rooms' %}" data-icon="arrow-l" data-direction="reverse" data-prefetch>{% trans "Back" %}</a>
     {% endif %}
     <h1>{% trans "Devices" %}</h1>
+    <a href="{% url 'mobile.views.settings' %}" data-icon="gear" class="ui-btn-right" data-prefetch>{% trans "Settings" %}</a>
 {% endblock %}
 
 {% block content %}

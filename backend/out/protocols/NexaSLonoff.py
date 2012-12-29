@@ -1,3 +1,4 @@
+import random
 from django.forms import HiddenInput
 from backend.models.Device import Device
 from backend.out.protocols.Protocol import Protocol
@@ -22,6 +23,24 @@ class NexaSLonoff(Protocol):
 
     def off(self, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"off"')
+
+    def generateRandom(self):
+        rand = random.randint(0,67234433)
+
+        unique = True
+
+        for device in self.devices:
+            if rand == device.code:
+                unique = False
+
+        if not unique:
+            return self.generateRandom()
+        return rand
+
+    def new(self):
+        self.devices = Device.objects.filter(type__startswith='NexaSL')
+        self.device.code = self.generateRandom()
+        self.device.action = 'on'
 
     SUPPORTED_ACTIONS = {
         "sync" : sync,

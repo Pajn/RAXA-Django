@@ -7,9 +7,15 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'mobile.views.edit_device' id=object.id %}" method="post">{% csrf_token %}
+    {% if type %}
+        <form action="{% url 'mobile.views.edit_device' type=type %}" method="post">{% csrf_token %}
+    {% else %}
+        <form action="{% url 'mobile.views.edit_device' id=object.id %}" method="post">{% csrf_token %}
+    {% endif %}
         {{ form.as_p }}
-        <input type="submit" value="{% trans "Save" %}" data-theme="b" />
-        <input type="submit" value="{% trans "Delete" %}" data-theme="c" />
+        <div class="ui-grid-a">
+            <div class="ui-block-a"><input type="submit" name="delete" value="{% trans "Delete" %}" data-theme="c" data-icon="delete" /></div>
+            <div class="ui-block-b"><input type="submit" name="save" value="{% trans "Save" %}" data-theme="b" data-icon="check" /></div>
+        </div>
     </form>
 {% endblock %}

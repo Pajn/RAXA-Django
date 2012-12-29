@@ -16,6 +16,9 @@ class Protocol(object):
     def off(self):
         raise NotImplementedError
 
+    def new(self):
+        raise NotImplementedError
+
     SUPPORTED_ACTIONS = {
         "sync" : sync,
         "on" : on,

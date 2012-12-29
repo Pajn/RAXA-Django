@@ -1,4 +1,5 @@
 from django.forms import HiddenInput, Widget
+import random
 from backend.models.Device import Device
 from backend.out.protocols.Protocol import Protocol
 from string import Template
@@ -43,8 +44,26 @@ class NexaSLdim(Protocol):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
 
     def dim_level(self, **kwargs):
-        dim_level = kwargs.get('instance')
-        self.device.connector.object.send(self.connector_string+',"cmd":"dim","dimLevel":"'+dim_level+'"')
+        dim_level = kwargs.get('dim_level')
+        self.device.connector.object.send('%s,"cmd":"dim","dimLevel":"%s"' % (self.connector_string, dim_level))
+
+    def generateRandom(self):
+        rand = random.randint(0,67234433)
+
+        unique = True
+
+        for device in self.devices:
+            if rand == device.code:
+                unique = False
+
+        if not unique:
+            return self.generateRandom()
+        return rand
+
+    def new(self):
+        self.devices = Device.objects.filter(type__startswith='NexaSL')
+        self.device.code = self.generateRandom()
+        self.device.action = 15
 
     SUPPORTED_ACTIONS = {
         "sync" : sync,
@@ -60,7 +79,8 @@ class NexaSLdim(Protocol):
             action = self.device.action
         try:
             dim_level = int(action)
-            action = "dim_level"
+            action = 'dim_level'
+            kwargs['dim_level'] = dim_level
         except ValueError:
             pass
         self.SUPPORTED_ACTIONS[action](self, **kwargs)

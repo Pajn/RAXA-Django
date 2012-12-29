@@ -9,7 +9,7 @@
 
 {% block content %}
     <div data-role="controlgroup">
-        <a href="{% url 'mobile.views.edit_device' id=0 %}" data-role="button" data-rel="dialog" data-transition="pop">{% trans "New" %}</a>
+        <a href="{% url 'mobile.views.new_device' %}" data-role="button" data-rel="dialog" data-transition="pop">{% trans "New" %}</a>
     </div>
     <div data-role="controlgroup">
         {% for device in list %}

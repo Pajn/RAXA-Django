@@ -1,51 +1,52 @@
-from django.forms import HiddenInput, TextInput, widgets
+from django.forms import HiddenInput, widgets
 from backend.models.Device import Device
 from backend.out.protocols.Protocol import Protocol
 
-LETTERS = (
-    ('A', 'A'),
-    ('B', 'B'),
-    ('C', 'C'),
-    ('D', 'D'),
-    ('E', 'E'),
-    ('F', 'F'),
-    ('G', 'G'),
-    ('H', 'H'),
-    ('I', 'I'),
-    ('J', 'J'),
-    ('K', 'K'),
-    ('L', 'L'),
-    ('M', 'M'),
-    ('N', 'N'),
-    ('O', 'O'),
-    ('P', 'P'),
-)
-
-DIGITS = (
-    (1, 1),
-    (2, 2),
-    (3, 3),
-    (4, 4),
-    (5, 5),
-    (6, 6),
-    (7, 7),
-    (8, 8),
-    (9, 9),
-    (10, 10),
-    (11, 11),
-    (12, 12),
-    (13, 13),
-    (14, 14),
-    (15, 15),
-    (16, 16),
-)
-
 class CodeSelectWidget(widgets.MultiWidget):
+
+    LETTERS = (
+        ('A', 'A'),
+        ('B', 'B'),
+        ('C', 'C'),
+        ('D', 'D'),
+        ('E', 'E'),
+        ('F', 'F'),
+        ('G', 'G'),
+        ('H', 'H'),
+        ('I', 'I'),
+        ('J', 'J'),
+        ('K', 'K'),
+        ('L', 'L'),
+        ('M', 'M'),
+        ('N', 'N'),
+        ('O', 'O'),
+        ('P', 'P'),
+        )
+
+    DIGITS = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8),
+        (9, 9),
+        (10, 10),
+        (11, 11),
+        (12, 12),
+        (13, 13),
+        (14, 14),
+        (15, 15),
+        (16, 16),
+        )
+
     def __init__(self, attrs=None, mode=0):
 
         _widgets = (
-            widgets.Select(attrs=attrs, choices=LETTERS),
-            widgets.Select(attrs=attrs, choices=DIGITS),
+            widgets.Select(attrs=attrs, choices=self.LETTERS),
+            widgets.Select(attrs=attrs, choices=self.DIGITS),
             )
         super(CodeSelectWidget, self).__init__(_widgets, attrs)
 
@@ -70,15 +71,8 @@ class CodeSelectWidget(widgets.MultiWidget):
         return prefix+join+sufix
 
     def value_from_datadict(self,data,files,name):
-        print 'Data: ', data
-        print 'Files: ', files
-        print 'Name: ', name
         line_list = [widget.value_from_datadict(data,files,name+'_%s' %i) for i,widget in enumerate(self.widgets)]
-        #try:
-        print 'return: ', line_list[0] + '/' + line_list[1]
         return line_list[0] + '/' + line_list[1]
-        #except:
-        #    return ''
 
 class NexaSC(Protocol):
     CONNECTOR_TYPE = "Tellstick"
@@ -89,8 +83,12 @@ class NexaSC(Protocol):
     def initialize(self, device):
         assert isinstance(device, Device)
         self.device = device
-        house = self.device.code.split('/')[0]
-        device = self.device.code.split('/')[1]
+        if self.device.code.split('/').__len__() == 2:
+            house = self.device.code.split('/')[0]
+            device = self.device.code.split('/')[1]
+        else:
+            house = 'A'
+            device = '1'
         self.connector_string = '"protocol":"NEXASC","house":"'+house+'","device":"'+device+'"'
 
     def sync(self, **kwargs):
@@ -106,6 +104,9 @@ class NexaSC(Protocol):
 
     def dim(self, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
+
+    def new(self):
+        self.device.action = 'on'
 
     SUPPORTED_ACTIONS = {
         "sync" : sync,

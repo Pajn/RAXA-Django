@@ -3,7 +3,7 @@ from django.db.models.signals import post_init
 from django.dispatch import receiver
 from . import Connector
 from . import Room
-from django.forms import ModelForm
+from django.forms import ModelForm, Form, ChoiceField
 from django.utils.translation import ugettext as _
 import os
 
@@ -23,8 +23,9 @@ class Device(models.Model):
     code = models.CharField(max_length=30)
     connector = models.ForeignKey(Connector)
     room = models.ForeignKey(Room)
-    order = models.IntegerField(_('Order'), )
-    action = models.CharField(_('Action'), max_length=8)
+    order = models.IntegerField(_('Order'), default=1)
+    action = models.CharField(_('Action'), max_length=9)
+    #status = models.CharField(_('Status'), max_length=9, default='off')
 
     object = None
 
@@ -35,9 +36,9 @@ class Device(models.Model):
     def __unicode__(self):
         return self.name
 
-class DeviceFormOld(ModelForm):
+class DeviceForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(DeviceFormOld, self).__init__(*args, **kwargs)
+        super(DeviceForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Device)
 
@@ -50,24 +51,11 @@ class DeviceFormOld(ModelForm):
 
     class Meta:
         model = Device
-        exclude = ('order',)
+        exclude = ('order', 'status')
 
-class DeviceFormNew(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(DeviceFormNew, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        assert isinstance(instance, Device)
-
-            #self.fields['type'].widget = widgets.Select()
-            #self.fields['action'].widget = instance.object.WIDGET
-
-    class Meta:
-        model = Device
-        exclude = ('order',)
-
-class a:
-    pass
-
+class DeviceFormNew(Form):
+    choices = supported_types()
+    type = ChoiceField(choices=choices)
 
 @receiver(post_init, sender=Device)
 def initialize_device(instance=None, **kwargs):

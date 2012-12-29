@@ -3,11 +3,11 @@
 {% load url from future %}
 
 {% block header %}
-    <h1>{% trans "Device in " %} {{ scenario.name }}</h1>
+    <h1>{% trans "Timer" %}</h1>
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'mobile.views.edit_scenario_device' scenario=scenario.id scenariodevice=scenariodevice %}" method="post">{% csrf_token %}
+    <form action="{% url 'mobile.views.edit_timer' id=id %}" method="post">{% csrf_token %}
         {{ form.as_p }}
         {% if submit == 'save' %}
             <input type="submit" value="{% trans "Save" %}" name="save" data-theme="b" data-icon="check" />
