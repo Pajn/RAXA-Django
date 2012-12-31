@@ -79,11 +79,11 @@ class DeviceScenario(Widget):
     def value_from_datadict(self, data, files, name):
         value = data[name]
 
-        if value[:1] == 'D':
+        if value.startswith('D'):
             id = value[1:]
             device = Device.objects.get(pk=id)
             return device
-        elif value[:1] == 'S':
+        elif value.startswith('S'):
             id = value[1:]
             scenario = Scenario.objects.get(pk=id)
             return scenario
