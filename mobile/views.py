@@ -6,6 +6,7 @@ from backend.models.Device import supported_types as device_supported_types
 from backend.models.Scenario import Scenario, ScenarioDevice, ScenarioForm, ScenarioDeviceForm, ScenarioDeviceFormNew
 from backend.models.Room import Room, RoomForm
 from backend.models.Connector import Connector, ConnectorForm
+from backend.models.Input import Input, InputForm, InputFormNew
 from backend.models.Timer import Timer, TimerFormNew, TimerForm
 from backend.widgets.DeviceScenario import DeviceScenarioHidden
 
@@ -44,7 +45,7 @@ def devices_settings(request):
     list = Device.objects.all()
     return render(request, 'mobile/settings/devices.html', {'list': list})
 
-def new_device(request, type=None):
+def new_device(request):
     if request.method == 'POST': # If the form has been submitted...
         form = DeviceFormNew(request.POST)
         form.fields['type'].choices = device_supported_types()
@@ -186,8 +187,7 @@ def connectors_settings(request):
 
 
 def scan_connectors(request):
-    list = Connector.objects.all()
-    return render(request, 'mobile/settings/connectors.html', {'list': list})
+    return HttpResponseRedirect(reverse('mobile.views.connectors_settings'))
 
 def edit_connector(request, id):
     object = get_object_or_404(Connector, pk=id)
@@ -208,8 +208,58 @@ def edit_connector(request, id):
     return render(request, 'mobile/settings/connector.html', {'object': object, 'form': form})
 
 def inputs_settings(request):
-    list = Room.objects.all()
-    return render(request, 'mobile/settings/rooms.html', {'list': list})
+    Input.scan()
+    list = Input.objects.exclude(pk=0)
+    return render(request, 'mobile/settings/inputs.html', {'list': list})
+
+def scan_input(request):
+    input = Input.scan()
+    if input is None:
+        return HttpResponseRedirect(reverse('mobile.views.inputs_settings'))
+    else:
+        return HttpResponseRedirect(reverse('mobile.views.edit_input', kwargs={'id': 0,}))
+
+def edit_input(request, id):
+    submit = 'delete'
+    if request.method == 'POST': # If the form has been submitted...
+        if 'new' in request.POST:
+            # First step submitted
+            form = InputFormNew(request.POST)
+            if form.is_valid(): # All validation rules pass
+                action_object = form._raw_value('device_scenario')
+                object = Input(action_object=action_object)
+                form = InputForm(instance=object)
+                form.fields['device_scenario'].widget = DeviceScenarioHidden(value=object.action_object)
+                submit = 'save'
+                return render(request, 'mobile/settings/input.html', {'form': form, 'id': id, 'submit': submit})
+        elif 'delete' in request.POST:
+            # Delete requested
+            object = get_object_or_404(Input, pk=id)
+            object.delete()
+            return HttpResponseRedirect(reverse('mobile.views.inputs_settings'))
+        else:
+            # second step
+            postdata = request.POST.copy()
+            postdata['action_object'] = postdata['device_scenario']
+            object = get_object_or_404(Input, pk=id)
+            if id == '0':
+                form = InputForm(request.POST)
+                action_object = form._raw_value('device_scenario')
+                object.action_object = action_object
+                submit = 'save'
+            form = InputForm(postdata, instance=object)
+            if form.is_valid(): # All validation rules pass
+                form.save()
+                return HttpResponseRedirect(reverse('mobile.views.inputs_settings'))
+    else:
+        if id == '0':
+            form = InputFormNew()
+            submit = 'next'
+        else:
+            object = get_object_or_404(Input, pk=id)
+            form = InputForm(instance=object)
+
+    return render(request, 'mobile/settings/input.html', {'form': form, 'id': id, 'submit': submit})
 
 def timers_settings(request):
     list = Timer.objects.all()
