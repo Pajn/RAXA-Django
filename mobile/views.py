@@ -208,7 +208,6 @@ def edit_connector(request, id):
     return render(request, 'mobile/settings/connector.html', {'object': object, 'form': form})
 
 def inputs_settings(request):
-    Input.scan()
     list = Input.objects.exclude(pk=0)
     return render(request, 'mobile/settings/inputs.html', {'list': list})
 
