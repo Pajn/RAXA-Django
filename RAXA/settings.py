@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     'django_cron',
     'backend',
     'mobile',
+    'api',
 )
 
 # A sample logging configuration. The only tangible logging

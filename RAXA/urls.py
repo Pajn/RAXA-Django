@@ -5,6 +5,7 @@ from django.conf.urls import patterns, include, url
 #admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^api/', include('api.urls')),
     url(r'^mobile/', include('mobile.urls')),
     url(r'^backend/', include('backend.urls')),
 
