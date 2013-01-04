@@ -1,0 +1,174 @@
+{% load i18n %}
+{% load url from future %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RAXA</title>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tablet/style.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}floors.css" />
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
+        <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
+        <script type="text/javascript" src="{{ STATIC_URL }}tablet/fastclick.min_.js"></script>
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="viewport" content="width=1.0, height=1.0, user-scalable=no" />
+        <!--[if IE 9]>
+            <style type="text/css">
+                .horisontal {
+                    background: url(images/horisontal.svg);
+                    background-size: 100%;
+                }
+                .vertical {
+                    background: url(images/vertical.svg);
+                    background-size: 100%;
+                }
+                .verticalSelected {
+                    background: url(images/verticalSelected.svg);
+                    background-size: 100%;
+                }
+            </style>
+        <![endif]-->
+    </head>
+    <body id="body">
+        <div id="container">
+            {% for floor in floors %}
+                <div id="floor{{ floor.id }}"></div>
+            {% endfor %}
+            <div id="devices"></div>
+        </div>
+        <div id="settings" style="Display: None">
+            <div id="menu">
+                <ul>
+                    <li><input type="button" id="DevicesSettings" value="{% trans "Devices" %}" class="button normalbutton vertical menu top" /></li>
+                    <li><input type="button" id="ScenariosSettings" value="{% trans "Scenarios" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" id="InputsSettings" value="{% trans "Inputs" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" id="TimersSettings" value="{% trans "Timers" %}" class="button normalbutton vertical menu" /></li>
+                    <!--<li><input type="button" id="AutoSettings" value="<?php echo $lang->{'automation'};?>" class="button normalbutton vertical menu" /></li>-->
+                    <li><input type="button" id="RoomsSettings" value="{% trans "Rooms" %}" class="button normalbutton vertical menu" /></li>
+                    <!--<li><input type="button" id="SystemSettings" value="<?php echo $lang->{'system'};?>" class="button normalbutton vertical menu" /></li>-->
+                    <!--<li><input type="button" id="PlanSettings" value="<?php echo $lang->{'plan'};?>" class="button normalbutton vertical menu" /></li>-->
+                </ul>
+            </div>
+            <div id="options" class="border">
+            </div>
+        </div>
+        <div id="retholder"><div id="ret" style="Display: None" class="border"></div></div>
+        <div id="footer">
+            {% include 'desktop/footer.html' %}
+        </div>
+        <script type="text/javascript">
+            function load(url, callback) {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (callback) {
+                            callback(xmlhttp);
+                        }
+                    }
+                };
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
+            }
+            window.onload = function () {
+                var floor_img = '';
+                if (supportsSVG()) {
+                    {% for floor in floors %}
+                        floor_img = document.createElement('div');
+                        floor_img.setAttribute('id', 'floor{{ floor.id }}img');
+                        document.getElementById('floor{{ floor.id }}').appendChild(floor_img);
+                        load('{{ STATIC_URL }}images/floor{{ floor.id }}.svg', function (data) {
+                            document.getElementById("floor{{ floor.id }}img").innerHTML = data.responseText;
+                        });
+                        var floor_img_overlay = document.createElement('div');
+                        floor_img_overlay.setAttribute('id', 'floor{{ floor.id }}imgoverlay');
+                        document.getElementById('floor{{ floor.id }}').appendChild(floor_img_overlay);
+                        load('{% url 'common.views.overlay' floor=floor.id %}', function (data) {
+                            document.getElementById("floor{{ floor.id }}imgoverlay").innerHTML = data.responseText;
+                        });
+                    {% endfor %}
+                } else {
+                    var css = document.createElement('link');
+                    css.setAttribute('rel', 'stylesheet');
+                    css.setAttribute('type', 'text/css');
+                    css.setAttribute('href', '{{ STATIC_URL }}tablet/rooms.css');
+                    document.getElementById('body').appendChild(css);
+
+                    {% for floor in floors %}
+                        floor_img = document.createElement('img');
+                        floor_img.setAttribute('id', 'floor{{ floor.id }}img');
+                        floor_img.setAttribute('src', '{{ STATIC_URL }}images/floor{{ floor.id }}.gif');
+                        document.getElementById('floor{{ floor.id }}').appendChild(floor_img);
+                    {% endfor %}
+
+                    {% for room in backend.models.Room.all %}
+                        var room = document.createElement('div');
+                        room.setAttribute('id', 'iroom{{ room.id }}');
+                        room.setAttribute('class', 'fastclick');
+                        room.setAttribute('style', 'z-Index: 100');
+                        room.setAttribute('onclick', 'room({{ room.id }})');
+                        document.getElementById('floor{{ room.floor.id }}').appendChild(room);
+                    {% endfor %}
+                }
+            };
+            function room(room) {
+                load('{% url 'tablet.views.devices' %}?room='+room, function (data) {
+                    document.getElementById("devices").innerHTML = data.responseText;
+                });
+            }
+            function scenario(id) {
+                document.getElementById("ret").textContent = '{% trans "Executing" %}';
+                document.getElementById('ret').style.display = "block";
+                load('{% url 'api.views.scenario' %}?id='+id, function (data) {
+                    document.getElementById("ret").innerHTML = data.responseText;
+                    window.setTimeout(function() {
+                        document.getElementById('ret').style.display = "none";
+                    }, 2000);
+                });
+            }
+            function device(id, cmd) {
+                var callback = function(data) {
+                    document.getElementById('ret').innerHTML = data.responseText;
+                    document.getElementById('ret').style.display = "block";
+                    window.setTimeout(function() {
+                        document.getElementById('ret').style.display = "none";
+                    }, 2000);
+                    if (supportsSVG()) {
+                        load('{% url 'common.views.overlay' floor=0 %}', function (data) {
+                            document.getElementById("lowerIMGoverlay").innerHTML = data.responseText;
+                        });
+                        load('{% url 'common.views.overlay' floor=1 %}', function (data) {
+                            document.getElementById("upperIMGoverlay").innerHTML = data.responseText;
+                        });
+                    }
+                };
+                load('{% url 'api.views.device' %}?id='+id+'&action='+cmd, callback);
+            }
+            function showdim(id) {
+                if (document.getElementById('dimrow' + id).style.display == "none") {
+                    document.getElementById('dimrow' + id).style.display = "block";
+                } else {
+                    document.getElementById('dimrow' + id).style.display = "none";
+                }
+            }
+            function dim(id) {
+                var dim_level = document.getElementById('dim' + id).value;
+                device(id, dim_level);
+            }
+            function supportsSVG() {
+                return !!document.createElementNS &&
+                       !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
+            }
+            var $settings = $('#settings');
+            var $container = $('#container');
+            function settings() {
+                if ($settings.is(':visible')) {
+                    $container.show();
+                    $settings.hide();
+                } else {
+                    $container.hide();
+                    $settings.show();
+                }
+            }
+        </script>
+    </body>
+</html>
