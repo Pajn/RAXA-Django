@@ -44,3 +44,26 @@ class Protocol(object):
         if action is '':
             action = self.device.action
         self.SUPPORTED_ACTIONS[action](self, **kwargs)
+
+class DimLivelProtocol(Protocol):
+    DIM_MIN = 0
+    DIM_MAX = 1
+    DIM_STEP = 1
+
+    def action(self, **kwargs):
+        action = kwargs.get('action')
+        if action is '':
+            action = self.device.action
+        try:
+            dim_level = int(action)
+            action = 'dim_level'
+            kwargs['dim_level'] = dim_level
+        except ValueError:
+            pass
+        self.SUPPORTED_ACTIONS[action](self, **kwargs)
+
+    def getSteps(self):
+        steps = []
+        for step in range(self.DIM_MIN, self.DIM_MAX, self.DIM_STEP):
+            steps.append(step)
+        return steps
