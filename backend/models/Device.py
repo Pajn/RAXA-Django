@@ -17,7 +17,7 @@ class Device(models.Model):
     room = models.ForeignKey(Room)
     order = models.IntegerField(_('Order'), default=1)
     action = models.CharField(_('Action'), max_length=9)
-    #status = models.CharField(_('Status'), max_length=9, default='off')
+    status = models.CharField(_('Status'), max_length=9, default='off')
 
     object = None
 
