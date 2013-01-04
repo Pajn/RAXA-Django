@@ -121,6 +121,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django_cron',
     'backend',
+    'common',
+    'tablet',
     'mobile',
     'api',
 )

@@ -7,6 +7,8 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
     url(r'^api/', include('api.urls')),
     url(r'^mobile/', include('mobile.urls')),
+    url(r'^common/', include('common.urls')),
+    url(r'^desktop/', include('tablet.urls')),
     url(r'^backend/', include('backend.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

@@ -39,6 +39,7 @@
                 <label>
                     <input type="range" class="slider" value="{{ device.action }}"
                            min="{{ device.object.DIM_MIN }}" max="{{ device.object.DIM_MAX }}"
+                           step="{{ device.object.DIM_STEP }}"
                            style="height: 15px; width: 30px;"/>
                 </label>
                 <button>{% trans "Dim" %}</button>
