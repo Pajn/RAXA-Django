@@ -1,7 +1,7 @@
 import random
 from django.forms import HiddenInput
 from backend.models.Device import Device
-from backend.out.protocols.Protocol import Protocol
+from backend.out import Protocol
 
 class NexaSLonoff(Protocol):
     CONNECTOR_TYPE = "Tellstick"

@@ -1,6 +1,6 @@
 from django.forms import HiddenInput, widgets
 from backend.models.Device import Device
-from backend.out.protocols.Protocol import Protocol
+from backend.out import Protocol
 
 class CodeSelectWidget(widgets.MultiWidget):
 

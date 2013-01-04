@@ -1,10 +1,24 @@
-from backend.models.Device import Device
+import os
+
+def supported_types():
+    dir = os.path.join(os.path.dirname(__file__), 'protocols')
+    types = []
+    for file in os.listdir(dir):
+        if file.endswith('.py'):
+            if file != '__init__.py':
+                types.append((file[:-3], file[:-3]))
+
+    return types
+
+def get_class(connector):
+    tmpmodule = __import__('backend.out.protocols.%s' % connector, fromlist=[connector])
+    tmpclass = getattr(tmpmodule, connector)
+    return tmpclass
 
 class Protocol(object):
     CONNECTOR_TYPE = ''
 
     def initialize(self, device):
-        assert isinstance(device, Device)
         self.device = device
 
     def sync(self):

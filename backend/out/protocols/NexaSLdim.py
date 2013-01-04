@@ -1,9 +1,9 @@
 from django.forms import HiddenInput, Widget
 import random
 from backend.models.Device import Device
-from backend.out.protocols.Protocol import Protocol
 from string import Template
 from django.utils.safestring import mark_safe
+from backend.out import Protocol
 
 class SliderWidget(Widget):
     def render(self, name, value, attrs=None):

@@ -3,6 +3,7 @@ from django.db.models.signals import post_init
 from django.dispatch import receiver
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
+from backend.out.connector import supported_types, get_class
 
 class Connector(models.Model):
     name = models.CharField(_('Name'), max_length=30)
@@ -16,6 +17,12 @@ class Connector(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    @staticmethod
+    def scan(timeout=10):
+        for type in supported_types():
+            pass
+
 
 class ConnectorForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -43,11 +50,7 @@ def initialize_connector(**kwargs):
     # This Will load the correct connector object to the model
     #instace is the model object
     instance = kwargs.get('instance')
-    #import the connector module
-    tmpmodule = __import__("backend.out.connectors." + instance.type, fromlist=[instance.type])
-    #get the connector class
-    tmpclass = getattr(tmpmodule, instance.type)
     #create the connector object
-    instance.object = tmpclass()
+    instance.object = get_class(instance.type)()
     #initialize the object
     instance.object.initialize(instance)

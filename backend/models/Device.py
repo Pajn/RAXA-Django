@@ -5,15 +5,7 @@ from . import Connector
 from . import Room
 from django.forms import ModelForm, Form, ChoiceField
 from django.utils.translation import ugettext as _
-import os
-
-def supported_types():
-    types = []
-    for n in os.listdir('backend/out/protocols'):
-        if n.endswith('.py'):
-            if n != 'Protocol.py' and n != '__init__.py':
-                types.append((n[:-3], n[:-3]))
-    return types
+from backend.out.protocol import get_class, supported_types
 
 class Device(models.Model):
     choices = supported_types()
@@ -63,11 +55,7 @@ def initialize_device(instance=None, **kwargs):
     # instace is the model object
     assert isinstance(instance, Device)
     if instance and instance.type:
-        # import the protocols module
-        tmpmodule = __import__('backend.out.protocols.%s' % instance.type, fromlist=[instance.type])
         # get the protocols class
-        tmpclass = getattr(tmpmodule, instance.type)
-        # create the protocol object
-        instance.object = tmpclass()
+        instance.object = get_class(instance.type)()
         # initialize the object
         instance.object.initialize(instance)
