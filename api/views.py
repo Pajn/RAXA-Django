@@ -8,7 +8,8 @@ from backend.models.Room import Floor
 API_VERSION = 2
 RAXA_VERSION = 2
 
-def respond_with_json(data, errors=[], pretty=False, request=None):
+def respond_with_json(data, errors=None, pretty=False, request=None):
+    if not errors: errors = []
     if request is not None:
         if request.REQUEST.has_key('pretty'):
             pretty = True
@@ -78,17 +79,20 @@ def version(request):
         }
     return respond_with_json(response, request=request)
 
-def devices(request, room=False):
-    if not room:
-        list = Device.objects.all()
-    else:
+def devices(request):
+    if request.REQUEST.has_key('room'):
+        room = request.REQUEST['room']
         list = Device.objects.filter(room=room)
+    else:
+        list = Device.objects.all()
     devices = []
     for device in list:
         devices.append(serialize_device(device))
     return respond_with_json(devices, request=request)
 
-def device(request, id, action):
+def device(request):
+    id = request.REQUEST['id']
+    action = request.REQUEST['action']
     device = Device.objects.get(pk=id)
     device.object.action(action=action)
     return respond_with_json('', request=request)
@@ -100,7 +104,8 @@ def scenarios(request):
         scenarios.append(serialize_scenario(scenario))
     return respond_with_json(scenarios, request=request)
 
-def scenario(request, id):
+def scenario(request):
+    id = request.REQUEST['id']
     scenario = Scenario.objects.get(pk=id)
     scenario.execute()
     return respond_with_json('', request=request)
