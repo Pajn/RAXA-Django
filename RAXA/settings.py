@@ -97,6 +97,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+CRON_CLASSES = (
+    'RAXA.cron.Timers',
+)
+
 ROOT_URLCONF = 'RAXA.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -115,6 +119,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django_cron',
     'backend',
     'mobile',
 )
