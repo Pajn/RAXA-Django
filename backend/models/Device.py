@@ -3,7 +3,7 @@ from django.db.models.signals import post_init
 from django.dispatch import receiver
 from . import Connector
 from . import Room
-from django.forms import ModelForm, Form, ChoiceField
+from django.forms import ModelForm, Form, ChoiceField, HiddenInput
 from django.utils.translation import ugettext as _
 from backend.out.protocol import get_class, supported_types
 
@@ -34,12 +34,22 @@ class DeviceForm(ModelForm):
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Device)
 
-        self.fields['type'].required = False
-        self.fields['type'].widget.attrs['disabled'] = 'disabled'
+        if instance and instance.id:
+            self.fields['type'].required = False
+            self.fields['type'].widget.attrs['disabled'] = 'disabled'
+        else:
+            self.fields['code'].widget = HiddenInput()
+            self.fields['action'].widget = HiddenInput()
 
     def clean_type(self):
         instance = getattr(self, 'instance', None)
-        return instance.type
+        assert isinstance(instance, Device)
+
+        if instance and instance.type:
+            instance = getattr(self, 'instance', None)
+            return instance.type
+        else:
+            return self.cleaned_data.get('type', None)
 
     class Meta:
         model = Device
