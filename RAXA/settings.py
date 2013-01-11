@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     'django_cron',
     'backend',
     'common',
+    'desktop',
     'tablet',
     'mobile',
     'api',
