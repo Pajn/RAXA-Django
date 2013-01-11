@@ -12,6 +12,8 @@ from backend.widgets import getWidget
 from backend.widgets.Time import Time
 
 class Timer(models.Model):
+    limit = models.Q(app_label = 'backend', model = 'Device') | models.Q(app_label = 'backend', model = 'Scenario')
+
     name = models.CharField(_('Name'), max_length=30)
     time = models.TimeField(_('Time'))
     monday = models.BooleanField(_('Monday'))
@@ -21,10 +23,10 @@ class Timer(models.Model):
     friday = models.BooleanField(_('Friday'))
     saturday = models.BooleanField(_('Saturday'))
     sunday = models.BooleanField(_('Sunday'))
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, limit_choices_to = limit)
     object_id = models.PositiveIntegerField()
     action_object = generic.GenericForeignKey('content_type', 'object_id')
-    action = models.CharField(_('Action'), max_length=9)
+    action = models.CharField(_('Action'), max_length=9, default='off')
 
     class Meta:
         app_label = 'backend'
@@ -75,9 +77,15 @@ class TimerForm(ModelForm):
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Timer)
 
-        self.fields['action_object'].widget = DeviceScenario(value=instance.action_object)
-        self.fields['action_object'].required = False
-        self.fields['action_object'].widget.attrs['disabled'] = 'disabled'
+        if instance and instance.action_object:
+            self.fields['action_object'].widget = DeviceScenario(value=instance.action_object)
+            self.fields['action_object'].required = False
+            self.fields['action_object'].widget.attrs['disabled'] = 'disabled'
+            self.fields['action_object'].label = _('Object')
+        else:
+            self.fields['action_object'].widget = HiddenInput()
+            self.fields['device_scenario'].widget = DeviceScenario(value=instance.action_object)
+            self.fields['device_scenario'].label = _('Object')
 
         # Put action at the back
         action = self.fields.pop('action')
@@ -90,20 +98,25 @@ class TimerForm(ModelForm):
             self.fields['action'].widget = HiddenInput()
 
     def clean_action_object(self):
+        print 'action_object'
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Timer)
         if instance and instance.action_object:
             return instance.action_object
         else:
             if 'device_scenario' in self.fields:
+                print self._raw_value('device_scenario')
+                instance.action_object = self._raw_value('device_scenario')
+                instance.action = 'off'
                 return self._raw_value('device_scenario')
             else:
                 raise ValidationError('Bad')
 
     def clean_content_type(self):
+        print 'content_type'
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Timer)
-        if instance and instance.id:
+        if instance and instance.action_object:
             return instance.content_type
         else:
             if 'device_scenario' in self.fields:
@@ -112,9 +125,10 @@ class TimerForm(ModelForm):
                 raise ValidationError('Bad')
 
     def clean_object_id(self):
+        print 'object_id'
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Timer)
-        if instance and instance.id:
+        if instance and instance.object_id:
             return instance.object_id
         else:
             if 'device_scenario' in self.fields:
