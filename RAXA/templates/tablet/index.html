@@ -5,7 +5,7 @@
     <head>
         <title>RAXA</title>
         <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tablet/style.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css" />
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}floors.css" />
         <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
         <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
@@ -83,7 +83,7 @@
                     var css = document.createElement('link');
                     css.setAttribute('rel', 'stylesheet');
                     css.setAttribute('type', 'text/css');
-                    css.setAttribute('href', '{{ STATIC_URL }}tablet/rooms.css');
+                    css.setAttribute('href', '{{ STATIC_URL }}rooms.css');
                     document.getElementById('body').appendChild(css);
 
                     {% for floor in floors %}
