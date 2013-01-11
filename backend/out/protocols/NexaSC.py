@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.forms import HiddenInput, widgets
 from backend.models.Device import Device
 from backend.out import Protocol
@@ -58,14 +59,14 @@ class CodeSelectWidget(widgets.MultiWidget):
         return [None, None]
 
     def format_output(self, rendered_widgets):
-        prefix = u'<div class="ui-grid-a">'
+        prefix = '<table style="display:inline-table; margin: 0; padding: 0; border 0; border-spacing: 0;"><tr>'
         #join = u''.join(rendered_widgets)
-        sufix = u'</div>'
+        sufix = '</tr></table>'
         block = {0:'a',1:'b',2:'c'}
         i = 0
         join = ''
         for widget in rendered_widgets:
-            join = join + u'<div class="ui-block-' + block[i] + u'">' + widget + u'</div>'
+            join = join + '<td>' + widget + '</td>'
             i += 1
 
         return prefix+join+sufix
@@ -107,6 +108,7 @@ class NexaSC(Protocol):
 
     def new(self):
         self.device.action = 'on'
+        self.device.code = 'A/1'
 
     SUPPORTED_ACTIONS = {
         "sync" : sync,
