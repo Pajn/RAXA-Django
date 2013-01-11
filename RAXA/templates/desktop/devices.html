@@ -1,37 +1,37 @@
 {% load i18n %}
 <h1 align="center">{{ room.name }}</h1>
 <table border="0">
-    {% for device in list %}
-        <tr>
-            <td align="left">{{ device.name }}</td>
-            <td align="right">
-                <img src="{{ STATIC_URL }}images/on.png" class="fastclick" onclick="device({{ device.id }}, 'on')"/>
-            </td>
-            <td align="right">
-                <img src="{{ STATIC_URL }}images/off.png" class="fastclick" onclick="device({{ device.id }}, 'off')"/>
-            </td>
-            <td align="right">
-                {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
-                    <img src="{{ STATIC_URL }}images/dim.png" class="fastclick" onclick="showdim({{ device.id }})"/>
-                {% elif 'dim' in device.object.SUPPORTED_ACTIONS %}
-                    <img src="{{ STATIC_URL }}images/dim.png" class="fastclick" onclick="device({{ device.id }}, 'dim')"/>
-                {% endif %}
-            </td>
-        </tr>
-        {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
-            <tr id="dimrow{{ device.id }}" style="display: none;">
-                <td></td>
-                <td align="right" colspan="2">
-                    <select id="dim{{ device.id }}">
-                        {% for step in device.object.getSteps %}
-                            <option value="{{ step }}">{{ step }}</option>
-                        {% endfor %}
-                    </select>
+    <tbody>
+        {% for device in list %}
+            <tr>
+                <td align="left">{{ device.name }}</td>
+                <td align="right">
+                    <img src="{{ STATIC_URL }}images/on.png" class="fastclick" onclick="device({{ device.id }}, 'on')"/>
                 </td>
                 <td align="right">
-                    <button onclick="dim({{ device.id }})">{% trans "Dim" %}</button>
+                    <img src="{{ STATIC_URL }}images/off.png" class="fastclick" onclick="device({{ device.id }}, 'off')"/>
+                </td>
+                <td align="right">
+                    {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
+                        <img src="{{ STATIC_URL }}images/dim.png" class="fastclick" onclick="showdim({{ device.id }})"/>
+                    {% elif 'dim' in device.object.SUPPORTED_ACTIONS %}
+                        <img src="{{ STATIC_URL }}images/dim.png" class="fastclick" onclick="device({{ device.id }}, 'dim')"/>
+                    {% endif %}
                 </td>
             </tr>
-        {% endif %}
-    {% endfor %}
+            {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
+                <tr>
+                    <td colspan="4">
+                        <div id="dimrow{{ device.id }}" style="display: none;">
+                            <input type="range" class="slider" value="{{ device.action }}"
+                                   min="{{ device.object.DIM_MIN }}" max="{{ device.object.DIM_MAX }}"
+                                   step="{{ device.object.DIM_STEP }}"
+                                   data-device="{{ device.id }}"
+                                   style="height: 15px; width: 30px;"/>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
 </table>

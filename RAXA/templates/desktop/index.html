@@ -5,13 +5,18 @@
     <head>
         <title>RAXA</title>
         <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tablet/style.css" />
+        <!-- chromeframe metatag -->
+        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css" />
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}floors.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}desktop/jquery-ui-1.9.2.custom.min.css" />
+
         <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
         <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
-        <script type="text/javascript" src="{{ STATIC_URL }}tablet/fastclick.min_.js"></script>
-        <meta name="HandheldFriendly" content="true" />
-        <meta name="viewport" content="width=1.0, height=1.0, user-scalable=no" />
+
+        <script type="text/javascript" src="{{ STATIC_URL }}desktop/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}desktop/jquery-ui-1.9.2.custom.min.js"></script>
         <!--[if IE 9]>
             <style type="text/css">
                 .horisontal {
@@ -30,26 +35,27 @@
         <![endif]-->
     </head>
     <body id="body">
-        <div id="container">
+        <div id="container" style="Display: {% block display_container %}block{% endblock %}">
             {% for floor in floors %}
                 <div id="floor{{ floor.id }}"></div>
             {% endfor %}
             <div id="devices"></div>
         </div>
-        <div id="settings" style="Display: None">
+        <div id="settings" style="Display: {% block display_settings %}None{% endblock %}">
             <div id="menu">
                 <ul>
-                    <li><input type="button" id="DevicesSettings" value="{% trans "Devices" %}" class="button normalbutton vertical menu top" /></li>
-                    <li><input type="button" id="ScenariosSettings" value="{% trans "Scenarios" %}" class="button normalbutton vertical menu" /></li>
-                    <li><input type="button" id="InputsSettings" value="{% trans "Inputs" %}" class="button normalbutton vertical menu" /></li>
-                    <li><input type="button" id="TimersSettings" value="{% trans "Timers" %}" class="button normalbutton vertical menu" /></li>
-                    <!--<li><input type="button" id="AutoSettings" value="<?php echo $lang->{'automation'};?>" class="button normalbutton vertical menu" /></li>-->
-                    <li><input type="button" id="RoomsSettings" value="{% trans "Rooms" %}" class="button normalbutton vertical menu" /></li>
-                    <!--<li><input type="button" id="SystemSettings" value="<?php echo $lang->{'system'};?>" class="button normalbutton vertical menu" /></li>-->
-                    <!--<li><input type="button" id="PlanSettings" value="<?php echo $lang->{'plan'};?>" class="button normalbutton vertical menu" /></li>-->
+                    <li><input type="button" data-id="Devices" value="{% trans "Devices" %}" class="button normalbutton vertical menu top" /></li>
+                    <li><input type="button" data-id="Scenarios" value="{% trans "Scenarios" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" data-id="Inputs" value="{% trans "Inputs" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" data-id="Timers" value="{% trans "Timers" %}" class="button normalbutton vertical menu" /></li>
+                    <!--<li><input type="button" data-id="Auto" value="<?php echo $lang->{'automation'};?>" class="button normalbutton vertical menu" /></li>-->
+                    <li><input type="button" data-id="Rooms" value="{% trans "Rooms" %}" class="button normalbutton vertical menu" /></li>
+                    <!--<li><input type="button" data-id="Systems" value="<?php echo $lang->{'system'};?>" class="button normalbutton vertical menu" /></li>-->
+                    <!--<li><input type="button" data-id="Plan" value="<?php echo $lang->{'plan'};?>" class="button normalbutton vertical menu" /></li>-->
                 </ul>
             </div>
             <div id="options" class="border">
+                {% block settings %}{% endblock %}
             </div>
         </div>
         <div id="retholder"><div id="ret" style="Display: None" class="border"></div></div>
@@ -57,6 +63,14 @@
             {% include 'desktop/footer.html' %}
         </div>
         <script type="text/javascript">
+            $(document).ready(function() {
+                $('.menu').on('click', function(){
+                    $('.menu').removeClass('verticalSelected');
+                    $(this).addClass('verticalSelected');
+                    var type = $(this).attr('data-id');
+                    $('#options').load('{% url 'desktop.views.settings' %}', {'type': type})
+                });
+            });
             function load(url, callback) {
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function () {
@@ -90,7 +104,7 @@
                     var css = document.createElement('link');
                     css.setAttribute('rel', 'stylesheet');
                     css.setAttribute('type', 'text/css');
-                    css.setAttribute('href', '{{ STATIC_URL }}tablet/rooms.css');
+                    css.setAttribute('href', '{{ STATIC_URL }}rooms.css');
                     document.getElementById('body').appendChild(css);
 
                     {% for floor in floors %}
@@ -110,9 +124,43 @@
                     {% endfor %}
                 }
             };
+            function update_overlay() {
+                {% for floor in floors %}
+                    load('{% url 'common.views.overlay' floor=floor.id %}', function (data) {
+                        document.getElementById("floor{{ floor.id }}imgoverlay").innerHTML = data.responseText;
+                    });
+                {% endfor %}
+            }
             function room(room) {
-                load('{% url 'tablet.views.devices' %}?room='+room, function (data) {
+                load('{% url 'desktop.views.devices' %}?room='+room, function (data) {
                     document.getElementById("devices").innerHTML = data.responseText;
+
+                    var $input, $slider;
+
+                    $('.slider').each(function(index, input) {
+                        $input = $(input);
+
+                        //Create a new div, turn it into a slider, and set its attributes based on
+                        //the attributes of the input.
+                        $slider = $('<div />').slider({
+                            min: parseInt($input.attr('min'), 10),
+                            max: parseInt($input.attr('max'), 10),
+                            value: parseInt($input.attr('value'), 10),
+                            step: parseInt($input.attr('step'), 10),
+                            slide: function(event, ui) {
+                                //Keep the value of the input[type=range] in sync with the slider.
+                                $(this).prev('input').val(ui.value);
+                            },
+                            stop: function(event, ui) {
+                                var id = $(this).prev('input').attr('data-device');
+                                device(id, ui.value);
+                            }
+                        });
+
+                        //Append the slider after the input and hide the input.  The user will only
+                        //interact with the slider.
+                        $input.after($slider).hide();
+                    });
                 });
             }
             function scenario(id) {
@@ -133,12 +181,7 @@
                         document.getElementById('ret').style.display = "none";
                     }, 2000);
                     if (supportsSVG()) {
-                        load('{% url 'common.views.overlay' floor=0 %}', function (data) {
-                            document.getElementById("lowerIMGoverlay").innerHTML = data.responseText;
-                        });
-                        load('{% url 'common.views.overlay' floor=1 %}', function (data) {
-                            document.getElementById("upperIMGoverlay").innerHTML = data.responseText;
-                        });
+                        update_overlay();
                     }
                 };
                 load('{% url 'api.views.device' %}?id='+id+'&action='+cmd, callback);
@@ -169,6 +212,36 @@
                     $settings.show();
                 }
             }
+
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getCookie('csrftoken');
+
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
         </script>
     </body>
 </html>
