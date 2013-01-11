@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.forms import ModelForm, ModelChoiceField, Form, HiddenInput
+from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext as _
 from . import Device
 from backend.widgets import getWidget
@@ -24,6 +25,15 @@ class Scenario(models.Model):
             for scenario_device in self.scenariodevice_set.all():
                 scenario_device.device.object.action(action=action)
 
+scenario_form_set = None
+
+def ScenarioFormSet(*args, **kwargs):
+    global scenario_form_set
+
+    if scenario_form_set is None:
+        scenario_form_set = modelformset_factory(Scenario, exclude=('order',), can_delete=True)
+    return scenario_form_set(*args, **kwargs)
+
 class ScenarioForm(ModelForm):
     class Meta:
         model = Scenario
@@ -36,6 +46,20 @@ class ScenarioDevice(models.Model):
 
     class Meta:
         app_label = 'backend'
+
+scenario_device_form_set = None
+
+def ScenarioDeviceFormSet(*args, **kwargs):
+    global scenario_device_form_set
+
+    if scenario_device_form_set is None:
+        scenario_device_form_set = modelformset_factory(ScenarioDevice, exclude=('scenario',), can_delete=True)
+    formset = scenario_device_form_set(*args, **kwargs)
+    for form in formset:
+        if 'device' in form.initial:
+            print form.initial['device']
+            form.fields['action'].widget = getWidget(form.instance.device)
+    return formset
 
 class ScenarioDeviceForm(ModelForm):
     device_new = ModelChoiceField(widget=HiddenInput(), queryset=Device.objects.all(), required=False)
@@ -65,6 +89,22 @@ class ScenarioDeviceForm(ModelForm):
     class Meta:
         model = ScenarioDevice
         exclude = ('scenario',)
+
+class ScenarioDeviceFormAction(ModelForm):
+    device_new = ModelChoiceField(widget=HiddenInput(), queryset=Device.objects.all(), required=False)
+    def __init__(self, *args, **kwargs):
+        super(ScenarioDeviceFormAction, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+
+        if instance is not None:
+            try:
+                self.fields['action'].widget = getWidget(instance.device)
+            except ObjectDoesNotExist:
+                pass
+
+    class Meta:
+        model = ScenarioDevice
+        exclude = ('scenario','device')
 
 class ScenarioDeviceFormNew(Form):
     device = ModelChoiceField(label=_('Device'), queryset=Device.objects.all())

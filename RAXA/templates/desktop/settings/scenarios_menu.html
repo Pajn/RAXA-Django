@@ -1,0 +1,18 @@
+{% load i18n %}
+{% load url from future %}
+<ul>
+    <li>
+        <button class="button biggerbutton vertical top"
+                onclick="$('#subsettingsoptions').load('{% url 'desktop.views.scenarios_settings' %}', {'edit': 'edit'})">
+            {% trans "Edit Scenarios" %}
+        </button>
+    </li>
+    {% for scenario in scenarios %}
+        <li>
+            <button class="button biggerbutton vertical"
+                onclick="$('#subsettingsoptions').load('{% url 'desktop.views.edit_scenario' %}', {'scenario': {{ scenario.id}}})">
+                {{ scenario.name }}
+            </button>
+        </li>
+    {% endfor %}
+</ul>
