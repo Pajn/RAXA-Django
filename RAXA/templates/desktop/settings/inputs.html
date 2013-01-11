@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load url from future %}
+<style type="text/css">
+    .container {
+        background: none;
+    }
+</style>
+<div id="accordion">
+    {% for input in inputs %}
+        <div class="group">
+            <div class="header" data-id="{{ input.id }}" style="line-height: 1;">
+                <span>{{ input.name }}</span>
+                <span style="float: right; font-size: 0.8em;color: #ccc">{{ input.action_object.name }}</span>
+            </div>
+            <div class="container"><br /><br /><br /><br /><br /><br /></div>
+        </div>
+    {% endfor %}
+</div>
+<div id="new">
+    <div class="header" data-id="0" style="line-height: 1;">
+        <span>{% blocktrans %}New Input{% endblocktrans %}</span>
+    </div>
+    <div class="container">
+        <form action="{% url 'desktop.views.edit_input' %}" method="post">{% csrf_token %}
+            <table style="text-align: left; border: 8px solid transparent; border-spacing: 0;">
+                {{ form.as_table }}
+            </table>
+            <input type="submit" name="add" value="{% trans "Add" %}" />
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    var $accordion = $('#accordion');
+    $accordion.accordion({
+        collapsible: true,
+        active: false,
+        heightStyle: "content",
+        header: '> div > div[class="header"]',
+        beforeActivate: function(event, ui) {
+            var id = ui.newHeader.attr('data-id');
+            ui.newPanel.load('{% url 'desktop.views.edit_input' %}', {'id': id});
+        }
+    }).sortable({
+                axis: "y",
+                handle: '.header',
+                start: function( event, ui ) {
+                    $accordion.accordion("activate", false);
+                },
+                stop: function( event, ui ) {
+                    // IE doesn't register the blur when sorting
+                    // so trigger focusout handlers to remove .ui-state-focus
+                    ui.item.children('div[class="header"]').triggerHandler("focusout");
+                }
+            });
+    $accordion.click(function(event) {
+        event.stopPropagation();
+    });
+    $('#options').click(function() {
+        $('#accordion').accordion("activate", false);
+    });
+    $('#new').accordion({
+        heightStyle: "content",
+        header: 'div[class="header"]'
+    });
+</script>
