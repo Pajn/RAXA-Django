@@ -17,10 +17,10 @@ class OnOff(Widget):
                 <input type="hidden" name="$name" id="$name$rand" value="$value" />
                 <fieldset data-role="controlgroup" data-type="horizontal">
                     <input type="radio" name="$name$rand" id="$name$rand-1" $onselected />
-                    <label for="$name$rand-1" onclick="$('#$name$rand').val('on')" >$on</label>
+                    <label for="$name$rand-1" onclick="$('#$name$rand').val('on')" class="on">$on</label>
 
-                    <input type="radio" name="$name$rand" id="$name$rand-2" $offselected  />
-                    <label for="$name$rand-2" onclick="$('#$name$rand').val('off')">$off</label>
+                    <input type="radio" name="$name$rand" id="$name$rand-2" $offselected />
+                    <label for="$name$rand-2" onclick="$('#$name$rand').val('off')" class="off">$off</label>
                 </fieldset>''')
 
         SELECTED = 'checked="checked"'

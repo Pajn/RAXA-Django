@@ -24,13 +24,13 @@ class OnOffDimLevel(Widget):
                 <input type="hidden" name="$name" id="$name$rand" value="$value" />
                 <fieldset data-role="controlgroup" data-type="horizontal">
                     <input type="radio" name="$name$rand" id="$name$rand-1" $onselected />
-                    <label for="$name$rand-1" onclick="$('#$name$rand').val('on');$('#$name$rand-sliderdiv').hide()" >$on</label>
+                    <label for="$name$rand-1" onclick="$('#$name$rand').val('on');$('#$name$rand-sliderdiv').hide()" class="on">$on</label>
 
-                    <input type="radio" name="$name$rand" id="$name$rand-2" $offselected  />
-                    <label for="$name$rand-2" onclick="$('#$name$rand').val('off');$('#$name$rand-sliderdiv').hide()">$off</label>
+                    <input type="radio" name="$name$rand" id="$name$rand-2" $offselected />
+                    <label for="$name$rand-2" onclick="$('#$name$rand').val('off');$('#$name$rand-sliderdiv').hide()" class="off">$off</label>
 
-                    <input type="radio" name="$name$rand" id="$name$rand-3" $dimselected  />
-                    <label for="$name$rand-3" onclick="$('#$name$rand').val($('#$name$rand-slider').val());$('#$name$rand-sliderdiv').show()">$dim</label>
+                    <input type="radio" name="$name$rand" id="$name$rand-3" $dimselected />
+                    <label for="$name$rand-3" onclick="$('#$name$rand').val($('#$name$rand-slider').val());$('#$name$rand-sliderdiv').show()" class="dim">$dim</label>
                 </fieldset>
                 <div id="$name$rand-sliderdiv" style="display: $dimhide;">
                     <input type="range" id="$name$rand-slider" onchange="$('#$name$rand').val($(this).val())" value="$dimvalue" min="$dimmin" max="$dimmax" step="$dimstep" />
