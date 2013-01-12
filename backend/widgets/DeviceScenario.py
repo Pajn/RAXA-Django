@@ -20,7 +20,7 @@ class DeviceScenario(Widget):
         if selected:
             SELECTED = 'selected="selected"'
 
-        tpl = Template('''<option value="D$id" $selected>$name</option>''')
+        tpl = Template('''<option value="D/$id" $selected>$name</option>''')
         return mark_safe(tpl.safe_substitute(id=device.id,
             selected=SELECTED, name=device.name))
 
@@ -29,7 +29,7 @@ class DeviceScenario(Widget):
         if selected:
             SELECTED = 'selected="selected"'
 
-        tpl = Template('''<option value="S$id" $selected>$name</option>''')
+        tpl = Template('''<option value="S/$id" $selected>$name</option>''')
         return mark_safe(tpl.safe_substitute(id=scenario.id,
             selected=SELECTED, name=scenario.name))
 
@@ -78,13 +78,14 @@ class DeviceScenario(Widget):
 
     def value_from_datadict(self, data, files, name):
         value = data[name]
+        value = value.split('/')
 
-        if value.startswith('D'):
-            id = value[1:]
+        if value[0] == 'D':
+            id = value[1]
             device = Device.objects.get(pk=id)
             return device
-        elif value.startswith('S'):
-            id = value[1:]
+        elif value[0] == 'D':
+            id = value[1]
             scenario = Scenario.objects.get(pk=id)
             return scenario
         else:
