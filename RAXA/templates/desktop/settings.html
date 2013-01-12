@@ -1,3 +1,10 @@
 {% extends "desktop/index.html" %}
 {% block display_container %}None{% endblock %}
 {% block display_settings %}block{% endblock %}
+{% block settings %}
+    {% if settings %}
+        {% with "desktop/settings/"|add:settings|add:"/"|add:settings|add:".html" as template %}
+            {% include template %}
+        {% endwith %}
+    {% endif %}
+{% endblock %}

@@ -17,7 +17,7 @@
 <div id="floorOverlay">
 </div>
 <div id="dialog-save" title="">
-    <form action="{% url 'desktop.views.furniture_settings' %}" method="post">{% csrf_token %}
+    <form action="{% url 'desktop.views.settings' type='furniture' %}" method="post">{% csrf_token %}
         {{ form.as_p }}
         <input type="submit" name="save" value="{% trans "Save" %}" />
     </form>
@@ -92,7 +92,7 @@
                 }
             });
             $("#floorOverlay svg .dot").on('contextmenu', function(e) {
-                $.post('{% url 'desktop.views.furniture_settings' %}', {'id': this.id});
+                $.post('{% url 'desktop.views.settings' type='furniture' %}', {'id': this.id});
                 this.parentNode.removeChild(this);
                 update_overlay();
                 e.preventDefault();

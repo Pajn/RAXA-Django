@@ -29,12 +29,12 @@
 
 </style>
 <div id="subsettings">
-    <div id="subsettingsmenu">{% include 'desktop/settings/scenarios_menu.html' %}</div>
+    <div id="subsettingsmenu">{% include 'desktop/settings/scenarios/scenarios_menu.html' %}</div>
     <div id="subsettingsoptions" class="border bottom">
         {% if scenario and scenario != 0%}
-            {% include 'desktop/settings/scenario.html' %}
+            {% include 'desktop/settings/scenarios/scenario.html' %}
         {% else %}
-            {% include 'desktop/settings/scenarios_edit.html' %}
+            {% include 'desktop/settings/scenarios/scenarios_edit.html' %}
         {% endif %}
     </div>
 </div>

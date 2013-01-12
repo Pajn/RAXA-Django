@@ -44,14 +44,14 @@
         <div id="settings" style="Display: {% block display_settings %}None{% endblock %}">
             <div id="menu">
                 <ul>
-                    <li><input type="button" data-id="Devices" value="{% trans "Devices" %}" class="button normalbutton vertical menu top" /></li>
-                    <li><input type="button" data-id="Scenarios" value="{% trans "Scenarios" %}" class="button normalbutton vertical menu" /></li>
-                    <li><input type="button" data-id="Inputs" value="{% trans "Inputs" %}" class="button normalbutton vertical menu" /></li>
-                    <li><input type="button" data-id="Timers" value="{% trans "Timers" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" data-id="devices" value="{% trans "Devices" %}" class="button normalbutton vertical menu top" /></li>
+                    <li><input type="button" data-id="scenarios" value="{% trans "Scenarios" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" data-id="inputs" value="{% trans "Inputs" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" data-id="timers" value="{% trans "Timers" %}" class="button normalbutton vertical menu" /></li>
                     <!--<li><input type="button" data-id="Auto" value="<?php echo $lang->{'automation'};?>" class="button normalbutton vertical menu" /></li>-->
-                    <li><input type="button" data-id="Rooms" value="{% trans "Rooms" %}" class="button normalbutton vertical menu" /></li>
-                    <li><input type="button" data-id="System" value="{% trans "System" %}" class="button normalbutton vertical menu" /></li>
-                    <li><input type="button" data-id="Plan" value="{% trans "Plan" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" data-id="rooms" value="{% trans "Rooms" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" data-id="system" value="{% trans "System" %}" class="button normalbutton vertical menu" /></li>
+                    <li><input type="button" data-id="plan" value="{% trans "Plan" %}" class="button normalbutton vertical menu" /></li>
                 </ul>
             </div>
             <div id="options" class="border">
@@ -68,7 +68,7 @@
                     $('.menu').removeClass('verticalSelected');
                     $(this).addClass('verticalSelected');
                     var type = $(this).attr('data-id');
-                    $('#options').load('{% url 'desktop.views.settings' %}', {'type': type}, function() {
+                    $('#options').load('{% url 'desktop.views.settings_index' %}', {'type': type}, function() {
                         window.history.pushState('', 'RAXA - '+$(this).val(), '/settings/'+type.toLowerCase());
                     });
                 });

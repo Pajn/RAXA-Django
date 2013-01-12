@@ -29,41 +29,113 @@ def devices(request):
         raise Http404('No room specified')
     return render(request, 'desktop/devices.html', {'list': list, 'room': room})
 
-def settings(request):
-    if request.method == 'POST':
-        type = request.POST['type']
-        if type == 'Devices':
-            list = Device.objects.all()
-            form = DeviceForm()
-            return render(request, 'desktop/settings/devices.html', {'devices': list, 'form': form})
-        elif type == 'Scenarios':
-            scenarios = Scenario.objects.all()
-            formset = ScenarioFormSet()
-            return render(request, 'desktop/settings/scenarios.html', {'scenarios': scenarios, 'formset': formset})
-        elif type == 'Inputs':
-            list = Input.objects.all()
-            form = InputForm()
-            return render(request, 'desktop/settings/inputs.html', {'inputs': list, 'form': form})
-        elif type == 'Timers':
-            list = Timer.objects.all()
-            form = TimerForm()
-            return render(request, 'desktop/settings/timers.html', {'timers': list, 'form': form})
-        elif type == 'System':
-            return render(request, 'desktop/settings/system.html')
-        elif type == 'Plan':
-            floors = []
-            for floor in Floor.objects.all():
-                floors.append((floor.id, floor.name))
-            selectfloor = Select(choices=floors).render('selectfloor', None, attrs={'id':'selectfloor'})
-            form = FurnitureForm()
-            return render(request, 'desktop/settings/furniture.html', {'selectfloor': selectfloor,'form':form})
-    else:
-        return index(request, template='desktop/settings.html')
+def setting(request, settings=None, **kwargs):
+    return index(request, template='desktop/settings.html', settings=settings, **kwargs)
 
-def devices_settings(request):
-    list = Device.objects.all()
-    form = DeviceForm()
-    return index(request, template='desktop/settings/devices_full.html', devices=list, form=form)
+def settings_index(request):
+    return Settings(request).render()
+
+def settings(request, type=None, **kwargs):
+    return Settings(request, type=type, **kwargs).render()
+
+class Settings():
+    template = ''
+    kwargs = {}
+    full = True
+
+    def __init__(self, request, type=None, **kwargs):
+        self.request = request
+
+        print type
+        print request.method
+        print request.POST
+
+        if type is None and request.method == 'POST' and 'type' in request.POST:
+            self.full = False
+            type = request.POST['type']
+
+        if type is not None:
+            if type == 'devices':
+                self.devices()
+            elif type == 'scenarios':
+                self.scenarios()
+            elif type == 'inputs':
+                self.inputs()
+            elif type == 'timers':
+                self.timers()
+            elif type == 'system':
+                self.system()
+            elif type == 'plan' or type == 'furniture':
+                self.furniture()
+
+    def render(self):
+        print self.full
+        if self.full:
+            return index(self.request, template='desktop/settings.html', settings=self.template, **self.kwargs)
+        else:
+            if self.template is None:
+                return render(self.request, 'desktop/settings.html')
+            else:
+                return render(self.request, 'desktop/settings/%s/%s.html' % (self.template, self.template), self.kwargs)
+
+    def devices(self):
+        list = Device.objects.all()
+        form = DeviceForm()
+
+        self.template = 'devices'
+        self.kwargs = {'devices': list, 'form': form}
+
+    def scenarios(self):
+        scenarios = Scenario.objects.all()
+        formset = ScenarioFormSet()
+
+        self.template = 'scenarios'
+        self.kwargs = {'scenarios': scenarios, 'formset': formset}
+
+    def inputs(self):
+        list = Input.objects.all()
+        form = InputForm()
+
+        self.template = 'inputs'
+        self.kwargs = {'inputs': list, 'form': form}
+
+    def timers(self):
+        list = Timer.objects.all()
+        form = TimerForm()
+
+        self.template = 'timers'
+        self.kwargs = {'timers': list, 'form': form}
+
+    def system(self):
+        self.template = 'system'
+
+    def furniture(self):
+        floor = None
+        form = FurnitureForm()
+        floors = []
+        for floor in Floor.objects.all():
+            floors.append((floor.id, floor.name))
+
+        if self.request.method == 'POST':
+            if 'floor' in self.request.POST:
+                floor = self.request.POST['floor']
+                print floor
+            if 'id' in self.request.POST:
+                id = self.request.POST['id']
+                object = get_object_or_404(Furniture, pk=id)
+                object.delete()
+            if 'save' in self.request.POST:
+                form = FurnitureForm(self.request.POST)
+
+                if form.is_valid(): # All validation rules pass
+                    form.save()
+                    form = FurnitureForm()
+
+        selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id':'selectfloor'})
+
+        self.template = 'furniture'
+        self.kwargs = {'selectfloor': selectfloor,'form':form}
+
 
 def edit_device(request):
     if request.method == 'POST':
@@ -73,7 +145,7 @@ def edit_device(request):
             if 'delete' in request.POST:
                 print 'delete'
                 object.delete()
-                return HttpResponseRedirect(reverse('desktop.views.devices_settings'))
+                return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'devices'}))
 
             elif 'save' in request.POST:
                 form = DeviceForm(request.POST, instance=object)
@@ -82,7 +154,7 @@ def edit_device(request):
 
                 if form.is_valid(): # All validation rules pass
                     form.save()
-                    return HttpResponseRedirect(reverse('desktop.views.devices_settings'))
+                    return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'devices'}))
 
             form = DeviceForm(instance=object)
             form.fields['code'].widget = object.object.CODE_WIDGET()
@@ -107,15 +179,15 @@ def edit_device(request):
 
             if form.is_valid(): # All validation rules pass
                 form.save()
-                return HttpResponseRedirect(reverse('desktop.views.devices_settings'))
+                return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'devices'}))
 
             list = Device.objects.all()
-            return index(request, 'desktop/settings/devices_full.html', devices=list, object=object, form=form)
+            return setting(request, settings='devices', devices=list, object=object, form=form)
 
     else:
         return False
 
-    return render(request, 'desktop/settings/device.html', {'object': object, 'form': form})
+    return render(request, 'desktop/settings/devices/device.html', {'object': object, 'form': form})
 
 def scenarios_settings(request, id=0):
     formset = ScenarioFormSet()
@@ -127,14 +199,14 @@ def scenarios_settings(request, id=0):
                 formset = ScenarioFormSet()
 
         elif 'edit' in request.POST:
-            return render(request, 'desktop/settings/scenarios_edit.html', {'formset': formset})
+            return render(request, 'desktop/settings/scenarios/scenarios_edit.html', {'formset': formset})
 
     if id != 0:
         form = ScenarioDeviceFormNew()
         scenariodevices = ScenarioDevice.objects.filter(scenario=id)
-        return index(request, template='desktop/settings/scenarios_full.html', formset=formset, scenario=id, form=form, scenariodevices=scenariodevices)
+        return setting(request, settings='scenarios', formset=formset, scenario=id, form=form, scenariodevices=scenariodevices)
     else:
-        return index(request, template='desktop/settings/scenarios_full.html', formset=formset)
+        return setting(request, settings='scenarios', formset=formset)
 
 def edit_scenario(request):
     if request.method == 'POST' and 'scenario' in request.POST:
@@ -155,7 +227,7 @@ def edit_scenario(request):
 
         form = ScenarioDeviceFormNew()
 
-        return render(request, 'desktop/settings/scenario.html', {'form': form, 'scenario': scenarioid, 'scenariodevices': scenariodevices})
+        return render(request, 'desktop/settings/scenarios/scenario.html', {'form': form, 'scenario': scenarioid, 'scenariodevices': scenariodevices})
 
     elif request.method == 'POST' and 'id' in request.POST:
         id = request.POST['id']
@@ -171,15 +243,10 @@ def edit_scenario(request):
                 form.save()
                 return HttpResponseRedirect(reverse('desktop.views.scenarios_settings', kwargs={'id': object.scenario.id}))
 
-        return render(request, 'desktop/settings/scenariodevice.html', {'form': form, 'object': object})
+        return render(request, 'desktop/settings/scenarios/scenariodevice.html', {'form': form, 'object': object})
 
     else:
         raise Http404('No scenario')
-
-def inputs_settings(request):
-    list = Input.objects.all()
-    form = InputForm()
-    return index(request, template='desktop/settings/inputs_full.html', inputs=list, form=form)
 
 def edit_input(request):
     if request.method == 'POST':
@@ -216,12 +283,7 @@ def edit_input(request):
     else:
         return False
 
-    return render(request, 'desktop/settings/timer.html', {'object': object, 'form': form})
-
-def timers_settings(request):
-    list = Timer.objects.all()
-    form = TimerForm()
-    return index(request, template='desktop/settings/timers_full.html', timers=list, form=form)
+    return render(request, 'desktop/settings/timers/timer.html', {'object': object, 'form': form})
 
 def edit_timer(request):
     if request.method == 'POST':
@@ -231,7 +293,7 @@ def edit_timer(request):
             if 'delete' in request.POST:
                 print 'delete'
                 object.delete()
-                return HttpResponseRedirect(reverse('desktop.views.timers_settings'))
+                return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'timers'}))
 
             elif 'save' in request.POST:
                 postdata = request.POST.copy()
@@ -241,7 +303,7 @@ def edit_timer(request):
 
                 if form.is_valid(): # All validation rules pass
                     form.save()
-                    return HttpResponseRedirect(reverse('desktop.views.timers_settings'))
+                    return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'timers'}))
 
             form = TimerForm(instance=object)
 
@@ -254,41 +316,11 @@ def edit_timer(request):
 
             if form.is_valid(): # All validation rules pass
                 form.save()
-                return HttpResponseRedirect(reverse('desktop.views.timers_settings'))
+                return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'timers'}))
     else:
         return False
 
-    return render(request, 'desktop/settings/timer.html', {'object': object, 'form': form})
-
-def system_settings(request):
-    return index(request, template='desktop/settings/system_full.html')
-
-def furniture_settings(request):
-    floors = []
-    for floor in Floor.objects.all():
-        floors.append((floor.id, floor.name))
-
-    floor = None
-    form = FurnitureForm()
-
-    if request.method == 'POST':
-        if 'floor' in request.POST:
-            floor = request.POST['floor']
-            print floor
-        if 'id' in request.POST:
-            id = request.POST['id']
-            object = get_object_or_404(Furniture, pk=id)
-            object.delete()
-        else:
-            form = FurnitureForm(request.POST)
-
-            if form.is_valid(): # All validation rules pass
-                form.save()
-                form = FurnitureForm()
-
-    selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id':'selectfloor'})
-
-    return index(request, template='desktop/settings/furniture_full.html', selectfloor=selectfloor, form=form)
+    return render(request, 'desktop/settings/timers/timer.html', {'object': object, 'form': form})
 
 def widget_action(request):
     if request.method == 'POST' and 'device' in request.POST:
