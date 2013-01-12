@@ -1,3 +1,5 @@
+{% load i18n %}
+{% load url from future %}
 <style type="text/css">
     #setupsystem {
         float: left;
@@ -31,21 +33,29 @@
 <div id="setupsystem">
     <div id="systemmenu">
         <ul>
-            <li><input type="button" id="connectors" value="Connectors" class="button normalbutton vertical menu top" /></li>
-            <li><input type="button" id="network" value="Network" class="button normalbutton vertical menu" /></li>
-            <li><input type="button" id="language" value="Language" class="button normalbutton vertical menu" /></li>
-            <li><input type="button" id="security" value="Security" class="button normalbutton vertical menu" /></li>
-            <li><input type="button" id="update" value="Updates" class="button normalbutton vertical menu" /></li>
-            <li><input type="button" id="theme" value="Theme" class="button normalbutton vertical menu bottom" /></li>
+            <li><input type="button" data-id="connectors" value="Connectors" class="button normalbutton vertical menu top" /></li>
+            <li><input type="button" data-id="network" value="Network" class="button normalbutton vertical menu" /></li>
+            <li><input type="button" data-id="language" value="Language" class="button normalbutton vertical menu" /></li>
+            <li><input type="button" data-id="security" value="Security" class="button normalbutton vertical menu" /></li>
+            <li><input type="button" data-id="update" value="Updates" class="button normalbutton vertical menu" /></li>
+            <li><input type="button" data-id="theme" value="Theme" class="button normalbutton vertical menu bottom" /></li>
         </ul>
     </div>
-    <div id="Soptions" class="border bottom"></div>
+    <div id="Soptions" class="border bottom">
+        {% if subsettings %}
+            {% with "desktop/settings/system/"|add:subsettings|add:"/"|add:subsettings|add:".html" as template %}
+                {% include template %}
+            {% endwith %}
+        {% endif %}
+    </div>
 </div>
 <script type="text/javascript">
     $('#systemmenu ul li input').click(function() {
         $("#systemmenu ul li input").removeClass('verticalSelected');
         $(this).addClass('verticalSelected');
-        var id = $(this).attr("id");
-        $("#Soptions").load('setup' + id + '.php');
+        var type = $(this).attr("data-id");
+        $("#Soptions").load('{% url 'desktop.views.settings' type='system' %}', {'subtype': type}, function() {
+            window.history.pushState('', 'RAXA - '+$(this).val(), '/settings/system/'+type);
+        });
     });
 </script>

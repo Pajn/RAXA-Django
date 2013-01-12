@@ -6,3 +6,6 @@ class Tellstick(Connector):
     def send(self, string):
         string = '{%s,"tellstick":"%s"}' % (string, self.connector.code)
         print string
+
+    def scan(self):
+        pass

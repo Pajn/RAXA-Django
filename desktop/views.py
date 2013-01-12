@@ -2,12 +2,13 @@ from django.core.urlresolvers import reverse
 from django.forms import Select
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from backend.models import InputForm
+from backend.models import InputForm, ConnectorFormSet
 from backend.models.Device import Device, DeviceForm
 from backend.models.Input import Input
 from backend.models.Room import Room, Floor
 from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, ScenarioDeviceFormNew, ScenarioDeviceFormAction
 from backend.models.Timer import Timer, TimerForm
+from backend.out.connector import scan_connectors
 from backend.widgets import OnOff, OnOffDimLevel
 from common.models.Furniture import Furniture, FurnitureForm
 
@@ -38,21 +39,24 @@ def settings_index(request):
 def settings(request, type=None, **kwargs):
     return Settings(request, type=type, **kwargs).render()
 
+def systemsettings(request, type=None, **kwargs):
+    return Settings(request, type='system', subtype=type, **kwargs).render()
+
 class Settings():
     template = ''
     kwargs = {}
     full = True
 
-    def __init__(self, request, type=None, **kwargs):
+    def __init__(self, request, type=None, subtype=None, **kwargs):
         self.request = request
-
-        print type
-        print request.method
-        print request.POST
 
         if type is None and request.method == 'POST' and 'type' in request.POST:
             self.full = False
             type = request.POST['type']
+
+        if subtype is None and request.method == 'POST' and 'subtype' in request.POST:
+            self.full = False
+            subtype = request.POST['subtype']
 
         if type is not None:
             if type == 'devices':
@@ -64,17 +68,28 @@ class Settings():
             elif type == 'timers':
                 self.timers()
             elif type == 'system':
-                self.system()
+                if subtype == 'connectors':
+                    self.connectors()
+                else:
+                    self.system()
             elif type == 'plan' or type == 'furniture':
                 self.furniture()
 
     def render(self):
-        print self.full
+        print self.template
         if self.full:
-            return index(self.request, template='desktop/settings.html', settings=self.template, **self.kwargs)
+            if self.template.startswith('system/'):
+                self.template = self.template.split('/')[1]
+                return index(self.request, template='desktop/settings.html', settings='system', subsettings=self.template, **self.kwargs)
+            else:
+                return index(self.request, template='desktop/settings.html', settings=self.template, **self.kwargs)
         else:
             if self.template is None:
                 return render(self.request, 'desktop/settings.html')
+            elif self.template.startswith('system/'):
+                self.template = self.template.split('/')[1]
+                print self.template
+                return render(self.request, 'desktop/settings/system/%s/%s.html' % (self.template, self.template), self.kwargs)
             else:
                 return render(self.request, 'desktop/settings/%s/%s.html' % (self.template, self.template), self.kwargs)
 
@@ -108,6 +123,20 @@ class Settings():
 
     def system(self):
         self.template = 'system'
+
+    def connectors(self):
+        if self.request.method == 'POST':
+            if 'save' in self.request.POST:
+                formset = ConnectorFormSet(self.request.POST)
+                if formset.is_valid():
+                    formset.save()
+            elif 'search' in self.request.POST:
+                scan_connectors()
+
+        formset = ConnectorFormSet()
+
+        self.template = 'system/connectors'
+        self.kwargs = {'formset': formset}
 
     def furniture(self):
         floor = None

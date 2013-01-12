@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.signals import post_init
 from django.dispatch import receiver
 from django.forms import ModelForm
+from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext as _
 from backend.out.connector import supported_types, get_class
 
@@ -23,6 +24,15 @@ class Connector(models.Model):
         for type in supported_types():
             pass
 
+connector_form_set = None
+
+def ConnectorFormSet(*args, **kwargs):
+    global connector_form_set
+
+    if connector_form_set is None:
+        connector_form_set = modelformset_factory(Connector, form=ConnectorForm, can_delete=True, extra=0)
+
+    return connector_form_set(*args, **kwargs)
 
 class ConnectorForm(ModelForm):
     def __init__(self, *args, **kwargs):

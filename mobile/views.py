@@ -8,6 +8,7 @@ from backend.models.Room import Room, RoomForm
 from backend.models.Connector import Connector, ConnectorForm
 from backend.models.Input import Input, InputForm, InputFormNew
 from backend.models.Timer import Timer, TimerFormNew, TimerForm
+from backend.out import connector
 from backend.widgets.DeviceScenario import DeviceScenarioHidden
 
 def index(request):
@@ -187,6 +188,7 @@ def connectors_settings(request):
 
 
 def scan_connectors(request):
+    connector.scan_connectors()
     return HttpResponseRedirect(reverse('mobile.views.connectors_settings'))
 
 def edit_connector(request, id):

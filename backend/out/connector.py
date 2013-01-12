@@ -1,4 +1,5 @@
 import os
+import time
 
 def supported_types():
     dir = os.path.join(os.path.dirname(__file__), 'connectors')
@@ -15,6 +16,12 @@ def get_class(connector):
     tmpclass = getattr(tmpmodule, connector)
     return tmpclass
 
+def scan_connectors():
+    types = supported_types()
+    for type in types:
+        get_class(type)().scan()
+    time.sleep(10)
+
 class Connector(object):
     TYPE = ''
 
@@ -23,3 +30,6 @@ class Connector(object):
 
     def send(self, string):
         raise NotImplementedError
+
+    def scan(self):
+        pass
