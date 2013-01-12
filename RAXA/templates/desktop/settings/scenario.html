@@ -152,11 +152,18 @@
     });
     $('#id_device').change(function() {
         var id = $(this).val();
-        $('#actioncell').load('{% url 'desktop.views.widget_action' %}', {'device': id}, function() {
-            fix_sliders();
-        });
-        $('#actionrow').show();
+        if (id != '') {
+            $('#actioncell').load('{% url 'desktop.views.widget_action' %}', {'device': id}, function() {
+                fix_sliders();
+            });
+            $('#actionrow').show();
+            $('input[name="add"]').removeAttr('disabled');
+        } else {
+            $('#actionrow').hide();
+            $('input[name="add"]').attr('disabled', 'disabled');
+        }
     });
+    $('input[name="add"]').attr('disabled', 'disabled');
     function fix_sliders() {
         $('input[type="range"]').each(function(index, input) {
             var $input, $label, $slider, $container;
