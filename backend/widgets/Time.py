@@ -1,17 +1,17 @@
+from __future__ import unicode_literals
 from django.forms import widgets
 
 class Time(widgets.MultiWidget):
 
-    hours = []
-    minutes = []
-
     def generate_hours(self):
+        self.hours = []
         for i in range(0, 24):
-            self.hours.append((str(i).zfill(2), str(i).zfill(2)))
+            self.hours.append((str(i), str(i).zfill(2)))
 
     def generate_minutes(self):
+        self.minutes = []
         for i in range(0, 60, 15):
-            self.minutes.append((str(i).zfill(2), str(i).zfill(2)))
+            self.minutes.append((str(i), str(i).zfill(2)))
 
     def __init__(self, attrs=None, mode=0):
         self.generate_hours()
@@ -29,14 +29,11 @@ class Time(widgets.MultiWidget):
         return [None, None]
 
     def format_output(self, rendered_widgets):
-        prefix = u'<div class="ui-grid-a">'
-        sufix = u'</div>'
-        block = {0:'a',1:'b',2:'c'}
-        i = 0
+        prefix = '<table style="display:inline-table; margin: 0; padding: 0; border 0; border-spacing: 0;"><tr>'
+        sufix = '</tr></table>'
         join = ''
         for widget in rendered_widgets:
-            join = join + u'<div class="ui-block-' + block[i] + u'">' + widget + u'</div>'
-            i += 1
+            join = join + '<td>' + widget + '</td>'
 
         return prefix+join+sufix
 
