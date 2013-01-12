@@ -46,6 +46,8 @@ def settings(request):
             list = Timer.objects.all()
             form = TimerForm()
             return render(request, 'desktop/settings/timers.html', {'timers': list, 'form': form})
+        elif type == 'System':
+            return render(request, 'desktop/settings/system.html')
     else:
         return index(request, template='desktop/settings.html')
 
@@ -248,6 +250,9 @@ def edit_timer(request):
         return False
 
     return render(request, 'desktop/settings/timer.html', {'object': object, 'form': form})
+
+def system_settings(request):
+    return index(request, template='desktop/settings/system_full.html')
 
 def widget_action(request):
     if request.method == 'POST' and 'device' in request.POST:

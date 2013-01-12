@@ -1,0 +1,51 @@
+<style type="text/css">
+    #setupsystem {
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    #systemmenu {
+        position: absolute;
+        left: -1px;
+        top: -1px;
+        width: 100%;
+    }
+
+    #systemmenu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #Soptions {
+        position: absolute;
+        left: 15%;
+        top: -1px;
+        width: 74%;
+
+        padding: 2%;
+    }
+
+</style>
+<div id="setupsystem">
+    <div id="systemmenu">
+        <ul>
+            <li><input type="button" id="connectors" value="Connectors" class="button normalbutton vertical menu top" /></li>
+            <li><input type="button" id="network" value="Network" class="button normalbutton vertical menu" /></li>
+            <li><input type="button" id="language" value="Language" class="button normalbutton vertical menu" /></li>
+            <li><input type="button" id="security" value="Security" class="button normalbutton vertical menu" /></li>
+            <li><input type="button" id="update" value="Updates" class="button normalbutton vertical menu" /></li>
+            <li><input type="button" id="theme" value="Theme" class="button normalbutton vertical menu bottom" /></li>
+        </ul>
+    </div>
+    <div id="Soptions" class="border bottom"></div>
+</div>
+<script type="text/javascript">
+    $('#systemmenu ul li input').click(function() {
+        $("#systemmenu ul li input").removeClass('verticalSelected');
+        $(this).addClass('verticalSelected');
+        var id = $(this).attr("id");
+        $("#Soptions").load('setup' + id + '.php');
+    });
+</script>
