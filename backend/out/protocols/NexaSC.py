@@ -81,6 +81,13 @@ class NexaSC(Protocol):
     CODE_WIDGET = CodeSelectWidget
     ACTION_WIDGET = HiddenInput
 
+    def __init__(self):
+        super(NexaSC, self).__init__()
+        extra_actions = {
+            "dim" : self.dim,
+            }
+        self.SUPPORTED_ACTIONS.update(extra_actions)
+
     def initialize(self, device):
         assert isinstance(device, Device)
         self.device = device
@@ -92,27 +99,20 @@ class NexaSC(Protocol):
             device = '1'
         self.connector_string = '"protocol":"NEXASC","house":"'+house+'","device":"'+device+'"'
 
-    def sync(self, **kwargs):
+    def sync(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
 
-    def on(self, **kwargs):
+    def on(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
 
-    def off(self, **kwargs):
+    def off(self, *args, **kwargs):
         print self.device.connector
         print self.device.connector.object
         self.device.connector.object.send(self.connector_string+',"cmd":"off"')
 
-    def dim(self, **kwargs):
+    def dim(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
 
     def new(self):
         self.device.action = 'on'
         self.device.code = 'A/1'
-
-    SUPPORTED_ACTIONS = {
-        "sync" : sync,
-        "on" : on,
-        "off" : off,
-        "dim" : dim,
-        }

@@ -18,26 +18,34 @@ def get_class(connector):
 class Protocol(object):
     CONNECTOR_TYPE = ''
 
+    def __init__(self):
+        self.SUPPORTED_ACTIONS = {
+            "sync" : self.sync,
+            "on" : self.on,
+            "off" : self.off,
+            "toggle" : self.toggle,
+            }
+
     def initialize(self, device):
         self.device = device
 
-    def sync(self):
+    def sync(self, *args, **kwargs):
         raise NotImplementedError
 
-    def on(self):
+    def on(self, *args, **kwargs):
         raise NotImplementedError
 
-    def off(self):
+    def off(self, *args, **kwargs):
         raise NotImplementedError
+
+    def toggle(self, *args, **kwargs):
+        if self.is_off():
+            self.on()
+        else:
+            self.off()
 
     def new(self):
-        raise NotImplementedError
-
-    SUPPORTED_ACTIONS = {
-        "sync" : sync,
-        "on" : on,
-        "off" : off,
-        }
+        pass
 
     def action(self, **kwargs):
         action = kwargs.get('action')
@@ -51,7 +59,7 @@ class Protocol(object):
         else:
             return False
 
-class DimLivelProtocol(Protocol):
+class DimLevelProtocol(Protocol):
     DIM_MIN = 0
     DIM_MAX = 1
     DIM_STEP = 1

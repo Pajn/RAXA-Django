@@ -15,13 +15,13 @@ class NexaSLonoff(Protocol):
         self.sender_id = device.code
         self.connector_string = '"protocol":"NEXASL","senderID":"'+self.sender_id+'"'
 
-    def sync(self, **kwargs):
+    def sync(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
 
-    def on(self, **kwargs):
+    def on(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
 
-    def off(self, **kwargs):
+    def off(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"off"')
 
     def generateRandom(self):
@@ -41,9 +41,3 @@ class NexaSLonoff(Protocol):
         self.devices = Device.objects.filter(type__startswith='NexaSL')
         self.device.code = self.generateRandom()
         self.device.action = 'on'
-
-    SUPPORTED_ACTIONS = {
-        "sync" : sync,
-        "on" : on,
-        "off" : off,
-        }
