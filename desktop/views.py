@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from backend.models import InputForm
 from backend.models.Device import Device, DeviceForm
@@ -7,6 +7,7 @@ from backend.models.Input import Input
 from backend.models.Room import Room, Floor
 from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, ScenarioDeviceFormNew, ScenarioDeviceFormAction
 from backend.models.Timer import Timer, TimerForm
+from backend.widgets import OnOff, OnOffDimLevel
 
 def index(request, template='desktop/index.html', **kwargs):
     floors = Floor.objects.all()
@@ -133,7 +134,11 @@ def edit_scenario(request):
             form = ScenarioDeviceFormNew(request.POST)
             if form.is_valid():
                 device = form.cleaned_data['device']
-                newinstance = ScenarioDevice(device=device, scenario=scenario, action='off')
+                if 'action' in request.POST:
+                    action = request.POST['action']
+                else:
+                    action = 'off'
+                newinstance = ScenarioDevice(device=device, scenario=scenario, action=action)
                 newinstance.save()
                 return HttpResponseRedirect(reverse('desktop.views.scenarios_settings', kwargs={'id': scenarioid}))
 
@@ -243,3 +248,17 @@ def edit_timer(request):
         return False
 
     return render(request, 'desktop/settings/timer.html', {'object': object, 'form': form})
+
+def widget_action(request):
+    if request.method == 'POST' and 'device' in request.POST:
+        id = request.POST['device']
+        device = get_object_or_404(Device, pk=id)
+
+        if 'dim_level' in device.object.SUPPORTED_ACTIONS:
+            widget = OnOffDimLevel(device=device)
+        else:
+            widget = OnOff()
+    else:
+        raise Http404('No device specified')
+
+    return HttpResponse(widget.render('action', 'off'))
