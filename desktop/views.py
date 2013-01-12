@@ -267,7 +267,7 @@ def furniture_settings(request):
     floors = []
     for floor in Floor.objects.all():
         floors.append((floor.id, floor.name))
-        
+
     floor = None
     form = FurnitureForm()
 
