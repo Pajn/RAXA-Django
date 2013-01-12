@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.forms import Select
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from backend.models import InputForm
@@ -8,6 +9,7 @@ from backend.models.Room import Room, Floor
 from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, ScenarioDeviceFormNew, ScenarioDeviceFormAction
 from backend.models.Timer import Timer, TimerForm
 from backend.widgets import OnOff, OnOffDimLevel
+from common.models.Furniture import Furniture, FurnitureForm
 
 def index(request, template='desktop/index.html', **kwargs):
     floors = Floor.objects.all()
@@ -48,6 +50,13 @@ def settings(request):
             return render(request, 'desktop/settings/timers.html', {'timers': list, 'form': form})
         elif type == 'System':
             return render(request, 'desktop/settings/system.html')
+        elif type == 'Plan':
+            floors = []
+            for floor in Floor.objects.all():
+                floors.append((floor.id, floor.name))
+            selectfloor = Select(choices=floors).render('selectfloor', None, attrs={'id':'selectfloor'})
+            form = FurnitureForm()
+            return render(request, 'desktop/settings/furniture.html', {'selectfloor': selectfloor,'form':form})
     else:
         return index(request, template='desktop/settings.html')
 
@@ -253,6 +262,33 @@ def edit_timer(request):
 
 def system_settings(request):
     return index(request, template='desktop/settings/system_full.html')
+
+def furniture_settings(request):
+    floors = []
+    for floor in Floor.objects.all():
+        floors.append((floor.id, floor.name))
+        
+    floor = None
+    form = FurnitureForm()
+
+    if request.method == 'POST':
+        if 'floor' in request.POST:
+            floor = request.POST['floor']
+            print floor
+        if 'id' in request.POST:
+            id = request.POST['id']
+            object = get_object_or_404(Furniture, pk=id)
+            object.delete()
+        else:
+            form = FurnitureForm(request.POST)
+
+            if form.is_valid(): # All validation rules pass
+                form.save()
+                form = FurnitureForm()
+
+    selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id':'selectfloor'})
+
+    return index(request, template='desktop/settings/furniture_full.html', selectfloor=selectfloor, form=form)
 
 def widget_action(request):
     if request.method == 'POST' and 'device' in request.POST:

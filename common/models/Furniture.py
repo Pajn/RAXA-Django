@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm, HiddenInput
 from backend.models import Device, Floor
 
 def enum(*sequential, **named):
@@ -19,3 +20,16 @@ class Furniture(models.Model):
 
     class Meta:
         app_label = 'common'
+
+class FurnitureForm(ModelForm):
+
+    class Meta:
+        model = Furniture
+        widgets = {
+            'type': HiddenInput(),
+            'floor': HiddenInput(),
+            'x1': HiddenInput(),
+            'y1': HiddenInput(),
+            'x2': HiddenInput(),
+            'y2': HiddenInput(),
+        }

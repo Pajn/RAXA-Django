@@ -14,5 +14,6 @@ urlpatterns = patterns('desktop.views',
     url(r'^settings/timers/$', 'timers_settings'),
     url(r'^settings/timer/$', 'edit_timer'),
     url(r'^settings/system/$', 'system_settings'),
+    url(r'^settings/plan/$', 'furniture_settings'),
     url(r'^widgets/action/$', 'widget_action'),
 )
