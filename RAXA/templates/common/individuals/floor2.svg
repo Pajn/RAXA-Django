@@ -9,4 +9,5 @@
     <rect id="room3" height="225" width="468" y="211.366302" x="13.970581" stroke="rgba(0,0,0,0)" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0" onclick="room(3)"/>
     <rect id="room4" height="115.000001" width="175" y="164.366302" x="450.970581" stroke="rgba(0,0,0,0)" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0" onclick="room(4)"/>
     <rect id="room5" height="152" width="133.999995" y="284.366302" x="491.970586" stroke="rgba(0,0,0,0)" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0" onclick="room(5)"/>
+    {% block furnitures %}{% endblock %}
 </svg>

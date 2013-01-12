@@ -45,6 +45,12 @@ class Protocol(object):
             action = self.device.action
         self.SUPPORTED_ACTIONS[action](self, **kwargs)
 
+    def is_off(self):
+        if self.device.status == 'off':
+            return True
+        else:
+            return False
+
 class DimLivelProtocol(Protocol):
     DIM_MIN = 0
     DIM_MAX = 1

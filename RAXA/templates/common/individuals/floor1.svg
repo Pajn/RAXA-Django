@@ -8,4 +8,5 @@
     <rect id="room12" height="186.000004" width="241" y="13.366299" x="386.970581" stroke="rgba(0,0,0,0)" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0" onclick="room(12)"/>
     <path id="room13" d="m14.9706,211.365997l-2.9706,221.634003l468,2l0,-156l145,-1l0,-67l-610.0294,0.365997z" stroke="rgba(0,0,0,0)" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0" onclick="room(13)"/>
     <rect id="room14" height="150" width="132" y="285.366302" x="492.970581" stroke="rgba(0,0,0,0)" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0" onclick="room(14)"/>
+    {% block furnitures %}{% endblock %}
 </svg>
