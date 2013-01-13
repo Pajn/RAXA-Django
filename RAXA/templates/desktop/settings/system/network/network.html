@@ -1,0 +1,62 @@
+{% load i18n %}
+{% load url from future %}
+<style type="text/css">
+    li {
+        list-style-type: none;
+    }
+    th {
+        text-align: left;
+    }
+</style>
+{% blocktrans %}Warning, setting wrong settings here may make RAXA inaccesible{% endblocktrans %}
+<form action="{% url 'desktop.views.systemsettings' type='network' %}" method="post">{% csrf_token %}
+    {{ form.errors.as_ul }}
+    {{ form.type }}
+    <table id="addresses"
+            {% if form.fields.type.initial != 'static' %}
+                style="display: none;"
+            {% endif %}>
+        <tr>
+            <th>
+                <label for="id_ip">{% trans "IP" %}:</label>
+            </th>
+            <td>
+                {{ form.ip }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="id_netmask">{% trans "Netmask" %}:</label>
+            </th>
+            <td>
+                {{ form.netmask }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="id_dns">{% trans "DNS" %}:</label>
+            </th>
+            <td>
+                {{ form.dns }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="id_gateway">{% trans "Gateway" %}:</label>
+            </th>
+            <td>
+                {{ form.gateway }}
+            </td>
+        </tr>
+    </table>
+    <input type="submit" name="save" value="{% trans "Save" %}" />
+</form>
+<script type="text/javascript">
+    $('input[type="radio"]').change(function() {
+        if ($(this).val() == 'static') {
+            $('#addresses').show();
+        } else {
+            $('#addresses').hide();
+        }
+    });
+</script>

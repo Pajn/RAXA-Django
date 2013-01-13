@@ -9,6 +9,7 @@ from backend.models.Room import Room, Floor
 from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, ScenarioDeviceFormNew, ScenarioDeviceFormAction
 from backend.models.Timer import Timer, TimerForm
 from backend.out.connector import scan_connectors
+from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
 from common.models.Furniture import Furniture, FurnitureForm
 
@@ -57,6 +58,7 @@ class Settings():
         if subtype is None and request.method == 'POST' and 'subtype' in request.POST:
             self.full = False
             subtype = request.POST['subtype']
+            print 'sub'+subtype
 
         if type is not None:
             if type == 'devices':
@@ -70,6 +72,8 @@ class Settings():
             elif type == 'system':
                 if subtype == 'connectors':
                     self.connectors()
+                elif subtype == 'network':
+                    self.network()
                 else:
                     self.system()
             elif type == 'plan' or type == 'furniture':
@@ -77,6 +81,7 @@ class Settings():
 
     def render(self):
         print self.template
+        print self.full
         if self.full:
             if self.template.startswith('system/'):
                 self.template = self.template.split('/')[1]
@@ -137,6 +142,18 @@ class Settings():
 
         self.template = 'system/connectors'
         self.kwargs = {'formset': formset}
+
+    def network(self):
+        form = NetworkForm()
+
+        if self.request.method == 'POST':
+            if 'save' in self.request.POST:
+                form = NetworkForm(self.request.POST)
+                if form.is_valid():
+                    form.save()
+
+        self.template = 'system/network'
+        self.kwargs = {'form': form}
 
     def furniture(self):
         floor = None
