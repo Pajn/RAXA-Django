@@ -1,10 +1,13 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.dispatch import Signal
 from django.forms import ModelForm, ModelChoiceField, Form, HiddenInput
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext as _
 from . import Device
 from backend.widgets import getWidget
+
+scenario_executed = Signal(providing_args=['scenario'])
 
 class Scenario(models.Model):
     name = models.CharField(_('Name'), max_length=30)
@@ -24,6 +27,8 @@ class Scenario(models.Model):
         else:
             for scenario_device in self.scenariodevice_set.all():
                 scenario_device.device.object.action(action=action)
+
+        scenario_executed.send(sender=self, scenario=self)
 
 scenario_form_set = None
 
