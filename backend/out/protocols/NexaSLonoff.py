@@ -20,9 +20,11 @@ class NexaSLonoff(Protocol):
 
     def on(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
+        self.device.set_status('on')
 
     def off(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"off"')
+        self.device.set_status('off')
 
     def generateRandom(self):
         rand = random.randint(0,67234433)

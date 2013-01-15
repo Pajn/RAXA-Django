@@ -1,11 +1,13 @@
 from django.db import models
 from django.db.models.signals import post_init
-from django.dispatch import receiver
+from django.dispatch import receiver, Signal
 from . import Connector
 from . import Room
 from django.forms import ModelForm, Form, ChoiceField, HiddenInput
 from django.utils.translation import ugettext as _
 from backend.out.protocol import get_class, supported_types
+
+device_status_change = Signal(providing_args=['device', 'status'])
 
 class Device(models.Model):
     choices = supported_types()
@@ -24,6 +26,10 @@ class Device(models.Model):
     class Meta:
         app_label = 'backend'
 
+    def set_status(self, status):
+        self.status = status
+        self.save()
+        device_status_change.send_robust(sender=self, device=self, status=status)
 
     def __unicode__(self):
         return self.name

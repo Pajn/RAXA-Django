@@ -47,13 +47,16 @@ class NexaSLdim(DimLevelProtocol):
 
     def off(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"off"')
+        self.device.set_status('off')
 
     def dim(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
+        self.device.set_status('dim')
 
     def dim_level(self, *args, **kwargs):
         dim_level = kwargs.get('dim_level')
         self.device.connector.object.send('%s,"cmd":"dim","dimLevel":"%s"' % (self.connector_string, dim_level))
+        self.device.set_status(dim_level)
 
     def generateRandom(self):
         rand = random.randint(0,67234433)
