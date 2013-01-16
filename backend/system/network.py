@@ -10,7 +10,7 @@ def read():
     netmask = ''
     gateway = ''
 
-    if 'iface eth0 inet dhcp' in file:
+    if 'iface eth0 inet dhcp\n' in file:
         type = 'dhcp'
     else:
         type = 'static'
