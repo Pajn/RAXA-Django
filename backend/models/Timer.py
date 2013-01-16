@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.dispatch import Signal
 from django.forms import ModelForm, Form, CharField, HiddenInput
 from django.utils.translation import ugettext as _
 from backend.models.Device import Device
@@ -10,6 +11,8 @@ from backend.models.Scenario import Scenario
 from backend.widgets.DeviceScenario import DeviceScenario, DeviceScenarioHidden
 from backend.widgets import getWidget
 from backend.widgets.Time import Time
+
+timer_executed = Signal(providing_args=['timer'])
 
 class Timer(models.Model):
     limit = models.Q(app_label = 'backend', model = 'Device') | models.Q(app_label = 'backend', model = 'Scenario')
@@ -39,6 +42,8 @@ class Timer(models.Model):
             self.action_object.object.action(action=self.action)
         elif isinstance(self.action_object, Scenario):
             self.action_object.execute()
+
+        timer_executed.send(sender=self, timer=self)
 
     @staticmethod
     def get_timers_within(minutes):
