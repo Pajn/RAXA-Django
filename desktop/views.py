@@ -3,7 +3,7 @@ from django.forms import Select
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from backend.models import InputForm, ConnectorFormSet
-from backend.models.Device import Device, DeviceForm
+from backend.models.Device import Device, DeviceForm, DeviceFormNew
 from backend.models.Input import Input
 from backend.models.Room import Room, Floor
 from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, ScenarioDeviceFormNew, ScenarioDeviceFormAction
@@ -58,7 +58,6 @@ class Settings():
         if subtype is None and request.method == 'POST' and 'subtype' in request.POST:
             self.full = False
             subtype = request.POST['subtype']
-            print 'sub'+subtype
 
         if type is not None:
             if type == 'devices':
@@ -80,8 +79,6 @@ class Settings():
                 self.furniture()
 
     def render(self):
-        print self.template
-        print self.full
         if self.full:
             if self.template.startswith('system/'):
                 self.template = self.template.split('/')[1]
@@ -100,7 +97,7 @@ class Settings():
 
     def devices(self):
         list = Device.objects.all()
-        form = DeviceForm()
+        form = DeviceFormNew()
 
         self.template = 'devices'
         self.kwargs = {'devices': list, 'form': form}
@@ -185,7 +182,7 @@ class Settings():
 
 def edit_device(request):
     if request.method == 'POST':
-        if 'id' in request.POST:
+        if 'id' in request.POST and request.POST['id'] != 'None':
             id = request.POST['id']
             object = get_object_or_404(Device, pk=id)
             if 'delete' in request.POST:
@@ -210,28 +207,27 @@ def edit_device(request):
             form.fields['action'].widget = object.object.ACTION_WIDGET()
         else:
             type = request.POST['type']
-
             object = Device(type=type)
             object.object.new()
-            print object.code
-            print object.action
 
-            postdata = request.POST.copy()
-            if postdata['code'] == '':
-                postdata['code'] = object.code
-            if postdata['action'] == '':
-                postdata['action'] = object.action
+            if 'add' in request.POST:
+                form = DeviceForm(request.POST, instance=object)
+            else:
+                form = DeviceForm(instance=object)
 
-            form = DeviceForm(postdata, instance=object)
             form.fields['code'].widget = object.object.CODE_WIDGET()
             form.fields['action'].widget = object.object.ACTION_WIDGET()
 
-            if form.is_valid(): # All validation rules pass
-                form.save()
-                return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'devices'}))
+            if 'add' in request.POST:
+                if form.is_valid(): # All validation rules pass
+                    form.save()
+                    return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'devices'}))
 
-            list = Device.objects.all()
-            return setting(request, settings='devices', devices=list, object=object, form=form)
+                list = Device.objects.all()
+                form = DeviceFormNew()
+                return setting(request, settings='devices', devices=list, object=object, form=form)
+            else:
+                return render(request, 'desktop/settings/devices/device.html', {'object': object, 'form': form, 'add': True})
 
     else:
         return False

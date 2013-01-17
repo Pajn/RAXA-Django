@@ -40,6 +40,10 @@ class DeviceForm(ModelForm):
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Device)
 
+        if instance and instance.type:
+            connector_type = get_class(instance.type)().CONNECTOR_TYPE
+            self.fields['type'].queryset = Connector.objects.filter(type=connector_type)
+
         if instance and instance.id:
             self.fields['type'].required = False
             self.fields['type'].widget.attrs['disabled'] = 'disabled'
@@ -61,9 +65,10 @@ class DeviceForm(ModelForm):
         model = Device
         exclude = ('order', 'status')
 
-class DeviceFormNew(Form):
-    choices = supported_types()
-    type = ChoiceField(choices=choices)
+class DeviceFormNew(ModelForm):
+    class Meta:
+        model = Device
+        exclude = ('name', 'code', 'connector', 'room', 'order', 'action', 'status')
 
 @receiver(post_init, sender=Device)
 def initialize_device(instance=None, **kwargs):
