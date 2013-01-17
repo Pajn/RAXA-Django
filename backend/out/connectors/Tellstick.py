@@ -1,4 +1,5 @@
 import socket
+import time
 from backend.out import Connector
 
 class Tellstick(Connector):
@@ -17,3 +18,4 @@ class Tellstick(Connector):
         s.connect(('127.0.0.1', 9001))
         s.send(message)
         s.close()
+        time.sleep(0.5)
