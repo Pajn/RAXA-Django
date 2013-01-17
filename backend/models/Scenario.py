@@ -20,8 +20,8 @@ class Scenario(models.Model):
     def __unicode__(self):
         return self.name
 
-    def execute(self, action=''):
-        if action is not '':
+    def execute(self, action=None):
+        if action is None:
             for scenario_device in self.scenariodevice_set.all():
                 scenario_device.device.object.action(action=scenario_device.action)
         else:
