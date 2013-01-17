@@ -32,7 +32,7 @@ class NexaSLdim(DimLevelProtocol):
         assert isinstance(device, Device)
         self.device = device
         self.sender_id = device.code
-        self.connector_string = '"protocol":"NEXASL","senderID":"'+self.sender_id+'"'
+        self.connector_string = '"protocol":"NEXASL","senderID":'+self.sender_id
 
     def sync(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
@@ -55,7 +55,7 @@ class NexaSLdim(DimLevelProtocol):
 
     def dim_level(self, *args, **kwargs):
         dim_level = kwargs.get('dim_level')
-        self.device.connector.object.send('%s,"cmd":"dim","dimLevel":"%s"' % (self.connector_string, dim_level))
+        self.device.connector.object.send('%s,"cmd":"dim","dimLevel":%s' % (self.connector_string, dim_level))
         self.device.set_status(dim_level)
 
     def generateRandom(self):

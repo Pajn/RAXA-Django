@@ -13,7 +13,7 @@ class NexaSLonoff(Protocol):
         assert isinstance(device, Device)
         self.device = device
         self.sender_id = device.code
-        self.connector_string = '"protocol":"NEXASL","senderID":"'+self.sender_id+'"'
+        self.connector_string = '"protocol":"NEXASL","senderID":'+self.sender_id
 
     def sync(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
