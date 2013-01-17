@@ -24,6 +24,7 @@
     </table>
     <input type="submit" name="save" value="{% trans "Save" %}" />
     <input type="submit" name="delete" value="{% trans "Delete" %}" />
+    <input type="submit" name="sync" value="{% trans "Sync" %}" onclick="device({{ object.id }}, 'sync');return false" />
 </form>
 {% if 'dim_level' in object.object.SUPPORTED_ACTIONS %}
     <script type="text/javascript">

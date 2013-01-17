@@ -202,6 +202,9 @@ def edit_device(request):
                     form.save()
                     return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'devices'}))
 
+            elif 'sync' in request.POST:
+                object.object.action(action='sync')
+
             form = DeviceForm(instance=object)
             form.fields['code'].widget = object.object.CODE_WIDGET()
             form.fields['action'].widget = object.object.ACTION_WIDGET()
