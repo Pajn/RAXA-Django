@@ -81,24 +81,24 @@ class NexaSC(Protocol):
     CODE_WIDGET = CodeSelectWidget
     ACTION_WIDGET = HiddenInput
 
-    LETTERS = (
-        ('A', 0),
-        ('B', 1),
-        ('C', 2),
-        ('D', 3),
-        ('E', 4),
-        ('F', 5),
-        ('G', 6),
-        ('H', 7),
-        ('I', 8),
-        ('J', 9),
-        ('K', 10),
-        ('L', 11),
-        ('M', 12),
-        ('N', 13),
-        ('O', 14),
-        ('P', 15),
-        )
+    LETTERS = {
+        'A': 0,
+        'B': 1,
+        'C': 2,
+        'D': 3,
+        'E': 4,
+        'F': 5,
+        'G': 6,
+        'H': 7,
+        'I': 8,
+        'J': 9,
+        'K': 10,
+        'L': 11,
+        'M': 12,
+        'N': 13,
+        'O': 14,
+        'P': 15,
+    }
 
     def __init__(self):
         super(NexaSC, self).__init__()
@@ -116,9 +116,9 @@ class NexaSC(Protocol):
         else:
             house = 'A'
             device = '1'
-        house = self.LETTERS[house]
+        house = self.LETTERS.get(house)
         device = int(device)-1
-        self.connector_string = '"protocol":"NEXASC","house":'+house+',"device":'+device
+        self.connector_string = '"protocol":"NEXASC","house":{0},"device":{1}'.format(house, device)
 
     def sync(self, *args, **kwargs):
         self.device.connector.object.send(self.connector_string+',"cmd":"on"')
