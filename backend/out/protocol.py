@@ -10,9 +10,9 @@ def supported_types():
 
     return types
 
-def get_class(connector):
-    tmpmodule = __import__('backend.out.protocols.%s' % connector, fromlist=[connector])
-    tmpclass = getattr(tmpmodule, connector)
+def get_class(protocol):
+    tmpmodule = __import__('backend.out.protocols.%s' % protocol, fromlist=[protocol])
+    tmpclass = getattr(tmpmodule, protocol)
     return tmpclass
 
 class Protocol(object):
