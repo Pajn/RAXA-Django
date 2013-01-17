@@ -2,13 +2,19 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.dispatch import Signal
 from django.forms import ModelForm, Form, CharField, HiddenInput
 from django.utils.translation import ugettext as _
 import time
+import datetime
 from backend.models.Device import Device
+from backend.models.Scenario import Scenario
 from backend.widgets.DeviceScenario import DeviceScenario, DeviceScenarioHidden
 from backend.widgets.Time import Time
 from backend.widgets import getWidget
+
+input_received = Signal(providing_args=['protocol', 'data'])
+input_executed = Signal(providing_args=['input'])
 
 class Input(models.Model):
     name = models.CharField(_('Name'), max_length=30)
@@ -22,6 +28,30 @@ class Input(models.Model):
 
     class Meta:
         app_label = 'backend'
+
+    def execute(self):
+        timedelta = datetime.datetime.now() - self.timestamp
+        if timedelta.total_seconds() > 2:
+            if isinstance(self.action_object, Device):
+                self.action_object.object.action(action=self.action)
+            elif isinstance(self.action_object, Scenario):
+                self.action_object.execute()
+
+            input_executed.send(sender=self, input=object)
+
+    @staticmethod
+    def received(protocol, data):
+        input_received.send(protocol=protocol, data=data)
+        try:
+            object = Input.objects.get(protocol=protocol, data=data)
+            object.execute()
+        except Input.DoesNotExist:
+            object = Input(id=0)
+            object.name = 'found'
+            object.protocol = protocol
+            object.data = data
+            object.save()
+
 
     @staticmethod
     def scan(timeout=10):
