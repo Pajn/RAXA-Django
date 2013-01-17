@@ -12,6 +12,7 @@ from backend.out.connector import scan_connectors
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
 from common.models.Furniture import Furniture, FurnitureForm
+from common.models.Plan import PlanForm, Plan
 
 def index(request, template='desktop/index.html', **kwargs):
     floors = Floor.objects.all()
@@ -75,6 +76,8 @@ class Settings():
                     self.network()
                 else:
                     self.system()
+            elif type == 'rooms':
+                self.rooms()
             elif type == 'plan' or type == 'furniture':
                 self.furniture()
 
@@ -152,6 +155,33 @@ class Settings():
         self.template = 'system/network'
         self.kwargs = {'form': form}
 
+    def rooms(self):
+        floor = None
+        form = PlanForm()
+        floors = []
+        for floor in Floor.objects.all():
+            floors.append((floor.id, floor.name))
+
+        if self.request.method == 'POST':
+            if 'floor' in self.request.POST:
+                floor = self.request.POST['floor']
+                print floor
+            if 'id' in self.request.POST:
+                id = self.request.POST['id']
+                object = get_object_or_404(Furniture, pk=id)
+                object.delete()
+            if 'save' in self.request.POST:
+                form = PlanForm(self.request.POST)
+
+                if form.is_valid(): # All validation rules pass
+                    form.save()
+                    form = PlanForm()
+
+        selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id':'selectfloor'})
+
+        self.template = 'rooms'
+        self.kwargs = {'selectfloor': selectfloor, 'form':form}
+
     def furniture(self):
         floor = None
         form = FurnitureForm()
@@ -177,7 +207,7 @@ class Settings():
         selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id':'selectfloor'})
 
         self.template = 'furniture'
-        self.kwargs = {'selectfloor': selectfloor,'form':form}
+        self.kwargs = {'selectfloor': selectfloor, 'form':form}
 
 
 def edit_device(request):

@@ -1,0 +1,100 @@
+{% load i18n %}
+{% load url from future %}
+<style type="text/css">
+    #floor svg, #floorOverlay svg {
+        position: absolute;
+        top: 15%;
+        left: 20px;
+        max-height: 60%;
+        max-width: 60%;
+    }
+</style>
+{{ selectfloor }}
+<div id="floor">
+</div>
+<div id="floorOverlay">
+</div>
+<div id="dialog-save" title="">
+    <form action="{% url 'desktop.views.settings' type='rooms' %}" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" name="save" value="{% trans "Save" %}" />
+    </form>
+</div>
+<script type="text/javascript">
+    var x1, y1, x, y, first, svg;
+    function get_floor() {
+        var floor = $('#selectfloor').val();
+        $('input[name="floor"]').val(floor);
+        $('#floor').load('{{ STATIC_URL }}images/floor'+floor+'.svg');
+        $('#floorOverlay').load('{% url 'common.views.overlay' %}', {'floor': floor, 'edit_rooms': true}, function() {
+
+            var svgNamespace = 'http://www.w3.org/2000/svg';
+            var $overlay = $('#floorOverlay svg');
+            first = true;
+
+            $overlay.on('click', function(e){
+                var pt = this.createSVGPoint();
+                pt.x = e.clientX; pt.y = e.clientY;
+
+                var loc = pt.matrixTransform(this.getScreenCTM().inverse());
+                x = Math.round(loc.x);
+                y = Math.round(loc.y);
+
+                if (first) {
+                    x1 = x;
+                    y1 = y;
+                    $('input[name="x"]').val(x1);
+                    $('input[name="y"]').val(y1);
+                    svg = e.target.ownerDocument.createElementNS(svgNamespace, 'rect');
+                    svg.setAttributeNS(null, 'class', 'map');
+                    svg.setAttributeNS(null, 'x', x1);
+                    svg.setAttributeNS(null, 'y', y1);
+                    svg.setAttributeNS(null, 'height', '0');
+                    svg.setAttributeNS(null, 'width', '0');
+                    svg.setAttributeNS(null, 'fill', 'rgba(100, 149, 237, 0.5)');
+                    svg.setAttributeNS(null, 'pointer-events', 'none');
+                    this.appendChild(svg);
+                    first = false;
+                } else {
+                    $('input[name="width"]').val(x-x1);
+                    $('input[name="height"]').val(y-y1);
+                    $('#dialog-save').dialog('open');
+                }
+
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            });
+            $overlay.on('mousemove', function(e){
+                var pt = this.createSVGPoint();
+                pt.x = e.clientX; pt.y = e.clientY;
+
+                var loc = pt.matrixTransform(this.getScreenCTM().inverse());
+                x = Math.round(loc.x);
+                y = Math.round(loc.y);
+
+                if (!first) {
+                    svg.setAttributeNS(null, 'width', x-x1);
+                    svg.setAttributeNS(null, 'height', y-y1);
+                }
+            });
+            $overlay.on('contextmenu', function(e) {
+                if (!first) {
+                    $('.map').remove();
+                    first = true;
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            });
+        });
+    }
+    $(function() {
+        get_floor();
+        $('#selectfloor').change(get_floor);
+        $('#dialog-save').dialog({
+            modal: true,
+            autoOpen: false
+        });
+    });
+</script>

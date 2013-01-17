@@ -2,10 +2,6 @@ from django.db import models
 from django.forms import ModelForm, HiddenInput
 from backend.models import Device, Floor
 
-def enum(*sequential, **named):
-    enums = dict(zip(sequential, range(len(sequential))), **named)
-    return type('Enum', (), enums)
-
 class Furniture(models.Model):
     types = {
         'dot': 0,

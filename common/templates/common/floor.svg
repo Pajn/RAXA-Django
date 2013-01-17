@@ -1,4 +1,16 @@
-{% extends floor %}
+{% extends 'common/individual.svg' %}
+
+{% block rooms %}
+    {% for room in rooms %}
+        <rect id="{{ room.id }}" x="{{ room.x }}px" y="{{ room.y }}px" width="{{ room.width }}px" height="{{ room.height }}px"
+            {% if edit_rooms %}
+                fill="rgba(100, 149, 237, 0.5)"
+            {% else %}
+                stroke="rgba(0,0,0,0)" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0"
+            {% endif %}
+        onclick="room({{ room.room.id }})" />
+    {% endfor %}
+{% endblock %}
 
 {% block furnitures %}
     {% for furniture in furnitures %}
