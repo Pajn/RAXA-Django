@@ -10,7 +10,7 @@ class Time(widgets.MultiWidget):
 
     def generate_minutes(self):
         self.minutes = []
-        for i in range(0, 60, 15):
+        for i in range(0, 60, 5):
             self.minutes.append((str(i), str(i).zfill(2)))
 
     def __init__(self, attrs=None, mode=0):
