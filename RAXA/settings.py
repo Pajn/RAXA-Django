@@ -158,6 +158,6 @@ LOGGING = {
 }
 
 try:
-    from RAXA.RAXA.local_settings import *
+    from RAXA.local_settings import *
 except ImportError:
     pass
