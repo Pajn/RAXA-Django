@@ -46,7 +46,10 @@ class Input(models.Model):
             object = Input.objects.get(protocol=protocol, data=data)
             object.execute()
         except Input.DoesNotExist:
-            object = Input(id=0)
+            try:
+                object = Input.objects.get(pk=0)
+            except Input.DoesNotExist:
+                object = Input(pk=0)
             object.name = 'found'
             object.protocol = protocol
             object.data = data
@@ -57,14 +60,14 @@ class Input(models.Model):
     def scan(timeout=10):
         try:
             input = Input.objects.get(pk=0)
-            input.protocol = ''
-            input.data = ''
-            input.content_type_id = 0
-            input.object_id = 0
-            input.action = ''
         except Input.DoesNotExist:
-            input = Input(id=0)
+            input = Input(pk=0)
         input.name = 'scanning'
+        input.protocol = ''
+        input.data = ''
+        input.content_type_id = 0
+        input.object_id = 0
+        input.action = ''
         input.save()
 
         found = False

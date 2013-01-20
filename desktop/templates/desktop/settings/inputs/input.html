@@ -86,12 +86,16 @@
     }
 </style>
 <form action="{% url 'desktop.views.edit_input' %}" method="post">{% csrf_token %}
-    <input type="hidden" name="id" value="{{ object.id }}" />
     <table style="text-align: left; border: 8px solid transparent; border-spacing: 0;">
         {{ form.as_table }}
     </table>
-    <input type="submit" name="save" value="{% trans "Save" %}" />
-    <input type="submit" name="delete" value="{% trans "Delete" %}" />
+    {% if add %}
+        <input type="submit" name="add" value="{% trans "Add" %}" />
+    {% else %}
+        <input type="hidden" name="id" value="{{ object.id }}" />
+        <input type="submit" name="save" value="{% trans "Save" %}" />
+        <input type="submit" name="delete" value="{% trans "Delete" %}" />
+    {% endif %}
 </form>
 {% if 'dim_level' in object.action_object.object.SUPPORTED_ACTIONS %}
     <script type="text/javascript">

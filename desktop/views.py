@@ -2,7 +2,8 @@ from django.core.urlresolvers import reverse
 from django.forms import Select
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from backend.models import InputForm, ConnectorFormSet
+from django.utils.translation import ugettext as _
+from backend.models import ConnectorFormSet
 from backend.models.Device import Device, DeviceForm, DeviceFormNew
 from backend.models.Input import Input
 from backend.models.Room import Room, Floor
@@ -114,10 +115,9 @@ class Settings():
 
     def inputs(self):
         list = Input.objects.all()
-        form = InputForm()
 
         self.template = 'inputs'
-        self.kwargs = {'inputs': list, 'form': form}
+        self.kwargs = {'inputs': list}
 
     def timers(self):
         list = Timer.objects.all()
@@ -324,6 +324,7 @@ def edit_scenario(request):
         raise Http404('No scenario')
 
 def edit_input(request):
+    add = False
     if request.method == 'POST':
         if 'id' in request.POST:
             id = request.POST['id']
@@ -346,19 +347,28 @@ def edit_input(request):
             form = TimerForm(instance=object)
 
         else:
-            postdata = request.POST.copy()
-            postdata['action_object'] = postdata['device_scenario']
+            if 'scan' in request.POST:
+                input = Input.scan()
+                if input is None:
+                    return HttpResponse('<input type="button" value="%s" onclick="scan()"/>' % _('Scan'))
+                else:
+                    object = Timer()
+                    form = TimerForm(instance=object)
+                    add = True
+            elif 'add' in request.POST:
+                postdata = request.POST.copy()
+                postdata['action_object'] = postdata['device_scenario']
 
-            object = Timer()
-            form = TimerForm(postdata, instance=object)
+                object = Timer()
+                form = TimerForm(postdata, instance=object)
 
-            if form.is_valid(): # All validation rules pass
-                form.save()
-                return HttpResponseRedirect(reverse('desktop.views.timers_settings'))
+                if form.is_valid(): # All validation rules pass
+                    form.save()
+                    return HttpResponseRedirect(reverse('desktop.views.timers_settings'))
     else:
         return False
 
-    return render(request, 'desktop/settings/timers/timer.html', {'object': object, 'form': form})
+    return render(request, 'desktop/settings/timers/timer.html', {'object': object, 'form': form, 'add': add})
 
 def edit_timer(request):
     if request.method == 'POST':
