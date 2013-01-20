@@ -100,7 +100,7 @@ class Settings():
                 return render(self.request, 'desktop/settings/%s/%s.html' % (self.template, self.template), self.kwargs)
 
     def devices(self):
-        list = Device.objects.all()
+        list = Device.objects.select_related().all()
         form = DeviceFormNew()
 
         self.template = 'devices'
@@ -287,7 +287,7 @@ def edit_scenario(request):
     if request.method == 'POST' and 'scenario' in request.POST:
         scenarioid = request.POST['scenario']
         scenario = get_object_or_404(Scenario, pk=scenarioid)
-        scenariodevices = ScenarioDevice.objects.filter(scenario=scenarioid)
+        scenariodevices = ScenarioDevice.objects.select_related().filter(scenario=scenarioid)
         if 'add' in request.POST:
             form = ScenarioDeviceFormNew(request.POST)
             if form.is_valid():
