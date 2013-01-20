@@ -41,7 +41,7 @@ class Input(models.Model):
 
     @staticmethod
     def received(protocol, data):
-        input_received.send(protocol=protocol, data=data)
+        input_received.send(sender=None, protocol=protocol, data=data)
         try:
             object = Input.objects.get(protocol=protocol, data=data)
             object.execute()

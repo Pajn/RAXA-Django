@@ -3,7 +3,7 @@ from django.forms import Select
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
-from backend.models import ConnectorFormSet
+from backend.models import ConnectorFormSet, InputForm
 from backend.models.Device import Device, DeviceForm, DeviceFormNew
 from backend.models.Input import Input
 from backend.models.Room import Room, Floor
@@ -328,23 +328,23 @@ def edit_input(request):
     if request.method == 'POST':
         if 'id' in request.POST:
             id = request.POST['id']
-            object = get_object_or_404(Timer, pk=id)
+            object = get_object_or_404(Input, pk=id)
             if 'delete' in request.POST:
                 print 'delete'
                 object.delete()
-                return HttpResponseRedirect(reverse('desktop.views.timers_settings'))
+                return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'inputs'}))
 
             elif 'save' in request.POST:
                 postdata = request.POST.copy()
                 postdata['action_object'] = postdata['device_scenario']
 
-                form = TimerForm(postdata, instance=object)
+                form = InputForm(postdata, instance=object)
 
                 if form.is_valid(): # All validation rules pass
                     form.save()
-                    return HttpResponseRedirect(reverse('desktop.views.timers_settings'))
+                    return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'inputs'}))
 
-            form = TimerForm(instance=object)
+            form = InputForm(instance=object)
 
         else:
             if 'scan' in request.POST:
@@ -352,19 +352,21 @@ def edit_input(request):
                 if input is None:
                     return HttpResponse('<input type="button" value="%s" onclick="scan()"/>' % _('Scan'))
                 else:
-                    object = Timer()
-                    form = TimerForm(instance=object)
+                    object = Input()
+                    form = InputForm(instance=object)
                     add = True
+                    object.protocol = input.protocol
+                    object.data = input.data
             elif 'add' in request.POST:
                 postdata = request.POST.copy()
                 postdata['action_object'] = postdata['device_scenario']
 
-                object = Timer()
-                form = TimerForm(postdata, instance=object)
+                object = Input()
+                form = InputForm(postdata, instance=object)
 
                 if form.is_valid(): # All validation rules pass
                     form.save()
-                    return HttpResponseRedirect(reverse('desktop.views.timers_settings'))
+                    return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'inputs'}))
     else:
         return False
 
