@@ -102,8 +102,9 @@ class InputForm(ModelForm):
         assert isinstance(instance, Input)
 
         self.fields['action_object'].widget = DeviceScenario(value=instance.action_object)
-        self.fields['action_object'].required = False
-        self.fields['action_object'].widget.attrs['disabled'] = 'disabled'
+        if instance and instance.action_object:
+            self.fields['action_object'].required = False
+            self.fields['action_object'].widget.attrs['disabled'] = 'disabled'
 
         # Put action at the back
         action = self.fields.pop('action')
@@ -122,6 +123,8 @@ class InputForm(ModelForm):
             return instance.action_object
         else:
             if 'device_scenario' in self.fields:
+                instance.action_object = self._raw_value('device_scenario')
+                instance.action = 'off'
                 return self._raw_value('device_scenario')
             else:
                 raise ValidationError('Bad')

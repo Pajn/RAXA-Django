@@ -359,7 +359,7 @@ def edit_input(request):
                     add = True
             elif 'add' in request.POST:
                 postdata = request.POST.copy()
-                postdata['action_object'] = postdata['device_scenario']
+                postdata['device_scenario'] = postdata['action_object']
 
                 object = Input()
                 form = InputForm(postdata, instance=object)
@@ -370,7 +370,7 @@ def edit_input(request):
     else:
         return False
 
-    return render(request, 'desktop/settings/timers/timer.html', {'object': object, 'form': form, 'add': add})
+    return render(request, 'desktop/settings/inputs/input.html', {'object': object, 'form': form, 'add': add})
 
 def edit_timer(request):
     if request.method == 'POST':

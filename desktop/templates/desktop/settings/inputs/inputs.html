@@ -33,7 +33,7 @@
         header: '> div > div[class="header"]',
         beforeActivate: function(event, ui) {
             var id = ui.newHeader.attr('data-id');
-            ui.newPanel.load('{% url 'desktop.views.edit_input' %}', {'id': id});
+            ui.newPanel.load('{% url 'desktop.views.edit_input' %}', {'id': id}, fix_sliders);
         }
     }).sortable({
                 axis: "y",
@@ -59,6 +59,63 @@
     });
     function scan() {
         $("#newcontainer").html('<img src="{{ STATIC_URL }}desktop/images/ajax-loader.gif" alt="{% trans 'scanning' %}..." />');
-        $('#newcontainer').load('{% url 'desktop.views.edit_input' %}', {'scan':true});
+        $('#newcontainer').load('{% url 'desktop.views.edit_input' %}', {'scan':true}, function() {
+            var $action_object = $('#new select[name="action_object"]');
+            $action_object.change(function() {
+                get_action_widget($(this).val());
+            });
+            var $actionrow = $('<tr id="actionrow" style="display: none;">\
+                <th><label for="id_action">{% trans "Action" %}:</label></th>\
+                <td id="actioncell"></td>\
+            </tr>');
+            $('#new input[name="action"]').remove();
+            $('#new tbody').append($actionrow);
+            get_action_widget($action_object.val());
+        });
+    }
+    function get_action_widget(value) {
+        var type = value.split('/')[0];
+        var id = value.split('/')[1];
+        if (type == 'D') {
+            $('#actioncell').load('{% url 'desktop.views.widget_action' %}', {'device': id}, function() {
+                fix_sliders();
+            });
+            $('#actionrow').show();
+        } else {
+            $('#actionrow').hide();
+        }
+    }
+    function fix_sliders() {
+        $('input[type="range"]').each(function(index, input) {
+            var $input, $label, $slider, $container;
+
+            $input = $(input);
+
+            $container = $('<div class="slider" style="width: 195px"/>');
+            $label = $('<span class="label ui-widget-content ui-corner-all">'+parseInt($input.attr('value'), 10)+'</span>');
+
+            //Create a new div, turn it into a slider, and set its attributes based on
+            //the attributes of the input.
+            $slider = $('<div style="float: right;width: 150px"/>').slider({
+                min: parseInt($input.attr('min'), 10),
+                max: parseInt($input.attr('max'), 10),
+                value: parseInt($input.attr('value'), 10),
+                step: parseInt($input.attr('step'), 10),
+                slide: function(event, ui) {
+                    //Keep the value of the input[type=range] in sync with the slider.
+                    //$(this).prev('input').val(ui.value);
+                    $input.val(ui.value);
+                    $input.change();
+                    $label.text(ui.value);
+                }
+            });
+
+            //Append the slider after the input and hide the input.  The user will only
+            //interact with the slider.
+            $input.hide();
+            $input.after($container);
+            $container.append($label);
+            $label.after($slider);
+        });
     }
 </script>

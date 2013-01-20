@@ -97,7 +97,7 @@
         <input type="submit" name="delete" value="{% trans "Delete" %}" />
     {% endif %}
 </form>
-{% if 'dim_level' in object.action_object.object.SUPPORTED_ACTIONS %}
+{% if 'dim_level' in object.action_object.object.SUPPORTED_ACTIONS and False %}
     <script type="text/javascript">
         var $input, $label, $slider, $container;
 
