@@ -157,6 +157,8 @@ LOGGING = {
     }
 }
 
+UPDATE_URL = 'http://updates.raxa.se/updates.xml'
+
 try:
     from RAXA.local_settings import *
 except ImportError:

@@ -10,6 +10,7 @@ from backend.models.Room import Room, Floor
 from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, ScenarioDeviceFormNew, ScenarioDeviceFormAction
 from backend.models.Timer import Timer, TimerForm
 from backend.out.connector import scan_connectors
+from backend.system import updates
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
 from common.models.Furniture import Furniture, FurnitureForm
@@ -75,6 +76,8 @@ class Settings():
                     self.connectors()
                 elif subtype == 'network':
                     self.network()
+                elif subtype == 'updates':
+                    self.updates()
                 else:
                     self.system()
             elif type == 'rooms':
@@ -154,6 +157,24 @@ class Settings():
 
         self.template = 'system/network'
         self.kwargs = {'form': form}
+
+    def updates(self):
+        if self.request.method == 'POST' and 'update' in self.request.POST:
+            update = updates.Update(self.request.POST['version'],self.request.POST['patch'])
+            update.apply()
+
+            return HttpResponseRedirect(reverse('desktop.views.index'))
+
+        else:
+            current_v = updates.write_version(updates.version())
+            checked, update = updates.check()
+            if checked:
+                head_v = updates.write_version(update.version)
+            else:
+                head_v = _("Couldn't check")
+
+            self.template = 'system/updates'
+            self.kwargs = {'current_v':current_v, 'head_v':head_v, 'update':update}
 
     def rooms(self):
         floor = None
@@ -324,6 +345,8 @@ def edit_scenario(request):
         raise Http404('No scenario')
 
 def edit_input(request):
+    object = None
+    form = None
     add = False
     if request.method == 'POST':
         if 'id' in request.POST:
