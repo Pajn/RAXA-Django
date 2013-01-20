@@ -58,6 +58,7 @@
         header: 'div[class="header"]'
     });
     function scan() {
+        $("#newcontainer").html('<img src="{{ STATIC_URL }}desktop/images/ajax-loader.gif" alt="{% trans 'scanning' %}..." />');
         $('#newcontainer').load('{% url 'desktop.views.edit_input' %}', {'scan':true});
     }
 </script>

@@ -13,7 +13,7 @@ from backend.out.connector import scan_connectors
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
 from common.models.Furniture import Furniture, FurnitureForm
-from common.models.Plan import PlanForm, Plan
+from common.models.Plan import PlanForm
 
 def index(request, template='desktop/index.html', **kwargs):
     floors = Floor.objects.all()
@@ -114,7 +114,7 @@ class Settings():
         self.kwargs = {'scenarios': scenarios, 'formset': formset}
 
     def inputs(self):
-        list = Input.objects.all()
+        list = Input.objects.exclude(pk=0)
 
         self.template = 'inputs'
         self.kwargs = {'inputs': list}
@@ -353,10 +353,10 @@ def edit_input(request):
                     return HttpResponse('<input type="button" value="%s" onclick="scan()"/>' % _('Scan'))
                 else:
                     object = Input()
-                    form = InputForm(instance=object)
-                    add = True
                     object.protocol = input.protocol
                     object.data = input.data
+                    form = InputForm(instance=object)
+                    add = True
             elif 'add' in request.POST:
                 postdata = request.POST.copy()
                 postdata['action_object'] = postdata['device_scenario']

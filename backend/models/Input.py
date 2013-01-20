@@ -43,7 +43,7 @@ class Input(models.Model):
     def received(protocol, data):
         input_received.send(sender=None, protocol=protocol, data=data)
         try:
-            object = Input.objects.get(protocol=protocol, data=data)
+            object = Input.objects.exclude(pk=0).get(protocol=protocol, data=data)
             object.execute()
         except Input.DoesNotExist:
             try:
