@@ -1,0 +1,169 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: RAXAmobile\n"
+"Language: en\n"
+
+#: templates/mobile/base.html:21 templates/mobile/devices.html:12
+#: templates/mobile/rooms.html:8 templates/mobile/scenarios.html:8
+#: templates/mobile/settings.html:7
+msgid "Settings"
+msgstr "Settings"
+
+#: templates/mobile/base.html:31 templates/mobile/devices.html:11
+#: templates/mobile/index.html:7 templates/mobile/settings.html:12
+#: templates/mobile/settings/devices.html:7
+msgid "Devices"
+msgstr "Devices"
+
+#: templates/mobile/base.html:32 templates/mobile/index.html:8
+#: templates/mobile/scenarios.html:7 templates/mobile/settings.html:13
+#: templates/mobile/settings/scenarios.html:7
+msgid "Scenarios"
+msgstr "Scenarios"
+
+#: templates/mobile/base.html:33 templates/mobile/index.html:9
+#: templates/mobile/rooms.html:7 templates/mobile/settings.html:14
+#: templates/mobile/settings/rooms.html:7
+msgid "Rooms"
+msgstr "Rooms"
+
+#: templates/mobile/devices.html:7 templates/mobile/devices.html.py:9
+#: templates/mobile/rooms.html:6 templates/mobile/scenarios.html:6
+#: templates/mobile/settings.html:6
+#: templates/mobile/settings/connectors.html:6
+#: templates/mobile/settings/devices.html:6
+#: templates/mobile/settings/inputs.html:6
+#: templates/mobile/settings/rooms.html:6
+#: templates/mobile/settings/scenario_devices.html:6
+#: templates/mobile/settings/scenarios.html:6
+#: templates/mobile/settings/timers.html:6
+msgid "Back"
+msgstr "Back"
+
+#: templates/mobile/devices.html:45
+msgid "Dim"
+msgstr "Dim"
+
+#: templates/mobile/devices.html:49
+#: templates/mobile/settings/scenario_devices.html:18
+msgid "No devices yet"
+msgstr "No devices yet"
+
+#: templates/mobile/index.html:12
+msgid "Android App"
+msgstr "Android App"
+
+#: templates/mobile/index.html:13
+msgid "Desktop"
+msgstr "Desktop"
+
+#: templates/mobile/rooms.html:16 templates/mobile/settings/rooms.html:15
+msgid "No rooms yet"
+msgstr "No rooms yet"
+
+#: templates/mobile/scenarios.html:16
+msgid "No scenarios yet"
+msgstr "No scenarios yet"
+
+#: templates/mobile/settings.html:15
+#: templates/mobile/settings/connectors.html:7
+msgid "Connectors"
+msgstr "Connectors"
+
+#: templates/mobile/settings.html:16 templates/mobile/settings/inputs.html:7
+msgid "Inputs"
+msgstr "Inputs"
+
+#: templates/mobile/settings.html:17 templates/mobile/settings/timers.html:7
+msgid "Timers"
+msgstr "Timers"
+
+#: templates/mobile/settings/connector.html:6
+msgid "Connector"
+msgstr "Connector"
+
+#: templates/mobile/settings/connector.html:13
+#: templates/mobile/settings/device.html:17
+#: templates/mobile/settings/input.html:16
+#: templates/mobile/settings/scenario.html:13
+#: templates/mobile/settings/scenario_device.html:16
+#: templates/mobile/settings/timer.html:16
+msgid "Delete"
+msgstr "Delete"
+
+#: templates/mobile/settings/connector.html:14
+#: templates/mobile/settings/device.html:18
+#: templates/mobile/settings/input.html:13
+#: templates/mobile/settings/input.html:17
+#: templates/mobile/settings/room.html:12
+#: templates/mobile/settings/scenario.html:14
+#: templates/mobile/settings/scenario_device.html:13
+#: templates/mobile/settings/scenario_device.html:17
+#: templates/mobile/settings/timer.html:13
+#: templates/mobile/settings/timer.html:17
+msgid "Save"
+msgstr "Save"
+
+#: templates/mobile/settings/connectors.html:12
+#: templates/mobile/settings/inputs.html:12
+msgid "Scan"
+msgstr "Scan"
+
+#: templates/mobile/settings/device.html:6
+#: templates/mobile/settings/device_new.html:6
+msgid "Device"
+msgstr "Device"
+
+#: templates/mobile/settings/device_new.html:12
+#: templates/mobile/settings/input.html:20
+#: templates/mobile/settings/scenario_device.html:20
+#: templates/mobile/settings/timer.html:20
+msgid "Next"
+msgstr "Next"
+
+#: templates/mobile/settings/devices.html:12
+#: templates/mobile/settings/scenarios.html:12
+#: templates/mobile/settings/timers.html:12
+msgid "New"
+msgstr "New"
+
+#: templates/mobile/settings/input.html:6
+msgid "Input"
+msgstr "Input"
+
+#: templates/mobile/settings/inputs.html:18
+msgid "No inputs yet"
+msgstr "No inputs yet"
+
+#: templates/mobile/settings/room.html:6
+msgid "Room"
+msgstr "Room"
+
+#: templates/mobile/settings/scenario.html:6
+msgid "Scenario"
+msgstr "Scenario"
+
+#: templates/mobile/settings/scenario.html:17
+msgid "Edit Devices"
+msgstr "Edit Devices"
+
+#: templates/mobile/settings/scenario_device.html:6
+msgid "Device in "
+msgstr "Device in "
+
+#: templates/mobile/settings/scenario_devices.html:7
+msgid "Devices in"
+msgstr "Devices in"
+
+#: templates/mobile/settings/scenario_devices.html:12
+msgid "Add"
+msgstr "Add"
+
+#: templates/mobile/settings/timer.html:6
+msgid "Timer"
+msgstr "Timer"
+

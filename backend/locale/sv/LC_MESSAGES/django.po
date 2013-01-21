@@ -1,0 +1,135 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: RAXA\n"
+"Language: sv\n"
+
+#: views.py:32
+msgid "New "
+msgstr "Ny "
+
+#: models/Connector.py:10 models/Device.py:15 models/Input.py:20
+#: models/Room.py:6 models/Room.py:23 models/Scenario.py:13 models/Timer.py:20
+msgid "Name"
+msgstr "Namn"
+
+#: models/Connector.py:11 models/Device.py:16
+msgid "Type"
+msgstr "Typ"
+
+#: models/Connector.py:12
+msgid "Code"
+msgstr "Kod"
+
+#: models/Device.py:20 models/Scenario.py:15
+msgid "Order"
+msgstr "Ordning"
+
+#: models/Device.py:21 models/Input.py:26 models/Scenario.py:50
+#: models/Timer.py:32
+msgid "Action"
+msgstr "Åtgärd"
+
+#: models/Device.py:22
+msgid "Status"
+msgstr "Status"
+
+#: models/Input.py:21
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: models/Input.py:22
+msgid "Data"
+msgstr "Data"
+
+#: models/Input.py:160
+msgid "Device or scenario for the input to trigger"
+msgstr "Enhet eller scenario för ingången att köra"
+
+#: models/Room.py:10
+msgid "Number of rooms"
+msgstr "Antal rum"
+
+#: models/Scenario.py:14
+msgid "Is hidden"
+msgstr "Är dold"
+
+#: models/Scenario.py:115
+msgid "Device"
+msgstr "Enhet"
+
+#: models/Timer.py:21
+msgid "Time"
+msgstr "Tid"
+
+#: models/Timer.py:22
+msgid "Monday"
+msgstr "Måndag"
+
+#: models/Timer.py:23
+msgid "Tuesday"
+msgstr "Tisdag"
+
+#: models/Timer.py:24
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: models/Timer.py:25
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: models/Timer.py:26
+msgid "Friday"
+msgstr "Fredag"
+
+#: models/Timer.py:27
+msgid "Saturday"
+msgstr "Lördag"
+
+#: models/Timer.py:28
+msgid "Sunday"
+msgstr "Söndag"
+
+#: models/Timer.py:89 models/Timer.py:93
+msgid "Object"
+msgstr "Objekt"
+
+#: models/Timer.py:150
+msgid "Device or scenario for the timer to trigger"
+msgstr "Enhet eller scenario för timern att köra"
+
+#: system/network.py:58
+msgid "DHCP"
+msgstr "DHCP"
+
+#: system/network.py:59
+msgid "Static"
+msgstr "Statisk"
+
+#: widgets/DeviceScenario.py:48
+msgid "Devices"
+msgstr "Enheter"
+
+#: widgets/DeviceScenario.py:55
+msgid "Scenarios"
+msgstr "Scenarion"
+
+#: widgets/OnOff.py:35 widgets/OnOffDimLevel.py:53
+msgid "On"
+msgstr "På"
+
+#: widgets/OnOff.py:35 widgets/OnOffDimLevel.py:53
+msgid "Off"
+msgstr "Av"
+
+#: widgets/OnOffDimLevel.py:53
+msgid "Dim"
+msgstr "Dimma"
+
+#: widgets/OnOffDimLevel.py:53
+msgid "Dim Value"
+msgstr "Dimnivå"
+

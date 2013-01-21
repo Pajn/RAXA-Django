@@ -1,0 +1,146 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: RAXAdesktop\n"
+"Language: sv\n"
+
+#: views.py:179
+msgid "Couldn't check"
+msgstr "Kunde inte kontrollera"
+
+#: views.py:381 templates/desktop/settings/inputs/inputs.html:24
+msgid "Scan"
+msgstr "Sök"
+
+#: templates/desktop/footer.html:11 templates/desktop/index.html:216
+msgid "Settings"
+msgstr "Inställningar"
+
+#: templates/desktop/index.html:47
+msgid "Devices"
+msgstr "Enheter"
+
+#: templates/desktop/index.html:48
+msgid "Scenarios"
+msgstr "Scenarion"
+
+#: templates/desktop/index.html:49
+msgid "Inputs"
+msgstr "Ingångar"
+
+#: templates/desktop/index.html:50
+msgid "Timers"
+msgstr "Timers"
+
+#: templates/desktop/index.html:52
+msgid "Rooms"
+msgstr "Rum"
+
+#: templates/desktop/index.html:53
+msgid "System"
+msgstr "System"
+
+#: templates/desktop/index.html:54
+msgid "Plan"
+msgstr "Karta"
+
+#: templates/desktop/index.html:169
+msgid "Executing"
+msgstr "Kör"
+
+#: templates/desktop/settings/devices/device.html:26
+#: templates/desktop/settings/inputs/input.html:93
+#: templates/desktop/settings/scenarios/scenario.html:114
+#: templates/desktop/settings/timers/timers.html:120
+msgid "Add"
+msgstr "Lägg till"
+
+#: templates/desktop/settings/devices/device.html:28
+#: templates/desktop/settings/furniture/furniture.html:22
+#: templates/desktop/settings/inputs/input.html:96
+#: templates/desktop/settings/rooms/rooms.html:20
+#: templates/desktop/settings/scenarios/scenariodevice.html:6
+#: templates/desktop/settings/scenarios/scenarios_edit.html:31
+#: templates/desktop/settings/system/connectors/connectors.html:31
+#: templates/desktop/settings/system/network/network.html:52
+#: templates/desktop/settings/timers/timer.html:8
+msgid "Save"
+msgstr "Spara"
+
+#: templates/desktop/settings/devices/device.html:29
+#: templates/desktop/settings/inputs/input.html:97
+#: templates/desktop/settings/scenarios/scenariodevice.html:7
+#: templates/desktop/settings/timers/timer.html:9
+msgid "Delete"
+msgstr "Ta bort"
+
+#: templates/desktop/settings/devices/device.html:30
+msgid "Sync"
+msgstr "Synca"
+
+#: templates/desktop/settings/devices/devices.html:21
+#: templates/desktop/settings/scenarios/scenario.html:103
+msgid "New Device"
+msgstr "Ny Enhet"
+
+#: templates/desktop/settings/furniture/furniture.html:14
+msgid "Snap to grid"
+msgstr "Fäst vid rutnät"
+
+#: templates/desktop/settings/inputs/inputs.html:21
+msgid "New Input"
+msgstr "Ny Ingång"
+
+#: templates/desktop/settings/inputs/inputs.html:61
+msgid "scanning"
+msgstr "söker"
+
+#: templates/desktop/settings/inputs/inputs.html:68
+#: templates/desktop/settings/scenarios/scenario.html:110
+#: templates/desktop/settings/timers/timers.html:114
+msgid "Action"
+msgstr "Åtgärd"
+
+#: templates/desktop/settings/scenarios/scenarios_menu.html:7
+msgid "Edit Scenarios"
+msgstr "Ändra Scenarion"
+
+#: templates/desktop/settings/system/connectors/connectors.html:32
+msgid "Search"
+msgstr "Sök"
+
+#: templates/desktop/settings/system/connectors/connectors.html:35
+msgid "Searching for new connectors, please wait..."
+msgstr "Söker efter nya anslutare, var snäll och vänta"
+
+#: templates/desktop/settings/system/network/network.html:11
+msgid "Warning, setting wrong settings here may make RAXA inaccesible"
+msgstr "Varning, att sätta fel inställningar här kan göra så att RAXA inte går att nå"
+
+#: templates/desktop/settings/system/network/network.html:21
+msgid "IP"
+msgstr "IP"
+
+#: templates/desktop/settings/system/network/network.html:29
+msgid "Netmask"
+msgstr "Nätmask"
+
+#: templates/desktop/settings/system/network/network.html:37
+msgid "DNS"
+msgstr "DNS"
+
+#: templates/desktop/settings/system/network/network.html:45
+msgid "Gateway"
+msgstr "Gateway"
+
+#: templates/desktop/settings/system/updates/updates.html:8
+msgid "Update"
+msgstr "Uppdatera"
+
+#: templates/desktop/settings/timers/timers.html:106
+msgid "New Timer"
+msgstr "Ny Timer"
+
