@@ -85,7 +85,12 @@ class Settings():
             elif type == 'plan' or type == 'furniture':
                 self.furniture()
 
+        self.type = type
+        self.subtype = subtype
+
     def render(self):
+        self.kwargs['type'] = self.type
+        self.kwargs['subtype'] = self.subtype
         if self.full:
             if self.template.startswith('system/'):
                 self.template = self.template.split('/')[1]
@@ -300,9 +305,9 @@ def scenarios_settings(request, id=0):
     if id != 0:
         form = ScenarioDeviceFormNew()
         scenariodevices = ScenarioDevice.objects.filter(scenario=id)
-        return setting(request, settings='scenarios', formset=formset, scenario=id, form=form, scenariodevices=scenariodevices)
+        return setting(request, settings='scenarios', formset=formset, scenario=id, form=form, scenariodevices=scenariodevices, type='scenarios')
     else:
-        return setting(request, settings='scenarios', formset=formset)
+        return setting(request, settings='scenarios', formset=formset, type='scenarios')
 
 def edit_scenario(request):
     if request.method == 'POST' and 'scenario' in request.POST:

@@ -8,7 +8,7 @@
             {% if forloop.first %}
                 <thead><tr>
                     {% for field in form.visible_fields %}
-                        <th>{{ field.label|capfirst }}</th>
+                        <th>{% trans field.label %}</th>
                     {% endfor %}
                 </tr></thead>
             {% endif %}

@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load url from future %}
-Current version: {{ current_v }}<br />
-Latest version: {{ head_v }}
+{% blocktrans %}Current version{% endblocktrans %}: {{ current_v }}<br />
+{% blocktrans %}Latest version{% endblocktrans %}: {{ head_v }}
 <form action="{% url 'desktop.views.systemsettings' type='updates' %}" method="post">{% csrf_token %}
     <input type="hidden" name="version" value="{{ head_v }}" />
     <input type="hidden" name="patch" value="{{ update.patch }}" />

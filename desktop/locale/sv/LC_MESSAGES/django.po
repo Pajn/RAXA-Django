@@ -7,11 +7,11 @@ msgstr ""
 "Project-Id-Version: RAXAdesktop\n"
 "Language: sv\n"
 
-#: views.py:179
+#: views.py:174
 msgid "Couldn't check"
 msgstr "Kunde inte kontrollera"
 
-#: views.py:381 templates/desktop/settings/inputs/inputs.html:24
+#: views.py:376 templates/desktop/settings/inputs/inputs.html:24
 msgid "Scan"
 msgstr "Sök"
 
@@ -143,4 +143,28 @@ msgstr "Uppdatera"
 #: templates/desktop/settings/timers/timers.html:106
 msgid "New Timer"
 msgstr "Ny Timer"
+
+#: templates/desktop/settings/system/system.html:36
+msgid "Connectors"
+msgstr "Anslutare"
+
+#: templates/desktop/settings/system/system.html:37
+msgid "Network"
+msgstr "Nätverk"
+
+#: templates/desktop/settings/system/system.html:38
+msgid "Security"
+msgstr "Säkerhet"
+
+#: templates/desktop/settings/system/system.html:39
+msgid "Updates"
+msgstr "Uppdateringar"
+
+#: templates/desktop/settings/system/updates/updates.html:3
+msgid "Current version"
+msgstr "Installerad version"
+
+#: templates/desktop/settings/system/updates/updates.html:4
+msgid "Latest version"
+msgstr "Senaste version"
 
