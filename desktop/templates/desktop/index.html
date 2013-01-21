@@ -69,7 +69,7 @@
                     $(this).addClass('verticalSelected');
                     var type = $(this).attr('data-id');
                     $('#options').load('{% url 'desktop.views.settings_index' %}', {'type': type}, function() {
-                        window.history.pushState('', 'RAXA - '+$(this).val(), '/settings/'+type);
+                        window.history.pushState('', 'RAXA - '+$(this).val(), '/{{ LANGUAGE_CODE }}/settings/'+type+'/');
                     });
                 });
             });
@@ -209,11 +209,11 @@
                 if ($settings.is(':visible')) {
                     $container.show();
                     $settings.hide();
-                    window.history.pushState('', 'RAXA', '/');
+                    window.history.pushState('', 'RAXA', '/{{ LANGUAGE_CODE }}/');
                 } else {
                     $container.hide();
                     $settings.show();
-                    window.history.pushState('', 'RAXA - {% trans "Settings" %}', '/settings/');
+                    window.history.pushState('', 'RAXA - {% trans "Settings" %}', '/{{ LANGUAGE_CODE }}/settings/');
                 }
             }
 

@@ -35,7 +35,6 @@
         <ul>
             <li><input type="button" data-id="connectors" value="Connectors" class="button normalbutton vertical menu top" /></li>
             <li><input type="button" data-id="network" value="Network" class="button normalbutton vertical menu" /></li>
-            <li><input type="button" data-id="language" value="Language" class="button normalbutton vertical menu" /></li>
             <li><input type="button" data-id="security" value="Security" class="button normalbutton vertical menu" /></li>
             <li><input type="button" data-id="updates" value="Updates" class="button normalbutton vertical menu" /></li>
             <li><input type="button" data-id="theme" value="Theme" class="button normalbutton vertical menu bottom" /></li>
@@ -55,7 +54,7 @@
         $(this).addClass('verticalSelected');
         var type = $(this).attr("data-id");
         $("#Soptions").load('{% url 'desktop.views.settings' type='system' %}', {'subtype': type}, function() {
-            window.history.pushState('', 'RAXA - '+$(this).val(), '/settings/system/'+type);
+            window.history.pushState('', 'RAXA - '+$(this).val(), '/{{ LANGUAGE_CODE }}/settings/system/'+type+'/');
         });
     });
 </script>

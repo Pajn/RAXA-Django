@@ -1,5 +1,7 @@
 # Django settings for RAXA project.
 
+ugettext = lambda s: s
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -88,8 +90,9 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -156,6 +159,11 @@ LOGGING = {
         },
     }
 }
+
+LANGUAGES = (
+    ('sv', ugettext('Swedish')),
+    ('en', ugettext('English')),
+    )
 
 UPDATE_URL = 'http://updates.raxa.se/updates.xml'
 
