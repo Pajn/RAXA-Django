@@ -1,12 +1,13 @@
 import json
-from django.shortcuts import render
 from django.http import HttpResponse
+from backend.models.Connector import Connector
 from backend.models.Device import Device
 from backend.models.Scenario import Scenario
 from backend.models.Room import Floor
+from backend.system import updates
 
-API_VERSION = 2
-RAXA_VERSION = 2
+API_VERSION = 1
+RAXA_VERSION = updates.version()
 
 def respond_with_json(data, errors=None, pretty=False, request=None):
     if not errors: errors = []
@@ -69,17 +70,47 @@ def serialize_floor(floor):
         }
     return output
 
-def index(request):
-    return render(request, 'mobile/index.html')
+def serialize_connector(connector):
+    output = {
+        'id': connector.id,
+        'name': connector.name,
+        'type': connector.type,
+        'code': connector.code,
+        }
+    return output
 
-def version(request):
+def index(request):
+    response = {}
+    errors = []
+    if request.REQUEST.has_key('get'):
+        get = request.REQUEST['get'].split(',')
+        for data in get:
+            if data == 'version':
+                response['version'] = version(request, render_json=False)
+            elif data == 'devices':
+                response['devices'] = devices(request, render_json=False)
+            elif data == 'scenarios':
+                response['scenarios'] = scenarios(request, render_json=False)
+            elif data == 'floors':
+                response['floors'] = floors(request, render_json=False)
+            elif data == 'connectors':
+                response['connectors'] = connectors(request, render_json=False)
+            else:
+                errors.append('%s is not valid' % data)
+
+    return respond_with_json(response, request=request, errors=errors)
+
+def version(request, render_json = True):
     response = {
         'api': API_VERSION,
         'raxa': RAXA_VERSION,
         }
-    return respond_with_json(response, request=request)
+    if render_json:
+        return respond_with_json(response, request=request)
+    else:
+        return response
 
-def devices(request):
+def devices(request, render_json = True):
     if request.REQUEST.has_key('room'):
         room = request.REQUEST['room']
         list = Device.objects.filter(room=room)
@@ -88,7 +119,10 @@ def devices(request):
     devices = []
     for device in list:
         devices.append(serialize_device(device))
-    return respond_with_json(devices, request=request)
+    if render_json:
+        return respond_with_json(devices, request=request)
+    else:
+        return devices
 
 def device(request):
     id = request.REQUEST['id']
@@ -97,12 +131,15 @@ def device(request):
     device.object.action(action=action)
     return respond_with_json('', request=request)
 
-def scenarios(request):
+def scenarios(request, render_json = True):
     list = Scenario.objects.all()
     scenarios = []
     for scenario in list:
         scenarios.append(serialize_scenario(scenario))
-    return respond_with_json(scenarios, request=request)
+    if render_json:
+        return respond_with_json(scenarios, request=request)
+    else:
+        return scenarios
 
 def scenario(request):
     id = request.REQUEST['id']
@@ -110,9 +147,22 @@ def scenario(request):
     scenario.execute()
     return respond_with_json('', request=request)
 
-def floors(request):
+def floors(request, render_json = True):
     list = Floor.objects.all()
     floors = []
     for floor in list:
         floors.append(serialize_floor(floor))
-    return respond_with_json(floors, request=request)
+    if render_json:
+        return respond_with_json(floors, request=request)
+    else:
+        return floors
+
+def connectors(request, render_json = True):
+    list = Connector.objects.all()
+    connectors = []
+    for connector in list:
+        connectors.append(serialize_connector(connector))
+    if render_json:
+        return respond_with_json(connectors, request=request)
+    else:
+        return connectors

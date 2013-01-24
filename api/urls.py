@@ -8,4 +8,5 @@ urlpatterns = patterns('api.views',
     url(r'^scenarios/$', 'scenarios'),
     url(r'^scenario/$', 'scenario'),
     url(r'^floors/$', 'floors'),
+    url(r'^connectors/$', 'connectors'),
 )
