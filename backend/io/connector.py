@@ -12,7 +12,7 @@ def supported_types():
     return types
 
 def get_class(connector):
-    tmpmodule = __import__('backend.out.connectors.%s' % connector, fromlist=[connector])
+    tmpmodule = __import__('backend.io.connectors.%s' % connector, fromlist=[connector])
     tmpclass = getattr(tmpmodule, connector)
     return tmpclass
 

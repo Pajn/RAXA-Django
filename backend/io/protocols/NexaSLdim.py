@@ -3,7 +3,7 @@ import random
 from backend.models.Device import Device
 from string import Template
 from django.utils.safestring import mark_safe
-from backend.out.protocol import DimLevelProtocol
+from backend.io.protocol import DimLevelProtocol
 
 class SliderWidget(Widget):
     def render(self, name, value, attrs=None):

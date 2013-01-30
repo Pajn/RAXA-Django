@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from django.forms import ModelForm
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext as _
-from backend.out.connector import supported_types, get_class
+from backend.io.connector import supported_types, get_class
 
 class Connector(models.Model):
     name = models.CharField(_('Name'), max_length=30)

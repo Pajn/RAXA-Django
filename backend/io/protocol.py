@@ -11,7 +11,7 @@ def supported_types():
     return types
 
 def get_class(protocol):
-    tmpmodule = __import__('backend.out.protocols.%s' % protocol, fromlist=[protocol])
+    tmpmodule = __import__('backend.io.protocols.%s' % protocol, fromlist=[protocol])
     tmpclass = getattr(tmpmodule, protocol)
     return tmpclass
 

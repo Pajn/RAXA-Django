@@ -9,7 +9,7 @@ from backend.models.Input import Input
 from backend.models.Room import Room, Floor
 from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, ScenarioDeviceFormNew, ScenarioDeviceFormAction
 from backend.models.Timer import Timer, TimerForm
-from backend.out.connector import scan_connectors
+from backend.io.connector import scan_connectors
 from backend.system import updates
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel

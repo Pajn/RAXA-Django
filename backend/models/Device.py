@@ -3,9 +3,9 @@ from django.db.models.signals import post_init
 from django.dispatch import receiver, Signal
 from . import Connector
 from . import Room
-from django.forms import ModelForm, Form, ChoiceField, HiddenInput
+from django.forms import ModelForm, HiddenInput
 from django.utils.translation import ugettext as _
-from backend.out.protocol import get_class, supported_types
+from backend.io.protocol import get_class, supported_types
 
 device_status_change = Signal(providing_args=['device', 'status'])
 

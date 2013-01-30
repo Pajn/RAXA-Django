@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from backend.io import connector
 from backend.models.Device import Device, DeviceForm, DeviceFormNew
 from backend.models.Device import supported_types as device_supported_types
 from backend.models.Scenario import Scenario, ScenarioDevice, ScenarioForm, ScenarioDeviceForm, ScenarioDeviceFormNew
@@ -8,7 +9,6 @@ from backend.models.Room import Room, RoomForm
 from backend.models.Connector import Connector, ConnectorForm
 from backend.models.Input import Input, InputForm, InputFormNew
 from backend.models.Timer import Timer, TimerFormNew, TimerForm
-from backend.out import connector
 from backend.widgets.DeviceScenario import DeviceScenarioHidden
 
 def index(request):

@@ -1,6 +1,6 @@
 import socket
 import time
-from backend.out import Connector
+from backend.io.connector import Connector
 
 class Tellstick(Connector):
     TYPE = 'Tellstick'

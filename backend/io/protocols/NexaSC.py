@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.forms import HiddenInput, widgets
 from backend.models.Device import Device
-from backend.out import Protocol
+from backend.io.protocol import Protocol
 
 class CodeSelectWidget(widgets.MultiWidget):
 
