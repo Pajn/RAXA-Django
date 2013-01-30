@@ -9,7 +9,11 @@
         max-width: 60%;
     }
 </style>
-{{ selectfloor }}
+{{ selectfloor }}<br />
+<select id="type">
+    <option value="dot">{% blocktrans %}Dot (device){% endblocktrans %}</option>
+    <option value="temp">{% blocktrans %}Temp display{% endblocktrans %}</option>
+</select>
 <input id="grid" type="checkbox" checked="checked" />
 <label for="grid">{% blocktrans %}Snap to grid{% endblocktrans %}</label>
 <div id="floor">
@@ -17,13 +21,24 @@
 <div id="floorOverlay">
 </div>
 <div id="dialog-save" title="">
-    <form action="{% url 'desktop.views.settings' type='furniture' %}" method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" name="save" value="{% trans "Save" %}" />
-    </form>
+    <div id="dot_form" class="dialog_form">
+        <form action="{% url 'desktop.views.settings' type='furniture' %}" method="post">{% csrf_token %}
+            <input type="hidden" value="dot" name="furniture_type">
+            {{ dot_form.as_p }}
+            <input type="submit" name="save" value="{% trans "Save" %}" />
+        </form>
+    </div>
+    <div id="temp_form" class="dialog_form">
+        <form action="{% url 'desktop.views.settings' type='furniture' %}" method="post">{% csrf_token %}
+            <input type="hidden" value="temp" name="furniture_type">
+            {{ temp_form.as_p }}
+            <input type="submit" name="save" value="{% trans "Save" %}" />
+        </form>
+    </div>
 </div>
 <script type="text/javascript">
     var x, y;
+    var type = 'dot';
     function get_floor() {
         var floor = $('#selectfloor').val();
         $('input[name="floor"]').val(floor);
@@ -48,8 +63,13 @@
                     x = Math.round(loc.x);
                     y = Math.round(loc.y);
                 }
-                $('input[name="x1"]').val(x);
-                $('input[name="y1"]').val(y);
+                if (type == 'dot') {
+                    $('input[name="x1"]').val(x);
+                    $('input[name="y1"]').val(y);
+                } else if (type == 'temp') {
+                    $('input[name="x"]').val(x);
+                    $('input[name="y"]').val(y);
+                }
                 if (document.getElementById("hover")) {
                     $('.hover').remove();
                 }
@@ -76,15 +96,30 @@
                 if (document.getElementById("hover")) {
                     $('.hover').remove();
                 }
-                var svg = e.target.ownerDocument.createElementNS(svgNamespace, 'circle');
-                svg.setAttributeNS(null, 'id', 'hover');
-                svg.setAttributeNS(null, 'class', 'hover');
-                svg.setAttributeNS(null, 'cx', x + 'px');
-                svg.setAttributeNS(null, 'cy', y + 'px');
-                svg.setAttributeNS(null, 'r', '10px');
-                svg.setAttributeNS(null, "fill", "rgba(0, 100, 0, 0.5)");
-                svg.setAttributeNS(null, "pointer-events", "none");
-                this.appendChild(svg);
+                if (type == 'dot') {
+                    var svg = e.target.ownerDocument.createElementNS(svgNamespace, 'circle');
+                    svg.setAttributeNS(null, 'id', 'hover');
+                    svg.setAttributeNS(null, 'class', 'hover');
+                    svg.setAttributeNS(null, 'cx', x + 'px');
+                    svg.setAttributeNS(null, 'cy', y + 'px');
+                    svg.setAttributeNS(null, 'r', '10px');
+                    svg.setAttributeNS(null, "fill", "rgba(0, 100, 0, 0.5)");
+                    svg.setAttributeNS(null, "pointer-events", "none");
+                    this.appendChild(svg);
+                } else if (type == 'temp') {
+                    var svg = e.target.ownerDocument.createElementNS(svgNamespace, 'text');
+                    svg.setAttributeNS(null, 'id', 'hover');
+                    svg.setAttributeNS(null, 'class', 'hover');
+                    svg.setAttributeNS(null, 'x', x + 'px');
+                    svg.setAttributeNS(null, 'y', y + 'px');
+                    svg.setAttributeNS(null, 'font-size', '3em');
+                    svg.setAttributeNS(null, 'font-family', 'arial');
+                    svg.setAttributeNS(null, 'style', 'text-anchor: middle;');
+                    svg.setAttributeNS(null, 'fill', "rgba(255, 255, 255, 0.5)");
+                    svg.setAttributeNS(null, 'pointer-events', 'none');
+                    svg.textContent = '12.3°';
+                    this.appendChild(svg);
+                }
             });
             $overlay.mouseout(function(e){
                 if (document.getElementById("hover")) {
@@ -101,8 +136,15 @@
             });
         });
     }
+    function change_type() {
+        type = $('#type').val();
+        $('.dialog_form').hide();
+        $('#'+type+'_form').show();
+    }
     $(function() {
         get_floor();
+        change_type();
+        $('#type').change(change_type);
         $('#selectfloor').change(get_floor);
         $('#dialog-save').dialog({
             modal: true,

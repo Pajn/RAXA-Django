@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: RAXAdesktop\n"
 "Language: en\n"
 
-#: views.py:174
+#: views.py:195
 msgid "Couldn't check"
 msgstr "Couldn't check"
 
-#: views.py:376 templates/desktop/settings/inputs/inputs.html:24
+#: views.py:405 templates/desktop/settings/inputs/inputs.html:24
 msgid "Scan"
 msgstr "Scan"
 
-#: templates/desktop/footer.html:11 templates/desktop/index.html:216
+#: templates/desktop/footer.html:11 templates/desktop/index.html:217
 msgid "Settings"
 msgstr "Settings"
 
@@ -35,19 +35,19 @@ msgstr "Inputs"
 msgid "Timers"
 msgstr "Timers"
 
-#: templates/desktop/index.html:52
+#: templates/desktop/index.html:53
 msgid "Rooms"
 msgstr "Rooms"
 
-#: templates/desktop/index.html:53
+#: templates/desktop/index.html:54
 msgid "System"
 msgstr "System"
 
-#: templates/desktop/index.html:54
+#: templates/desktop/index.html:55
 msgid "Plan"
 msgstr "Plan"
 
-#: templates/desktop/index.html:169
+#: templates/desktop/index.html:170
 msgid "Executing"
 msgstr "Executing"
 
@@ -59,13 +59,15 @@ msgid "Add"
 msgstr "Add"
 
 #: templates/desktop/settings/devices/device.html:28
-#: templates/desktop/settings/furniture/furniture.html:22
+#: templates/desktop/settings/furniture/furniture.html:28
+#: templates/desktop/settings/furniture/furniture.html:35
 #: templates/desktop/settings/inputs/input.html:96
 #: templates/desktop/settings/rooms/rooms.html:20
 #: templates/desktop/settings/scenarios/scenariodevice.html:6
 #: templates/desktop/settings/scenarios/scenarios_edit.html:31
 #: templates/desktop/settings/system/connectors/connectors.html:31
 #: templates/desktop/settings/system/network/network.html:52
+#: templates/desktop/settings/thermometers/thermometers.html:31
 #: templates/desktop/settings/timers/timer.html:8
 msgid "Save"
 msgstr "Save"
@@ -86,7 +88,7 @@ msgstr "Sync"
 msgid "New Device"
 msgstr "New Device"
 
-#: templates/desktop/settings/furniture/furniture.html:14
+#: templates/desktop/settings/furniture/furniture.html:18
 msgid "Snap to grid"
 msgstr "Snap to grid"
 
@@ -167,4 +169,16 @@ msgstr "Current version"
 #: templates/desktop/settings/system/updates/updates.html:4
 msgid "Latest version"
 msgstr "Latest version"
+
+#: templates/desktop/index.html:51
+msgid "Thermometers"
+msgstr "Thermometers"
+
+#: templates/desktop/settings/furniture/furniture.html:14
+msgid "Dot (device)"
+msgstr ""
+
+#: templates/desktop/settings/furniture/furniture.html:15
+msgid "Temp display"
+msgstr ""
 

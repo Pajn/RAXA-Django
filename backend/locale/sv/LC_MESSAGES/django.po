@@ -12,15 +12,16 @@ msgid "New "
 msgstr "Ny "
 
 #: models/Connector.py:10 models/Device.py:15 models/Input.py:20
-#: models/Room.py:6 models/Room.py:23 models/Scenario.py:13 models/Timer.py:20
+#: models/Room.py:6 models/Room.py:23 models/Scenario.py:13
+#: models/Thermometer.py:10 models/Timer.py:20
 msgid "Name"
 msgstr "Namn"
 
-#: models/Connector.py:11 models/Device.py:16
+#: models/Connector.py:11 models/Device.py:16 models/Thermometer.py:11
 msgid "Type"
 msgstr "Typ"
 
-#: models/Connector.py:12
+#: models/Connector.py:12 models/Thermometer.py:12
 msgid "Code"
 msgstr "Kod"
 
@@ -132,4 +133,8 @@ msgstr "Dimma"
 #: widgets/OnOffDimLevel.py:53
 msgid "Dim Value"
 msgstr "Dimnivå"
+
+#: models/Thermometer.py:13
+msgid "Temperature"
+msgstr "Temperatur"
 

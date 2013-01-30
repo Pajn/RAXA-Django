@@ -4,6 +4,5 @@
         width="100%"
         height="100%"
         viewBox="0 0 695.02942 446.63371">
-    {% block rooms %}{% endblock %}
-    {% block furnitures %}{% endblock %}
+    {% block data %}{% endblock %}
 </svg>

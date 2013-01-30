@@ -3,7 +3,7 @@ from django.forms import Select
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
-from backend.models import ConnectorFormSet, InputForm
+from backend.models import ConnectorFormSet, InputForm, ThermometerFormSet
 from backend.models.Device import Device, DeviceForm, DeviceFormNew
 from backend.models.Input import Input
 from backend.models.Room import Room, Floor
@@ -13,8 +13,10 @@ from backend.io.connector import scan_connectors
 from backend.system import updates
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
+from common.models import Temp
 from common.models.Furniture import Furniture, FurnitureForm
 from common.models.Plan import PlanForm
+from common.models.Temp import TempForm
 
 def index(request, template='desktop/index.html', **kwargs):
     floors = Floor.objects.all()
@@ -71,6 +73,8 @@ class Settings():
                 self.inputs()
             elif type == 'timers':
                 self.timers()
+            elif type == 'thermometers':
+                self.thermometers()
             elif type == 'system':
                 if subtype == 'connectors':
                     self.connectors()
@@ -133,6 +137,18 @@ class Settings():
 
         self.template = 'timers'
         self.kwargs = {'timers': list, 'form': form}
+
+    def thermometers(self):
+        if self.request.method == 'POST':
+            if 'save' in self.request.POST:
+                formset = ThermometerFormSet(self.request.POST)
+                if formset.is_valid():
+                    formset.save()
+
+        formset = ThermometerFormSet()
+
+        self.template = 'thermometers'
+        self.kwargs = {'formset': formset}
 
     def system(self):
         self.template = 'system'
@@ -210,7 +226,8 @@ class Settings():
 
     def furniture(self):
         floor = None
-        form = FurnitureForm()
+        dot_form = FurnitureForm()
+        temp_form = TempForm()
         floors = []
         for floor in Floor.objects.all():
             floors.append((floor.id, floor.name))
@@ -218,22 +235,29 @@ class Settings():
         if self.request.method == 'POST':
             if 'floor' in self.request.POST:
                 floor = self.request.POST['floor']
-                print floor
+
+            print self.request.POST
             if 'id' in self.request.POST:
                 id = self.request.POST['id']
-                object = get_object_or_404(Furniture, pk=id)
-                object.delete()
+                if self.request.POST['furniture_type'] == 'dot':
+                    object = get_object_or_404(Furniture, pk=id)
+                    object.delete()
+                elif self.request.POST['furniture_type'] == 'temp':
+                    object = get_object_or_404(Temp, pk=id)
+                    object.delete()
             if 'save' in self.request.POST:
-                form = FurnitureForm(self.request.POST)
+                if self.request.POST['furniture_type'] == 'dot':
+                    form = FurnitureForm(self.request.POST)
+                elif self.request.POST['furniture_type'] == 'temp':
+                    form = TempForm(self.request.POST)
 
                 if form.is_valid(): # All validation rules pass
                     form.save()
-                    form = FurnitureForm()
 
         selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id':'selectfloor'})
 
         self.template = 'furniture'
-        self.kwargs = {'selectfloor': selectfloor, 'form':form}
+        self.kwargs = {'selectfloor': selectfloor, 'dot_form':dot_form, 'temp_form':temp_form}
 
 
 def edit_device(request):

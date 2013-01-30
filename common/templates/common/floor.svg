@@ -1,6 +1,6 @@
 {% extends 'common/individual.svg' %}
 
-{% block rooms %}
+{% block data %}
     {% for room in rooms %}
         <rect id="{{ room.id }}" x="{{ room.x }}px" y="{{ room.y }}px" width="{{ room.width }}px" height="{{ room.height }}px"
             {% if edit_rooms %}
@@ -10,16 +10,21 @@
             {% endif %}
         onclick="room({{ room.room.id }})" />
     {% endfor %}
-{% endblock %}
 
-{% block furnitures %}
     {% for furniture in furnitures %}
         <circle id="{{ furniture.id }}" class="dot device{{ furniture.device.id }}" cx="{{ furniture.x1 }}px" cy="{{ furniture.y1 }}px" r="{{ radious }}px"
-            {% if furniture.device.object.is_off %}
+        {% if furniture.device.object.is_off %}
                 fill="rgba(55,55,55,1)"
-            {% else %}
+        {% else %}
                 fill="rgba(255,255,255,1)"
-            {% endif %}
-        onclick="device({{ furniture.device.id }}, 'toggle')" />
+        {% endif %}
+                onclick="device({{ furniture.device.id }}, 'toggle')" />
+    {% endfor %}
+
+    {% for temp in temps %}
+        <text id="{{ temp.id }}" class="temp" x="{{ temp.x }}px" y="{{ temp.y }}px" fill="rgba(255,255,255,1)"
+              font-size="3em" font-family="arial" style="text-anchor: middle;">
+            {{ temp.thermometer.temp }}°
+        </text>
     {% endfor %}
 {% endblock %}
