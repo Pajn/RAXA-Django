@@ -2,6 +2,7 @@ from django.shortcuts import render
 from common.models import Temp
 from common.models.Furniture import Furniture
 from common.models.Plan import Plan
+from RAXA.local_settings import SVG_ATTR
 
 def overlay(request, floor=1):
     edit_rooms = False
@@ -16,4 +17,4 @@ def overlay(request, floor=1):
     furnitures = Furniture.objects.select_related('device').filter(floor=floor)
     temps = Temp.objects.select_related('thermometer').filter(floor=floor)
     radious=10
-    return render(request, 'common/floor.svg', {'rooms':rooms, 'furnitures':furnitures, 'temps':temps, 'radious':radious, 'edit_rooms':edit_rooms})
+    return render(request, 'common/floor.svg', {'SVG_ATTR': SVG_ATTR[int(floor)], 'rooms':rooms, 'furnitures':furnitures, 'temps':temps, 'radious':radious, 'edit_rooms':edit_rooms})
