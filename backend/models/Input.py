@@ -7,6 +7,7 @@ from django.forms import ModelForm, Form, CharField, HiddenInput
 from django.utils.translation import ugettext_lazy as _
 import time
 import datetime
+import pytz
 from backend.models.Device import Device
 from backend.models.Scenario import Scenario
 from backend.widgets.DeviceScenario import DeviceScenario, DeviceScenarioHidden
@@ -30,7 +31,7 @@ class Input(models.Model):
         app_label = 'backend'
 
     def execute(self):
-        timedelta = datetime.datetime.now() - self.timestamp
+        timedelta = datetime.datetime.now(pytz.utc) - self.timestamp
         if timedelta.total_seconds() > 2:
             if isinstance(self.action_object, Device):
                 self.action_object.object.action(action=self.action)
