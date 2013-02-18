@@ -3,7 +3,7 @@ from django.forms import Select
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
-from backend.models import ConnectorFormSet, InputForm, ThermometerFormSet
+from backend.models import ConnectorFormSet, InputForm, ThermometerFormSet, RoomFormSet, FloorFormSet
 from backend.models.Device import Device, DeviceForm, DeviceFormNew
 from backend.models.Input import Input
 from backend.models.Room import Room, Floor
@@ -48,6 +48,9 @@ def settings(request, type=None, **kwargs):
 def systemsettings(request, type=None, **kwargs):
     return Settings(request, type='system', subtype=type, **kwargs).render()
 
+def roomsettings(request, type=None, **kwargs):
+    return Settings(request, type='room', subtype=type, **kwargs).render()
+
 class Settings():
     template = ''
     kwargs = {}
@@ -84,8 +87,15 @@ class Settings():
                     self.updates()
                 else:
                     self.system()
-            elif type == 'rooms':
-                self.rooms()
+            elif type == 'room':
+                if subtype == 'rooms':
+                    self.rooms()
+                elif subtype == 'floors':
+                    self.floors()
+                elif subtype == 'plan':
+                    self.plan()
+                else:
+                    self.roomsmenu()
             elif type == 'plan' or type == 'furniture':
                 self.furniture()
 
@@ -99,6 +109,9 @@ class Settings():
             if self.template.startswith('system/'):
                 self.template = self.template.split('/')[1]
                 return index(self.request, template='desktop/settings.html', settings='system', subsettings=self.template, **self.kwargs)
+            elif self.template.startswith('room/'):
+                self.template = self.template.split('/')[1]
+                return index(self.request, template='desktop/settings.html', settings='room', subsettings=self.template, **self.kwargs)
             else:
                 return index(self.request, template='desktop/settings.html', settings=self.template, **self.kwargs)
         else:
@@ -108,6 +121,10 @@ class Settings():
                 self.template = self.template.split('/')[1]
                 print self.template
                 return render(self.request, 'desktop/settings/system/%s/%s.html' % (self.template, self.template), self.kwargs)
+            elif self.template.startswith('room/'):
+                self.template = self.template.split('/')[1]
+                print self.template
+                return render(self.request, 'desktop/settings/room/%s/%s.html' % (self.template, self.template), self.kwargs)
             else:
                 return render(self.request, 'desktop/settings/%s/%s.html' % (self.template, self.template), self.kwargs)
 
@@ -197,7 +214,34 @@ class Settings():
             self.template = 'system/updates'
             self.kwargs = {'current_v':current_v, 'head_v':head_v, 'update':update}
 
+    def roomsmenu(self):
+        self.template = 'room'
+
     def rooms(self):
+        if self.request.method == 'POST':
+            if 'save' in self.request.POST:
+                formset = RoomFormSet(self.request.POST)
+                if formset.is_valid():
+                    formset.save()
+
+        formset = RoomFormSet()
+
+        self.template = 'room/rooms'
+        self.kwargs = {'formset': formset}
+
+    def floors(self):
+        if self.request.method == 'POST':
+            if 'save' in self.request.POST:
+                formset = FloorFormSet(self.request.POST)
+                if formset.is_valid():
+                    formset.save()
+
+        formset = FloorFormSet()
+
+        self.template = 'room/floors'
+        self.kwargs = {'formset': formset}
+
+    def plan(self):
         floor = None
         form = PlanForm()
         floors = []
@@ -221,7 +265,7 @@ class Settings():
 
         selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id':'selectfloor'})
 
-        self.template = 'rooms'
+        self.template = 'room/plan'
         self.kwargs = {'selectfloor': selectfloor, 'form':form}
 
     def furniture(self):

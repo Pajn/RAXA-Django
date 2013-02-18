@@ -1,0 +1,58 @@
+{% load i18n %}
+{% load url from future %}
+<style type="text/css">
+    #setuprooms {
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    #roomsmenu {
+        position: absolute;
+        left: -1px;
+        top: -1px;
+        width: 100%;
+    }
+
+    #roomsmenu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #Roptions {
+        position: absolute;
+        left: 15%;
+        top: -1px;
+        width: 74%;
+
+        padding: 2%;
+    }
+
+</style>
+<div id="setuprooms">
+    <div id="roomsmenu">
+        <ul>
+            <li><input type="button" data-id="rooms" value="{% trans "Rooms" %}" class="button biggerbutton vertical submenu top {% if subtype == 'rooms' %}verticalSelected{% endif %}" /></li>
+            <li><input type="button" data-id="floors" value="{% trans "Floors" %}" class="button biggerbutton vertical submenu {% if subtype == 'floors' %}verticalSelected{% endif %}" /></li>
+            <li><input type="button" data-id="plan" value="{% trans "Plan" %}" class="button biggerbutton vertical submenu bottom {% if subtype == 'plan' %}verticalSelected{% endif %}" /></li>
+        </ul>
+    </div>
+    <div id="Roptions" class="border bottom">
+        {% if subsettings %}
+            {% with "desktop/settings/room/"|add:subsettings|add:"/"|add:subsettings|add:".html" as template %}
+                {% include template %}
+            {% endwith %}
+        {% endif %}
+    </div>
+</div>
+<script type="text/javascript">
+    $('.submenu').click(function() {
+        $('.submenu').removeClass('verticalSelected');
+        $(this).addClass('verticalSelected');
+        var type = $(this).attr("data-id");
+        $('#Roptions').load('{% url 'desktop.views.settings' type='room' %}', {'subtype': type}, function() {
+            window.history.pushState('', 'RAXA - '+$(this).val(), '/{{ LANGUAGE_CODE }}/settings/room/'+type+'/');
+        });
+    });
+</script>

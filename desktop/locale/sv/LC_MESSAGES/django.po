@@ -1,17 +1,19 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: RAXAdesktop\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-02-18 21:11+0100\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
-"Project-Id-Version: RAXAdesktop\n"
-"Language: sv\n"
 
-#: views.py:195
+#: views.py:212
 msgid "Couldn't check"
 msgstr "Kunde inte kontrollera"
 
-#: views.py:405 templates/desktop/settings/inputs/inputs.html:24
+#: views.py:449 templates/desktop/settings/inputs/inputs.html:24
 msgid "Scan"
 msgstr "Sök"
 
@@ -35,7 +37,12 @@ msgstr "Ingångar"
 msgid "Timers"
 msgstr "Timers"
 
+#: templates/desktop/index.html:51
+msgid "Thermometers"
+msgstr "Termometrar"
+
 #: templates/desktop/index.html:53
+#: templates/desktop/settings/room/room.html:36
 msgid "Rooms"
 msgstr "Rum"
 
@@ -44,6 +51,7 @@ msgid "System"
 msgstr "System"
 
 #: templates/desktop/index.html:55
+#: templates/desktop/settings/room/room.html:38
 msgid "Plan"
 msgstr "Karta"
 
@@ -62,7 +70,9 @@ msgstr "Lägg till"
 #: templates/desktop/settings/furniture/furniture.html:28
 #: templates/desktop/settings/furniture/furniture.html:35
 #: templates/desktop/settings/inputs/input.html:96
-#: templates/desktop/settings/rooms/rooms.html:20
+#: templates/desktop/settings/room/floors/floors.html:31
+#: templates/desktop/settings/room/plan/plan.html:20
+#: templates/desktop/settings/room/rooms/rooms.html:31
 #: templates/desktop/settings/scenarios/scenariodevice.html:6
 #: templates/desktop/settings/scenarios/scenarios_edit.html:31
 #: templates/desktop/settings/system/connectors/connectors.html:31
@@ -88,6 +98,14 @@ msgstr "Synca"
 msgid "New Device"
 msgstr "Ny Enhet"
 
+#: templates/desktop/settings/furniture/furniture.html:14
+msgid "Dot (device)"
+msgstr "Prick (Enhet)"
+
+#: templates/desktop/settings/furniture/furniture.html:15
+msgid "Temp display"
+msgstr "Temperaturvisning"
+
 #: templates/desktop/settings/furniture/furniture.html:18
 msgid "Snap to grid"
 msgstr "Fäst vid rutnät"
@@ -106,45 +124,13 @@ msgstr "söker"
 msgid "Action"
 msgstr "Åtgärd"
 
+#: templates/desktop/settings/room/room.html:37
+msgid "Floors"
+msgstr "Våningar"
+
 #: templates/desktop/settings/scenarios/scenarios_menu.html:7
 msgid "Edit Scenarios"
 msgstr "Ändra Scenarion"
-
-#: templates/desktop/settings/system/connectors/connectors.html:32
-msgid "Search"
-msgstr "Sök"
-
-#: templates/desktop/settings/system/connectors/connectors.html:35
-msgid "Searching for new connectors, please wait..."
-msgstr "Söker efter nya anslutare, var snäll och vänta"
-
-#: templates/desktop/settings/system/network/network.html:11
-msgid "Warning, setting wrong settings here may make RAXA inaccesible"
-msgstr "Varning, att sätta fel inställningar här kan göra så att RAXA inte går att nå"
-
-#: templates/desktop/settings/system/network/network.html:21
-msgid "IP"
-msgstr "IP"
-
-#: templates/desktop/settings/system/network/network.html:29
-msgid "Netmask"
-msgstr "Nätmask"
-
-#: templates/desktop/settings/system/network/network.html:37
-msgid "DNS"
-msgstr "DNS"
-
-#: templates/desktop/settings/system/network/network.html:45
-msgid "Gateway"
-msgstr "Gateway"
-
-#: templates/desktop/settings/system/updates/updates.html:8
-msgid "Update"
-msgstr "Uppdatera"
-
-#: templates/desktop/settings/timers/timers.html:106
-msgid "New Timer"
-msgstr "Ny Timer"
 
 #: templates/desktop/settings/system/system.html:36
 msgid "Connectors"
@@ -162,6 +148,35 @@ msgstr "Säkerhet"
 msgid "Updates"
 msgstr "Uppdateringar"
 
+#: templates/desktop/settings/system/connectors/connectors.html:32
+msgid "Search"
+msgstr "Sök"
+
+#: templates/desktop/settings/system/connectors/connectors.html:35
+msgid "Searching for new connectors, please wait..."
+msgstr "Söker efter nya anslutare, var snäll och vänta"
+
+#: templates/desktop/settings/system/network/network.html:11
+msgid "Warning, setting wrong settings here may make RAXA inaccesible"
+msgstr ""
+"Varning, att sätta fel inställningar här kan göra så att RAXA inte går att nå"
+
+#: templates/desktop/settings/system/network/network.html:21
+msgid "IP"
+msgstr "IP"
+
+#: templates/desktop/settings/system/network/network.html:29
+msgid "Netmask"
+msgstr "Nätmask"
+
+#: templates/desktop/settings/system/network/network.html:37
+msgid "DNS"
+msgstr "DNS"
+
+#: templates/desktop/settings/system/network/network.html:45
+msgid "Gateway"
+msgstr "Gateway"
+
 #: templates/desktop/settings/system/updates/updates.html:3
 msgid "Current version"
 msgstr "Installerad version"
@@ -170,15 +185,10 @@ msgstr "Installerad version"
 msgid "Latest version"
 msgstr "Senaste version"
 
-#: templates/desktop/index.html:51
-msgid "Thermometers"
-msgstr "Termometrar"
+#: templates/desktop/settings/system/updates/updates.html:8
+msgid "Update"
+msgstr "Uppdatera"
 
-#: templates/desktop/settings/furniture/furniture.html:14
-msgid "Dot (device)"
-msgstr "Prick (Enhet)"
-
-#: templates/desktop/settings/furniture/furniture.html:15
-msgid "Temp display"
-msgstr "Temperaturvisning"
-
+#: templates/desktop/settings/timers/timers.html:106
+msgid "New Timer"
+msgstr "Ny Timer"

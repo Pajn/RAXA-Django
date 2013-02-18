@@ -1,17 +1,19 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: RAXAdesktop\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-02-18 21:11+0100\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
-"Project-Id-Version: RAXAdesktop\n"
-"Language: en\n"
 
-#: views.py:195
+#: views.py:212
 msgid "Couldn't check"
 msgstr "Couldn't check"
 
-#: views.py:405 templates/desktop/settings/inputs/inputs.html:24
+#: views.py:449 templates/desktop/settings/inputs/inputs.html:24
 msgid "Scan"
 msgstr "Scan"
 
@@ -35,7 +37,12 @@ msgstr "Inputs"
 msgid "Timers"
 msgstr "Timers"
 
+#: templates/desktop/index.html:51
+msgid "Thermometers"
+msgstr "Thermometers"
+
 #: templates/desktop/index.html:53
+#: templates/desktop/settings/room/room.html:36
 msgid "Rooms"
 msgstr "Rooms"
 
@@ -44,6 +51,7 @@ msgid "System"
 msgstr "System"
 
 #: templates/desktop/index.html:55
+#: templates/desktop/settings/room/room.html:38
 msgid "Plan"
 msgstr "Plan"
 
@@ -62,7 +70,9 @@ msgstr "Add"
 #: templates/desktop/settings/furniture/furniture.html:28
 #: templates/desktop/settings/furniture/furniture.html:35
 #: templates/desktop/settings/inputs/input.html:96
-#: templates/desktop/settings/rooms/rooms.html:20
+#: templates/desktop/settings/room/floors/floors.html:31
+#: templates/desktop/settings/room/plan/plan.html:20
+#: templates/desktop/settings/room/rooms/rooms.html:31
 #: templates/desktop/settings/scenarios/scenariodevice.html:6
 #: templates/desktop/settings/scenarios/scenarios_edit.html:31
 #: templates/desktop/settings/system/connectors/connectors.html:31
@@ -88,6 +98,14 @@ msgstr "Sync"
 msgid "New Device"
 msgstr "New Device"
 
+#: templates/desktop/settings/furniture/furniture.html:14
+msgid "Dot (device)"
+msgstr ""
+
+#: templates/desktop/settings/furniture/furniture.html:15
+msgid "Temp display"
+msgstr ""
+
 #: templates/desktop/settings/furniture/furniture.html:18
 msgid "Snap to grid"
 msgstr "Snap to grid"
@@ -106,9 +124,29 @@ msgstr "scanning"
 msgid "Action"
 msgstr "Action"
 
+#: templates/desktop/settings/room/room.html:37
+msgid "Floors"
+msgstr "Floors"
+
 #: templates/desktop/settings/scenarios/scenarios_menu.html:7
 msgid "Edit Scenarios"
 msgstr "Edit Scenarios"
+
+#: templates/desktop/settings/system/system.html:36
+msgid "Connectors"
+msgstr "Connectors"
+
+#: templates/desktop/settings/system/system.html:37
+msgid "Network"
+msgstr "Network"
+
+#: templates/desktop/settings/system/system.html:38
+msgid "Security"
+msgstr "Security"
+
+#: templates/desktop/settings/system/system.html:39
+msgid "Updates"
+msgstr "Updates"
 
 #: templates/desktop/settings/system/connectors/connectors.html:32
 msgid "Search"
@@ -138,30 +176,6 @@ msgstr "DNS"
 msgid "Gateway"
 msgstr "Gateway"
 
-#: templates/desktop/settings/system/updates/updates.html:8
-msgid "Update"
-msgstr "Update"
-
-#: templates/desktop/settings/timers/timers.html:106
-msgid "New Timer"
-msgstr "New Timer"
-
-#: templates/desktop/settings/system/system.html:36
-msgid "Connectors"
-msgstr "Connectors"
-
-#: templates/desktop/settings/system/system.html:37
-msgid "Network"
-msgstr "Network"
-
-#: templates/desktop/settings/system/system.html:38
-msgid "Security"
-msgstr "Security"
-
-#: templates/desktop/settings/system/system.html:39
-msgid "Updates"
-msgstr "Updates"
-
 #: templates/desktop/settings/system/updates/updates.html:3
 msgid "Current version"
 msgstr "Current version"
@@ -170,15 +184,10 @@ msgstr "Current version"
 msgid "Latest version"
 msgstr "Latest version"
 
-#: templates/desktop/index.html:51
-msgid "Thermometers"
-msgstr "Thermometers"
+#: templates/desktop/settings/system/updates/updates.html:8
+msgid "Update"
+msgstr "Update"
 
-#: templates/desktop/settings/furniture/furniture.html:14
-msgid "Dot (device)"
-msgstr ""
-
-#: templates/desktop/settings/furniture/furniture.html:15
-msgid "Temp display"
-msgstr ""
-
+#: templates/desktop/settings/timers/timers.html:106
+msgid "New Timer"
+msgstr "New Timer"

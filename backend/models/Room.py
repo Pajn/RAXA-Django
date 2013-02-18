@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
+from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 
 class Floor(models.Model):
@@ -19,6 +20,16 @@ class FloorForm(ModelForm):
     class Meta:
         model = Floor
 
+floor_form_set = None
+
+def FloorFormSet(*args, **kwargs):
+    global floor_form_set
+
+    if floor_form_set is None:
+        floor_form_set = modelformset_factory(Floor, form=FloorForm, can_delete=True)
+
+    return floor_form_set(*args, **kwargs)
+
 class Room(models.Model):
     name = models.CharField(_('Name'), max_length=30)
     floor = models.ForeignKey(Floor)
@@ -30,16 +41,15 @@ class Room(models.Model):
         return self.name
 
 class RoomForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(RoomForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        if instance and instance.id:
-            self.fields['floor'].required = False
-            self.fields['floor'].widget.attrs['disabled'] = 'disabled'
-
-    def clean_floor(self):
-        instance = getattr(self, 'instance', None)
-        return instance.floor
-
     class Meta:
         model = Room
+
+room_form_set = None
+
+def RoomFormSet(*args, **kwargs):
+    global room_form_set
+
+    if room_form_set is None:
+        room_form_set = modelformset_factory(Room, form=RoomForm, can_delete=True)
+
+    return room_form_set(*args, **kwargs)
