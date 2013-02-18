@@ -14,7 +14,7 @@
 </div>
 <div id="floorOverlay">
 </div>
-<div id="dialog-save" title="">
+<div id="dialog-save-room" title="">
     <form action="{% url 'desktop.views.settings' type='rooms' %}" method="post">{% csrf_token %}
         {{ form.as_p }}
         <input type="submit" name="save" value="{% trans "Save" %}" />
@@ -68,7 +68,7 @@
                         $('input[name="height"]').val(y-y1);
                         $('input[name="y"]').val(y1);
                     }
-                    $('#dialog-save').dialog('open');
+                    $('#dialog-save-room').dialog('open');
                 }
 
                 e.preventDefault();
@@ -114,7 +114,7 @@
     $(function() {
         get_floor();
         $('#selectfloor').change(get_floor);
-        $('#dialog-save').dialog({
+        $('#dialog-save-room').dialog({
             modal: true,
             autoOpen: false
         });
