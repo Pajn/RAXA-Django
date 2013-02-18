@@ -1,6 +1,7 @@
 from django.db import models
-from django.forms import ModelForm, HiddenInput
+from django.forms import ModelForm, HiddenInput, ModelChoiceField
 from backend.models import Room, Floor
+from django.utils.translation import ugettext_lazy as _
 
 class Plan(models.Model):
     floor = models.ForeignKey(Floor)
@@ -22,6 +23,7 @@ class Plan(models.Model):
         app_label = 'common'
 
 class PlanForm(ModelForm):
+    room = ModelChoiceField(Room.objects, label=_('Room'))
 
     class Meta:
         model = Plan
