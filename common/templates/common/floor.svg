@@ -12,22 +12,33 @@
                 stroke="rgba(0,0,0,0)" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0"
             {% endif %}
         onclick="room({{ room.room.id }})" />
-    {% endfor %}
-
-    {% for furniture in furnitures %}
-        <circle id="{{ furniture.id }}" class="dot device{{ furniture.device.id }}" cx="{{ furniture.x1 }}px" cy="{{ furniture.y1 }}px" r="{{ radious }}px"
-        {% if furniture.device.object.is_off %}
-                fill="rgba(55,55,55,1)"
-        {% else %}
-                fill="rgba(255,255,255,1)"
+        {% if edit_rooms %}
+            <text text-anchor="middle" x="{{ room.center_x }}" y="{{ room.center_y }}" style="fill: #fff;">
+                <tspan x="{{ room.center_x }}">{{ room.room.name }}</tspan>
+                <tspan x="{{ room.center_x }}" dy="15">{{ room.room.floor.name }}</tspan>
+            </text>
+            <text x="{{ room.x }}" y="{{ room.y }}" dy="15" style="fill: #f00;" onclick="delete_room({{ room.id }})" cursor="pointer">
+                X
+            </text>
         {% endif %}
-                onclick="device({{ furniture.device.id }}, 'toggle')" />
     {% endfor %}
 
-    {% for temp in temps %}
-        <text id="{{ temp.id }}" class="temp" x="{{ temp.x }}px" y="{{ temp.y }}px" fill="rgba(255,255,255,1)"
-              font-size="3em" font-family="arial" style="text-anchor: middle;">
-            {{ temp.thermometer.temp }}°
-        </text>
-    {% endfor %}
+    {% if not edit_rooms %}
+        {% for furniture in furnitures %}
+            <circle id="{{ furniture.id }}" class="dot device{{ furniture.device.id }}" cx="{{ furniture.x1 }}px" cy="{{ furniture.y1 }}px" r="{{ radious }}px"
+            {% if furniture.device.object.is_off %}
+                    fill="rgba(55,55,55,1)"
+            {% else %}
+                    fill="rgba(255,255,255,1)"
+            {% endif %}
+                    onclick="device({{ furniture.device.id }}, 'toggle')" />
+        {% endfor %}
+
+        {% for temp in temps %}
+            <text id="{{ temp.id }}" class="temp" x="{{ temp.x }}px" y="{{ temp.y }}px" fill="rgba(255,255,255,1)"
+                  font-size="3em" font-family="arial" style="text-anchor: middle;">
+                {{ temp.thermometer.temp }}°
+            </text>
+        {% endfor %}
+    {% endif %}
 </svg>

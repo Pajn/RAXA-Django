@@ -10,6 +10,14 @@ class Plan(models.Model):
     height = models.IntegerField(default=0)
     room = models.ForeignKey(Room)
 
+    @property
+    def center_x(self):
+        return self.width/2 + self.x
+
+    @property
+    def center_y(self):
+        return self.height/2 + self.y
+
     class Meta:
         app_label = 'common'
 

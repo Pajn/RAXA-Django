@@ -15,7 +15,7 @@ from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
 from common.models import Temp
 from common.models.Furniture import Furniture, FurnitureForm
-from common.models.Plan import PlanForm
+from common.models.Plan import PlanForm, Plan
 from common.models.Temp import TempForm
 
 def index(request, template='desktop/index.html', **kwargs):
@@ -210,7 +210,7 @@ class Settings():
                 print floor
             if 'id' in self.request.POST:
                 id = self.request.POST['id']
-                object = get_object_or_404(Furniture, pk=id)
+                object = get_object_or_404(Plan, pk=id)
                 object.delete()
             if 'save' in self.request.POST:
                 form = PlanForm(self.request.POST)

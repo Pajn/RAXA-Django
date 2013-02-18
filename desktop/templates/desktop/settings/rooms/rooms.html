@@ -43,8 +43,6 @@
                 if (first) {
                     x1 = x;
                     y1 = y;
-                    $('input[name="x"]').val(x1);
-                    $('input[name="y"]').val(y1);
                     svg = e.target.ownerDocument.createElementNS(svgNamespace, 'rect');
                     svg.setAttributeNS(null, 'class', 'map');
                     svg.setAttributeNS(null, 'x', x1);
@@ -56,8 +54,20 @@
                     this.appendChild(svg);
                     first = false;
                 } else {
-                    $('input[name="width"]').val(x-x1);
-                    $('input[name="height"]').val(y-y1);
+                    if (x1 > x) {
+                        $('input[name="width"]').val(x1-x);
+                        $('input[name="x"]').val(x);
+                    } else {
+                        $('input[name="width"]').val(x-x1);
+                        $('input[name="x"]').val(x1);
+                    }
+                    if (y1 > y) {
+                        $('input[name="height"]').val(y1-y);
+                        $('input[name="y"]').val(y);
+                    } else {
+                        $('input[name="height"]').val(y-y1);
+                        $('input[name="y"]').val(y1);
+                    }
                     $('#dialog-save').dialog('open');
                 }
 
@@ -74,8 +84,20 @@
                 y = Math.round(loc.y);
 
                 if (!first) {
-                    svg.setAttributeNS(null, 'width', x-x1);
-                    svg.setAttributeNS(null, 'height', y-y1);
+                    if (x1 > x) {
+                        svg.setAttributeNS(null, 'width', x1-x);
+                        svg.setAttributeNS(null, 'x', x);
+                    } else {
+                        svg.setAttributeNS(null, 'width', x-x1);
+                        svg.setAttributeNS(null, 'x', x1);
+                    }
+                    if (y1 > y) {
+                        svg.setAttributeNS(null, 'height', y1-y);
+                        svg.setAttributeNS(null, 'y', y);
+                    } else {
+                        svg.setAttributeNS(null, 'height', y-y1);
+                        svg.setAttributeNS(null, 'y', y1);
+                    }
                 }
             });
             $overlay.on('contextmenu', function(e) {
@@ -97,4 +119,9 @@
             autoOpen: false
         });
     });
+    function delete_room(id) {
+        $.post('{% url 'desktop.views.settings' type='rooms' %}', {'id': id}, function() {
+            get_floor();
+        });
+    }
 </script>
