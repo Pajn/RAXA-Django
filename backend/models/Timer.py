@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.dispatch import Signal
 from django.forms import ModelForm, Form, CharField, HiddenInput
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from backend.models.Device import Device
 from backend.models.Scenario import Scenario
 from backend.widgets.DeviceScenario import DeviceScenario, DeviceScenarioHidden

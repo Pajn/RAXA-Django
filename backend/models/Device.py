@@ -4,7 +4,7 @@ from django.dispatch import receiver, Signal
 from . import Connector
 from . import Room
 from django.forms import ModelForm, HiddenInput
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from backend.io.protocol import get_class, supported_types
 
 device_status_change = Signal(providing_args=['device', 'status'])

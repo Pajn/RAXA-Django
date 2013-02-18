@@ -3,7 +3,7 @@ from django.db import models
 from django.dispatch import Signal
 from django.forms import ModelForm, ModelChoiceField, Form, HiddenInput
 from django.forms.models import modelformset_factory
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from . import Device
 from backend.widgets import getWidget
 

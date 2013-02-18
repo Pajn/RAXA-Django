@@ -3,7 +3,7 @@ from django.db.models.signals import post_init
 from django.dispatch import receiver
 from django.forms import ModelForm
 from django.forms.models import modelformset_factory
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from backend.io.connector import supported_types, get_class
 
 class Connector(models.Model):

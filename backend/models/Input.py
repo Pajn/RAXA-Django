@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.dispatch import Signal
 from django.forms import ModelForm, Form, CharField, HiddenInput
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 import time
 import datetime
 from backend.models.Device import Device
