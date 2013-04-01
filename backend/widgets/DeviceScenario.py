@@ -84,7 +84,7 @@ class DeviceScenario(Widget):
             id = value[1]
             device = Device.objects.get(pk=id)
             return device
-        elif value[0] == 'D':
+        elif value[0] == 'S':
             id = value[1]
             scenario = Scenario.objects.get(pk=id)
             return scenario
