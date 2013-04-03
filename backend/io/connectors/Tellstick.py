@@ -25,4 +25,3 @@ class Tellstick(Connector):
         if sent == 0:
             self.connect()
             self.s.send(message)
-        time.sleep(0.5)
