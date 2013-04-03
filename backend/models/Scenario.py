@@ -6,6 +6,7 @@ from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from . import Device
 from backend.widgets import getWidget
+from django.db import transaction
 
 scenario_executed = Signal(providing_args=['scenario'])
 
@@ -21,12 +22,17 @@ class Scenario(models.Model):
         return self.name
 
     def execute(self, action=None):
+        transaction.enter_transaction_management()
+        transaction.managed(True)
+
         if action is None:
-            for scenario_device in self.scenariodevice_set.all():
+            for scenario_device in self.scenariodevice_set.all().select_related():
                 scenario_device.device.object.action(action=scenario_device.action)
         else:
             for scenario_device in self.scenariodevice_set.all():
                 scenario_device.device.object.action(action=action)
+
+        transaction.commit()
 
         scenario_executed.send(sender=self, scenario=self)
 
