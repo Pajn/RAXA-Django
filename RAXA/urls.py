@@ -7,6 +7,7 @@ from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = patterns('',
     url(r'^api/', include('api.urls')),
+    url(r'^backend/', include('backend.urls')),
 )
 
 urlpatterns += i18n_patterns('',
@@ -14,7 +15,6 @@ urlpatterns += i18n_patterns('',
     url(r'^mobile/', include('mobile.urls')),
     url(r'^common/', include('common.urls')),
     url(r'^tablet/', include('tablet.urls')),
-    url(r'^backend/', include('backend.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
