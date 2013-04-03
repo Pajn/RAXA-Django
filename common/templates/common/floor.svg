@@ -11,7 +11,7 @@
             {% else %}
                 stroke="rgba(0,0,0,0)" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0"
             {% endif %}
-        onclick="room({{ room.room.id }})" />
+        onclick="room({{ room.room_id }})" />
         {% if edit_rooms %}
             <text text-anchor="middle" x="{{ room.center_x }}" y="{{ room.center_y }}" style="fill: #fff;">
                 <tspan x="{{ room.center_x }}">{{ room.room.name }}</tspan>
@@ -25,13 +25,13 @@
 
     {% if not edit_rooms %}
         {% for furniture in furnitures %}
-            <circle id="{{ furniture.id }}" class="dot device{{ furniture.device.id }}" cx="{{ furniture.x1 }}px" cy="{{ furniture.y1 }}px" r="{{ radious }}px"
+            <circle id="{{ furniture.id }}" class="dot device{{ furniture.device_id }}" cx="{{ furniture.x1 }}px" cy="{{ furniture.y1 }}px" r="{{ radious }}px"
             {% if furniture.device.object.is_off %}
                     fill="rgba(55,55,55,1)"
             {% else %}
                     fill="rgba(255,255,255,1)"
             {% endif %}
-                    onclick="device({{ furniture.device.id }}, 'toggle')" />
+                    onclick="device({{ furniture.device_id }}, 'toggle')" />
         {% endfor %}
 
         {% for temp in temps %}
