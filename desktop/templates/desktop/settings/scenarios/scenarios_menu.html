@@ -2,17 +2,27 @@
 {% load url from future %}
 <ul>
     <li>
-        <button class="button biggerbutton vertical top"
+        <button class="button biggerbutton vertical verticalSelected submenu top"
                 onclick="$('#subsettingsoptions').load('{% url 'desktop.views.scenarios_settings' %}', {'edit': 'edit'})">
             {% trans "Edit Scenarios" %}
         </button>
     </li>
     {% for scenario in scenarios %}
         <li>
-            <button class="button biggerbutton vertical"
+            <button class="button biggerbutton vertical submenu"
                 onclick="$('#subsettingsoptions').load('{% url 'desktop.views.edit_scenario' %}', {'scenario': {{ scenario.id}}})">
                 {{ scenario.name }}
             </button>
         </li>
     {% endfor %}
 </ul>
+<script type="text/javascript">
+    $('.submenu').click(function() {
+        $('.submenu').removeClass('verticalSelected');
+        $(this).addClass('verticalSelected');
+        var type = $(this).attr("data-id");
+        $("#Soptions").load('{% url 'desktop.views.settings' type='system' %}', {'subtype': type}, function() {
+            window.history.pushState('', 'RAXA - '+$(this).val(), '/{{ LANGUAGE_CODE }}/settings/system/'+type+'/');
+        });
+    });
+</script>

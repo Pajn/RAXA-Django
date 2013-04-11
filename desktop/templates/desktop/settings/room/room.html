@@ -39,8 +39,8 @@
         </ul>
     </div>
     <div id="Roptions" class="border bottom">
-        {% if subsettings %}
-            {% with "desktop/settings/room/"|add:subsettings|add:"/"|add:subsettings|add:".html" as template %}
+        {% if subtype %}
+            {% with "desktop/settings/room/"|add:subtype|add:"/"|add:subtype|add:".html" as template %}
                 {% include template %}
             {% endwith %}
         {% endif %}
@@ -55,4 +55,9 @@
             window.history.pushState('', 'RAXA - '+$(this).val(), '/{{ LANGUAGE_CODE }}/settings/room/'+type+'/');
         });
     });
+    {% if subtype %}
+        window.setTimeout(function() {
+            window.history.pushState('', 'RAXA - {{ subtype }}', '/{{ LANGUAGE_CODE }}/settings/room/{{ subtype }}/');
+        }, 10);
+    {% endif %}
 </script>

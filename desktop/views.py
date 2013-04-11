@@ -55,6 +55,7 @@ class Settings():
     template = ''
     kwargs = {}
     full = True
+    default = None
 
     def __init__(self, request, type=None, subtype=None, **kwargs):
         self.request = request
@@ -101,6 +102,8 @@ class Settings():
 
         self.type = type
         self.subtype = subtype
+        if self.subtype is None and self.default is not None:
+            self.subtype = self.default
 
     def render(self):
         self.kwargs['type'] = self.type
@@ -108,10 +111,10 @@ class Settings():
         if self.full:
             if self.template.startswith('system/'):
                 self.template = self.template.split('/')[1]
-                return index(self.request, template='desktop/settings.html', settings='system', subsettings=self.template, **self.kwargs)
+                return index(self.request, template='desktop/settings.html', settings='system', **self.kwargs)
             elif self.template.startswith('room/'):
                 self.template = self.template.split('/')[1]
-                return index(self.request, template='desktop/settings.html', settings='room', subsettings=self.template, **self.kwargs)
+                return index(self.request, template='desktop/settings.html', settings='room', **self.kwargs)
             else:
                 return index(self.request, template='desktop/settings.html', settings=self.template, **self.kwargs)
         else:
@@ -168,7 +171,11 @@ class Settings():
         self.kwargs = {'formset': formset}
 
     def system(self):
+        formset = ConnectorFormSet()
+        self.default = 'connectors'
+
         self.template = 'system'
+        self.kwargs = {'formset': formset}
 
     def connectors(self):
         if self.request.method == 'POST':
@@ -215,7 +222,11 @@ class Settings():
             self.kwargs = {'current_v':current_v, 'head_v':head_v, 'update':update}
 
     def roomsmenu(self):
+        formset = RoomFormSet()
+        self.default = 'rooms'
+
         self.template = 'room'
+        self.kwargs = {'formset': formset}
 
     def rooms(self):
         if self.request.method == 'POST':
