@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from backend.authorization import get_user
 from backend.io import connector
 from backend.models.Device import Device, DeviceForm, DeviceFormNew
 from backend.models.Device import supported_types as device_supported_types
@@ -9,10 +10,21 @@ from backend.models.Room import Room, RoomForm
 from backend.models.Connector import Connector, ConnectorForm
 from backend.models.Input import Input, InputForm, InputFormNew
 from backend.models.Timer import Timer, TimerFormNew, TimerForm
+from backend.models.User import LoginForm
 from backend.widgets.DeviceScenario import DeviceScenarioHidden
 
 def index(request):
     return render(request, 'mobile/index.html')
+
+def login(request, **kwargs):
+    if request.method == 'POST':
+        print request.POST['password']
+        if get_user().check_password(request.POST['password']):
+            request.session['auth'] = 1
+            return HttpResponseRedirect(request.session.get('url', default=reverse('mobile.views.index')))
+    loginform = LoginForm()
+    kwargs['loginform'] = loginform
+    return render(request, 'mobile/login.html', kwargs)
 
 def devices(request, room=False):
     if not room:

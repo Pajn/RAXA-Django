@@ -1,12 +1,13 @@
 import json
 from django.http import HttpResponse
+from backend.authorization import get_user
 from backend.models.Connector import Connector
 from backend.models.Device import Device
 from backend.models.Scenario import Scenario
 from backend.models.Room import Floor
 from backend.system import updates
 
-API_VERSION = 1
+API_VERSION = 2
 RAXA_VERSION = updates.version()
 
 def respond_with_json(data, errors=None, pretty=False, request=None):
@@ -79,24 +80,48 @@ def serialize_connector(connector):
         }
     return output
 
+def view(request, view='index', render_json=True):
+    if request.session.get('auth', default=-1) == -1:
+        errors = ['Unauthorized:' + view]
+        if render_json:
+            return respond_with_json({}, request=request, errors=errors)
+        else:
+            return None, errors
+    else:
+        if render_json:
+            return globals()[view](request, render_json)
+        else:
+            return globals()[view](request, render_json), []
+
 def index(request):
     response = {}
     errors = []
     if request.REQUEST.has_key('get'):
         get = request.REQUEST['get'].split(',')
         for data in get:
-            if data == 'version':
-                response['version'] = version(request, render_json=False)
-            elif data == 'devices':
-                response['devices'] = devices(request, render_json=False)
-            elif data == 'scenarios':
-                response['scenarios'] = scenarios(request, render_json=False)
-            elif data == 'floors':
-                response['floors'] = floors(request, render_json=False)
-            elif data == 'connectors':
-                response['connectors'] = connectors(request, render_json=False)
+            if data in ['version']:
+                response[data] = globals()[data](request, render_json=False)
+            elif data in ['devices', 'scenarios', 'floors', 'connectors']:
+                response[data], error = view(request, view=data, render_json=False)
+                if error.__len__() > 0:
+                    response.pop(data)
+                    errors.extend(error)
             else:
                 errors.append('%s is not valid' % data)
+
+    return respond_with_json(response, request=request, errors=errors)
+
+def login(request):
+    response = {}
+    errors = []
+    if request.REQUEST.has_key('password'):
+        user = get_user()
+        if user.check_password(request.REQUEST['password']):
+            response['key'] = user.api_key
+        else:
+            errors.append('Bad Password')
+    else:
+        errors.append('No Password')
 
     return respond_with_json(response, request=request, errors=errors)
 

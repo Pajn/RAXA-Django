@@ -1,8 +1,22 @@
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from backend.authorization import get_user
+from backend.models.User import LoginForm
 from common.models import Temp
 from common.models.Furniture import Furniture
 from common.models.Plan import Plan
 from RAXA.local_settings import SVG_ATTR
+
+def login(request, template='common/login.html', **kwargs):
+    if request.method == 'POST':
+        print request.POST['password']
+        if get_user().check_password(request.POST['password']):
+            request.session['auth'] = 1
+            return HttpResponseRedirect(request.session.get('url', default=reverse('desktop.views.index')))
+    loginform = LoginForm()
+    kwargs['loginform'] = loginform
+    return render(request, template, kwargs)
 
 def overlay(request, floor=1):
     edit_rooms = False

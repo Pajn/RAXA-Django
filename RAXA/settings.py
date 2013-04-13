@@ -94,10 +94,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     #'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    #'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'backend.authorization.Auth',
 )
 
 CRON_CLASSES = (
@@ -112,14 +113,14 @@ WSGI_APPLICATION = 'RAXA.wsgi.application'
 TEMPLATE_DIRS = ('/hdd/Development/PyCharm/RAXA/RAXA/templates',)
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
+    #'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
+    #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django_cron',
@@ -166,6 +167,11 @@ LANGUAGES = (
     )
 
 UPDATE_URL = 'http://updates.raxa.se/updates.xml'
+
+LOCAL_IP_RANGES = [
+    '192.168.',
+    '10.'
+]
 
 try:
     from RAXA.local_settings import *

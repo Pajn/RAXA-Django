@@ -2,11 +2,12 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('api.views',
     url(r'^$', 'index'),
+    url(r'^login/$', 'login'),
     url(r'^version/$', 'version'),
-    url(r'^devices/$', 'devices'),
-    url(r'^device/$', 'device'),
-    url(r'^scenarios/$', 'scenarios'),
-    url(r'^scenario/$', 'scenario'),
-    url(r'^floors/$', 'floors'),
-    url(r'^connectors/$', 'connectors'),
+    url(r'^(?P<view>devices)/$', 'view'),
+    url(r'^(?P<view>device)/$', 'view'),
+    url(r'^(?P<view>scenarios)/$', 'view'),
+    url(r'^(?P<view>scenario)/$', 'view'),
+    url(r'^(?P<view>floors)/$', 'view'),
+    url(r'^(?P<view>connectors)/$', 'view'),
 )

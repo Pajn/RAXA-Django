@@ -2,6 +2,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('desktop.views',
     url(r'^$', 'index'),
+    url(r'^login/$', 'login'),
     url(r'^devices/$', 'devices'),
     url(r'^settings/$', 'settings_index'),
     url(r'^settings/device/$', 'edit_device'),

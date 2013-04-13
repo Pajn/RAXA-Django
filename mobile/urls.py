@@ -2,6 +2,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('mobile.views',
     url(r'^$', 'index'),
+    url(r'^login/$', 'login'),
     url(r'^devices/$', 'devices'),
     url(r'^devices/(?P<room>\d+)/$', 'devices'),
     url(r'^device/(?P<id>\d+)/cmd/(?P<action>[a-zA-Z0-9_]+)/$', 'device'),

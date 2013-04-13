@@ -3,6 +3,7 @@ from django.forms import Select
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
+from backend.authorization import get_user
 from backend.models import ConnectorFormSet, InputForm, ThermometerFormSet, RoomFormSet, FloorFormSet
 from backend.models.Device import Device, DeviceForm, DeviceFormNew
 from backend.models.Input import Input
@@ -10,9 +11,11 @@ from backend.models.Room import Room, Floor
 from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, ScenarioDeviceFormNew, ScenarioDeviceFormAction
 from backend.models.Timer import Timer, TimerForm
 from backend.io.connector import scan_connectors
+from backend.models.User import SecurityForm
 from backend.system import updates
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
+import common.views
 from common.models import Temp
 from common.models.Furniture import Furniture, FurnitureForm
 from common.models.Plan import PlanForm, Plan
@@ -26,6 +29,9 @@ def index(request, template='desktop/index.html', **kwargs):
     kwargs['floors'] = floors
     kwargs['percent'] = percent
     return render(request, template, kwargs)
+
+def login(request):
+    return common.views.login(request)
 
 def devices(request):
     if request.REQUEST.has_key('room'):
@@ -84,6 +90,8 @@ class Settings():
                     self.connectors()
                 elif subtype == 'network':
                     self.network()
+                elif subtype == 'security':
+                    self.security()
                 elif subtype == 'updates':
                     self.updates()
                 else:
@@ -201,6 +209,24 @@ class Settings():
                     form.save()
 
         self.template = 'system/network'
+        self.kwargs = {'form': form}
+
+    def security(self):
+        user = get_user()
+        form = SecurityForm(instance=user)
+
+        if self.request.method == 'POST':
+            if 'save' in self.request.POST:
+                form = SecurityForm(self.request.POST, instance=user)
+                if form.is_valid():
+                    form.save()
+                    print 'saving'
+                    print form.cleaned_data['password1']
+                    user.set_password(form.cleaned_data['password1'])
+            elif 'logout' in self.request.POST:
+                self.request.session['auth'] = 0
+
+        self.template = 'system/security'
         self.kwargs = {'form': form}
 
     def updates(self):
