@@ -81,7 +81,7 @@ def serialize_connector(connector):
     return output
 
 def view(request, view='index', render_json=True):
-    if request.session.get('auth', default=-1) == -1:
+    if request.session.get('auth', default=0) == -1:
         errors = ['Unauthorized:' + view]
         if render_json:
             return respond_with_json({}, request=request, errors=errors)
@@ -149,12 +149,15 @@ def devices(request, render_json = True):
     else:
         return devices
 
-def device(request):
+def device(request, render_json = True):
     id = request.REQUEST['id']
     action = request.REQUEST['action']
     device = Device.objects.get(pk=id)
     device.object.action(action=action)
-    return respond_with_json('', request=request)
+    if render_json:
+        return respond_with_json('', request=request)
+    else:
+        return ''
 
 def scenarios(request, render_json = True):
     list = Scenario.objects.all()
