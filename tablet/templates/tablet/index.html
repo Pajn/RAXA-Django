@@ -111,7 +111,7 @@
             function scenario(id) {
                 document.getElementById("ret").textContent = '{% trans "Executing" %}';
                 document.getElementById('ret').style.display = "block";
-                load('{% url 'api.views.view' view='scenario' %}?id='+id, function (data) {
+                load('{% url 'api.views.view_auth' view='scenario' %}?id='+id, function (data) {
                     document.getElementById("ret").innerHTML = data.responseText;
                     window.setTimeout(function() {
                         document.getElementById('ret').style.display = "none";
@@ -134,7 +134,7 @@
                         });
                     }
                 };
-                load('{% url 'api.views.view' view='device' %}?id='+id+'&action='+cmd, callback);
+                load('{% url 'api.views.view_auth' view='device' %}?id='+id+'&action='+cmd, callback);
             }
             function showdim(id) {
                 if (document.getElementById('dimrow' + id).style.display == "none") {

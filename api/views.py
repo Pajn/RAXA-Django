@@ -13,12 +13,13 @@ RAXA_VERSION = updates.version()
 def respond_with_json(data, errors=None, pretty=False, request=None):
     if not errors: errors = []
     if request is not None:
-        if request.REQUEST.has_key('pretty'):
+        if 'pretty' in request.REQUEST:
             pretty = True
     if not errors:
-        status = {'status': 'ok', 'errors': errors, 'version': version(None, False)}
+        status = {'status': 'ok', 'errors': errors}
     else:
         status = {'status': 'error', 'errors': errors}
+    status['version'], err = version()
     response = {'response': data, 'status': status}
     if pretty:
         jsons = json.dumps(response, sort_keys=True,
@@ -80,7 +81,14 @@ def serialize_connector(connector):
         }
     return output
 
-def view(request, view='index', render_json=True):
+def view(request, view='login', render_json=True):
+    if render_json:
+        response, errors = globals()[view](request)
+        return respond_with_json(response, request=request, errors=errors)
+    else:
+        return globals()[view](request), []
+
+def view_auth(request, view='index', render_json=True):
     if request.session.get('auth', default=0) == -1:
         errors = ['Unauthorized:' + view]
         if render_json:
@@ -89,9 +97,10 @@ def view(request, view='index', render_json=True):
             return None, errors
     else:
         if render_json:
-            return globals()[view](request, render_json)
+            response, errors = globals()[view](request)
+            return respond_with_json(response, request=request, errors=errors)
         else:
-            return globals()[view](request, render_json), []
+            return globals()[view](request), []
 
 def index(request):
     response = {}
@@ -100,9 +109,12 @@ def index(request):
         get = request.REQUEST['get'].split(',')
         for data in get:
             if data in ['version']:
-                response[data] = globals()[data](request, render_json=False)
-            elif data in ['devices', 'scenarios', 'floors', 'connectors']:
                 response[data], error = view(request, view=data, render_json=False)
+                if error.__len__() > 0:
+                    response.pop(data)
+                    errors.extend(error)
+            elif data in ['devices', 'scenarios', 'floors', 'connectors']:
+                response[data], error = view_auth(request, view=data, render_json=False)
                 if error.__len__() > 0:
                     response.pop(data)
                     errors.extend(error)
@@ -114,83 +126,83 @@ def index(request):
 def login(request):
     response = {}
     errors = []
-    if request.REQUEST.has_key('password'):
+    if 'password' in request.REQUEST:
         user = get_user()
         if user.check_password(request.REQUEST['password']):
             response['key'] = user.api_key
         else:
             errors.append('Bad Password')
     else:
-        errors.append('No Password')
+        errors.append('NotSet:password')
 
     return respond_with_json(response, request=request, errors=errors)
 
-def version(request, render_json = True):
+def version(*args):
     response = {
         'api': API_VERSION,
         'raxa': RAXA_VERSION,
         }
-    if render_json:
-        return respond_with_json(response, request=request)
-    else:
-        return response
+    return response, []
 
-def devices(request, render_json = True):
-    if request.REQUEST.has_key('room'):
+def devices(request):
+    if 'room' in request.REQUEST:
         room = request.REQUEST['room']
-        list = Device.objects.filter(room=room)
+        query = Device.objects.filter(room=room)
     else:
-        list = Device.objects.all()
+        query = Device.objects.all()
     devices = []
-    for device in list:
+    for device in query:
         devices.append(serialize_device(device))
-    if render_json:
-        return respond_with_json(devices, request=request)
-    else:
-        return devices
+    return devices, []
 
-def device(request, render_json = True):
-    id = request.REQUEST['id']
-    action = request.REQUEST['action']
-    device = Device.objects.get(pk=id)
-    device.object.action(action=action)
-    if render_json:
-        return respond_with_json('', request=request)
-    else:
-        return ''
+def device(request):
+    try:
+        pk = request.REQUEST['id']
+    except KeyError:
+        return '', ['NotSet:id']
+    try:
+        action = request.REQUEST['action']
+    except KeyError:
+        return '', ['NotSet:action']
+    try:
+        device = Device.objects.get(pk=pk)
+        try:
+            device.object.action(action=action)
+        except KeyError:
+            return '', ['ActionNotSupported:' + action]
+        return '', []
+    except Device.DoesNotExist:
+        return '', ['DoesNotExist:Device']
 
-def scenarios(request, render_json = True):
-    list = Scenario.objects.all()
+def scenarios(*args):
+    query = Scenario.objects.all()
     scenarios = []
-    for scenario in list:
+    for scenario in query:
         scenarios.append(serialize_scenario(scenario))
-    if render_json:
-        return respond_with_json(scenarios, request=request)
-    else:
-        return scenarios
+    return scenarios, []
 
 def scenario(request):
-    id = request.REQUEST['id']
-    scenario = Scenario.objects.get(pk=id)
-    scenario.execute()
-    return respond_with_json('', request=request)
+    try:
+        pk = request.REQUEST['id']
+    except KeyError:
+        return '', ['NotSet:id']
+    try:
+        scenario = Scenario.objects.get(pk=pk)
+        scenario.execute()
+        return '', []
+    except Scenario.DoesNotExist:
+        return '', ['DoesNotExist:Scenario']
 
-def floors(request, render_json = True):
-    list = Floor.objects.all()
+def floors(*args):
+    query = Floor.objects.all()
     floors = []
-    for floor in list:
+    for floor in query:
         floors.append(serialize_floor(floor))
-    if render_json:
-        return respond_with_json(floors, request=request)
-    else:
-        return floors
+    return floors, []
 
-def connectors(request, render_json = True):
-    list = Connector.objects.all()
+def connectors(*args):
+    query = Connector.objects.all()
     connectors = []
-    for connector in list:
+    for connector in query:
         connectors.append(serialize_connector(connector))
-    if render_json:
-        return respond_with_json(connectors, request=request)
-    else:
-        return connectors
+    return connectors, []
