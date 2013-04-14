@@ -16,7 +16,7 @@ def respond_with_json(data, errors=None, pretty=False, request=None):
         if request.REQUEST.has_key('pretty'):
             pretty = True
     if not errors:
-        status = {'status': 'ok', 'errors': errors}
+        status = {'status': 'ok', 'errors': errors, 'version': version(None, False)}
     else:
         status = {'status': 'error', 'errors': errors}
     response = {'response': data, 'status': status}
@@ -107,7 +107,7 @@ def index(request):
                     response.pop(data)
                     errors.extend(error)
             else:
-                errors.append('%s is not valid' % data)
+                errors.append('NotValid:' + data)
 
     return respond_with_json(response, request=request, errors=errors)
 
