@@ -100,7 +100,7 @@ def view_auth(request, view='index', render_json=True):
             response, errors = globals()[view](request)
             return respond_with_json(response, request=request, errors=errors)
         else:
-            return globals()[view](request), []
+            return globals()[view](request)
 
 def index(request):
     response = {}
