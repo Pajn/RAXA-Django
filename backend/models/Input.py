@@ -21,8 +21,8 @@ class Input(models.Model):
     name = models.CharField(_('Name'), max_length=30)
     protocol = models.CharField(_('Protocol'), max_length=30)
     data = models.CharField(_('Data'), max_length=30)
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, null=True)
+    object_id = models.PositiveIntegerField(null=True)
     action_object = generic.GenericForeignKey('content_type', 'object_id')
     action = models.CharField(_('Action'), max_length=9)
     timestamp = models.DateTimeField(auto_now=True)
@@ -44,13 +44,13 @@ class Input(models.Model):
     def received(protocol, data):
         input_received.send(sender=None, protocol=protocol, data=data)
         try:
-            object = Input.objects.exclude(pk=0).get(protocol=protocol, data=data)
+            object = Input.objects.exclude(pk=1).get(protocol=protocol, data=data)
             object.execute()
         except Input.DoesNotExist:
             try:
-                object = Input.objects.get(pk=0)
+                object = Input.objects.get(pk=1)
             except Input.DoesNotExist:
-                object = Input(pk=0)
+                object = Input(pk=1)
             object.name = 'found'
             object.protocol = protocol
             object.data = data
@@ -60,14 +60,14 @@ class Input(models.Model):
     @staticmethod
     def scan(timeout=10):
         try:
-            input = Input.objects.get(pk=0)
+            input = Input.objects.get(pk=1)
         except Input.DoesNotExist:
-            input = Input(pk=0)
+            input = Input(pk=1)
         input.name = 'scanning'
         input.protocol = ''
         input.data = ''
-        input.content_type_id = 0
-        input.object_id = 0
+        input.content_type_id = None
+        input.object_id = None
         input.action = ''
         input.save()
 
@@ -78,7 +78,7 @@ class Input(models.Model):
 
         while not found and not timedout:
             try:
-                input = Input.objects.get(pk=0, name='found')
+                input = Input.objects.get(pk=1, name='found')
                 found = True
             except Input.DoesNotExist:
                 current_time = time.time() - start_time
