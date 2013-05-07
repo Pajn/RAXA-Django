@@ -38,7 +38,7 @@ class Room(models.Model):
         app_label = 'backend'
 
     def __unicode__(self):
-        return self.name
+        return '%s - %s' % (self.name, self.floor.name)
 
 class RoomForm(ModelForm):
     class Meta:
