@@ -15,6 +15,7 @@ from backend.models.User import SecurityForm
 from backend.system import updates
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
+from backend.widgets.OnOffColorWheel import OnOffColorWheel
 import common.views
 from common.models import Temp
 from common.models.Furniture import Furniture, FurnitureForm
@@ -547,7 +548,9 @@ def widget_action(request):
         id = request.POST['device']
         device = get_object_or_404(Device, pk=id)
 
-        if 'dim_level' in device.object.SUPPORTED_ACTIONS:
+        if 'color_wheel' in device.object.SUPPORTED_ACTIONS:
+            widget = OnOffColorWheel(device=device)
+        elif 'dim_level' in device.object.SUPPORTED_ACTIONS:
             widget = OnOffDimLevel(device=device)
         else:
             widget = OnOff()
