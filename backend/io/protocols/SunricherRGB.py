@@ -98,6 +98,13 @@ class SunricherRGB(Protocol):
     def new(self):
         self.device.action = 'on'
 
+    def action(self, *args, **kwargs):
+        action = kwargs.get('action')
+        if action.startswith('CW'):
+            kwargs['angle'] = action[2:]
+            kwargs['action'] = 'color_wheel'
+        self.SUPPORTED_ACTIONS[action](self, **kwargs)
+
     def _send(self, data, ip, port):
         datarow = bytearray.fromhex(u'55 39 38 32')
         datarow.insert(4, data[0])
