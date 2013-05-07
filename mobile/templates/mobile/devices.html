@@ -24,6 +24,11 @@
             <a href="{% url 'mobile.views.device' id=device.id action="off" %}" data-role="button">
                 <img src="{{ STATIC_URL }}mobile/images/off.png" class="onoffimg" />
             </a>
+            {% if 'color_wheel' in device.object.SUPPORTED_ACTIONS %}
+                <button id="cw{{ device.id }}" data-role="button" class="dim" rel="external">
+                    <img src="{{ STATIC_URL }}mobile/images/color.png" class="onoffimg" />
+                </button>
+            {% endif %}
             {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
                 <button id="dim{{ device.id }}" data-role="button" class="dim" rel="external">
                     <img src="{{ STATIC_URL }}mobile/images/dim.png" class="onoffimg" />
@@ -34,6 +39,30 @@
                 </a>
             {% endif %}
         </div>
+        {% if 'color_wheel' in device.object.SUPPORTED_ACTIONS %}
+            <div id="slidecw{{ device.id }}" class="hide dimbox" align="center"
+                 style="position: relative; margin: 0 auto; width: 200px; height: 200px;">
+                <img src="{{ STATIC_URL }}images/color_wheel.png"
+                     style="position: absolute; top: 0px; left: 0px; width: 200px; height: 200px;"
+                     onload="$(this).click(function(e) {
+                         var offset = $(this).offset();
+                         var x = e.clientX - offset.left;
+                         var y = e.clientY - offset.top;
+                         var x_diff = x - 100;
+                         var y_diff = y - 100;
+                         var angle = (180 * Math.atan(x_diff/y_diff)) / Math.PI;
+                         if (y_diff < 0) { angle += 180; }
+                         else if (x_diff < 0 && y_diff > 0) { angle += 360; }
+                         var angle = Math.floor(angle);
+                         $.get('{% url 'api.views.view_auth' view='device' %}?id={{ device.id }}' +
+                               '&action=color_wheel&angle='+angle);
+                     });"/>
+                <img src="{{ STATIC_URL }}images/white.png"
+                     style="position: absolute; top: 62px; left: 62px; width: 76px; height: 76px;"
+                     onclick="$.get('{% url 'api.views.view_auth' view='device' %}?id={{ device.id }}' +
+                               '&action=white');"/>
+            </div>
+        {% endif %}
         {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
             <div id="slidedim{{ device.id }}" class="hide dimbox" align="center">
                 <label>
