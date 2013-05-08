@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load staticfiles %}
 <h1 align="center">{{ room.name }}</h1>
 <table border="0">
     <tbody>
@@ -12,6 +13,9 @@
                     <img src="{{ STATIC_URL }}images/off.png" class="fastclick" onclick="device({{ device.id }}, 'off')"/>
                 </td>
                 <td align="right">
+                    {% if 'color_wheel' in device.object.SUPPORTED_ACTIONS %}
+                        <img src="{{ STATIC_URL }}images/color.png" class="fastclick" onclick="showdim({{ device.id }})"/>
+                    {% endif %}
                     {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
                         <img src="{{ STATIC_URL }}images/dim.png" class="fastclick" onclick="showdim({{ device.id }})"/>
                     {% elif 'dim' in device.object.SUPPORTED_ACTIONS %}
@@ -19,6 +23,31 @@
                     {% endif %}
                 </td>
             </tr>
+            {% if 'color_wheel' in device.object.SUPPORTED_ACTIONS %}
+                <tr>
+                    <td colspan="4">
+                        <div id="dimrow{{ device.id }}" style="display: none; position: relative; width: 200px; height: 200px;">
+                            <img src="{{ STATIC_URL }}images/color_wheel.png"
+                                 style="position: absolute; top: 0px; left: 0px; width: 200px; height: 200px;"
+                                 onload="$(this).click(function(e) {
+                                     var offset = $(this).offset();
+                                     var x = e.clientX - offset.left;
+                                     var y = e.clientY - offset.top;
+                                     var x_diff = x - 100;
+                                     var y_diff = y - 100;
+                                     var angle = (180 * Math.atan(x_diff/y_diff)) / Math.PI;
+                                     if (y_diff < 0) { angle += 180; }
+                                     else if (x_diff < 0 && y_diff > 0) { angle += 360; }
+                                     var angle = Math.floor(angle);
+                                     device({{ device.id }},'color_wheel&angle='+angle);
+                                 });"/>
+                            <img src="{{ STATIC_URL }}images/white.png"
+                                 style="position: absolute; top: 62px; left: 62px; width: 76px; height: 76px;"
+                                 onclick="device({{ device.id }},'white')"/>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
             {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
                 <tr>
                     <td colspan="4">

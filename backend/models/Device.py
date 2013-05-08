@@ -15,7 +15,7 @@ class Device(models.Model):
     name = models.CharField(_('Name'), max_length=30)
     type = models.CharField(_('Type'), max_length=30, choices=choices)
     code = models.CharField(max_length=30)
-    connector = models.ForeignKey(Connector)
+    connector = models.ForeignKey(Connector, null=True, default=None)
     room = models.ForeignKey(Room)
     order = models.IntegerField(_('Order'), default=1)
     action = models.CharField(_('Action'), max_length=9)
@@ -39,6 +39,9 @@ class DeviceForm(ModelForm):
         super(DeviceForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Device)
+
+        if instance.object.CONNECTOR_TYPE is None:
+            self.fields.pop('connector')
 
         if instance and instance.type:
             connector_type = get_class(instance.type)().CONNECTOR_TYPE

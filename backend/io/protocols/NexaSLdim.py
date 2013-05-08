@@ -23,6 +23,7 @@ class NexaSLdim(DimLevelProtocol):
     def __init__(self):
         super(NexaSLdim, self).__init__()
         extra_actions = {
+            "sync" : self.sync,
             "dim" : self.dim,
             "dim_level" : self.dim_level,
             }

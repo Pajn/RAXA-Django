@@ -34,7 +34,6 @@ def serialize_device(device):
         'name': device.name,
         'type': device.type,
         'code': device.code,
-        'connector': device.connector.id,
         'room': device.room.id,
         'floor': device.room.floor.id,
         'order': device.order,
@@ -43,6 +42,8 @@ def serialize_device(device):
         'supported_actions': device.object.SUPPORTED_ACTIONS.keys(),
         'connector_type': device.object.CONNECTOR_TYPE
     }
+    if device.connector is not None:
+        output['connector'] = device.connector.id
     return output
 
 def serialize_scenario(scenario):
@@ -167,7 +168,7 @@ def device(request):
     try:
         device = Device.objects.get(pk=pk)
         try:
-            device.object.action(action=action)
+            device.object.action(**request.REQUEST)
         except KeyError:
             return '', ['ActionNotSupported:' + action]
         return '', []

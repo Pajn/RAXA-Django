@@ -28,8 +28,5 @@ class Connector(object):
     def initialize(self, connector):
         self.connector = connector
 
-    def send(self, string):
-        raise NotImplementedError
-
     def scan(self):
         pass

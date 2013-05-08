@@ -9,6 +9,13 @@ class NexaSLonoff(Protocol):
     CODE_WIDGET = HiddenInput
     ACTION_WIDGET = HiddenInput
 
+    def __init__(self):
+        super(NexaSLonoff, self).__init__()
+        extra_actions = {
+            "sync" : self.sync,
+            }
+        self.SUPPORTED_ACTIONS.update(extra_actions)
+
     def initialize(self, device):
         assert isinstance(device, Device)
         self.device = device

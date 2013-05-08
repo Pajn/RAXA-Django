@@ -44,7 +44,6 @@ class CodeSelectWidget(widgets.MultiWidget):
         )
 
     def __init__(self, attrs=None, mode=0):
-
         _widgets = (
             widgets.Select(attrs=attrs, choices=self.LETTERS),
             widgets.Select(attrs=attrs, choices=self.DIGITS),
@@ -103,6 +102,7 @@ class NexaSC(Protocol):
     def __init__(self):
         super(NexaSC, self).__init__()
         extra_actions = {
+            "sync" : self.sync,
             "dim" : self.dim,
             }
         self.SUPPORTED_ACTIONS.update(extra_actions)

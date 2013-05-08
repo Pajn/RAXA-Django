@@ -20,7 +20,6 @@ class Protocol(object):
 
     def __init__(self):
         self.SUPPORTED_ACTIONS = {
-            "sync" : self.sync,
             "on" : self.on,
             "off" : self.off,
             "toggle" : self.toggle,
