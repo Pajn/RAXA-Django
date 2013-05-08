@@ -65,7 +65,7 @@ class SunricherRGB(Protocol):
         data = bytearray.fromhex('02 00 02 12 ab')
         self._send(data, self.ip, 8899)
         time.sleep(0.2)
-        
+
         angle = int(kwargs.get('angle'))
         angle = int (1.0 + (4.0 * angle) / 15.0)
         if angle < 5:
