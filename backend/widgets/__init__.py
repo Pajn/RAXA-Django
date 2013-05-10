@@ -2,6 +2,7 @@ from OnOff import OnOff
 from OnOffDimLevel import OnOffDimLevel
 from OnOffColorWheel import OnOffColorWheel
 
+
 def getWidget(device, ui='default'):
     if 'color_wheel' in device.object.SUPPORTED_ACTIONS:
         return OnOffColorWheel(ui=ui, device=device)

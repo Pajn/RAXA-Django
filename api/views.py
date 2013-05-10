@@ -10,6 +10,7 @@ from backend.system import updates
 API_VERSION = 2
 RAXA_VERSION = updates.version()
 
+
 def respond_with_json(data, errors=None, pretty=False, request=None):
     if not errors: errors = []
     if request is not None:
@@ -27,6 +28,7 @@ def respond_with_json(data, errors=None, pretty=False, request=None):
     else:
         jsons = json.dumps(response)
     return HttpResponse(jsons, mimetype='application/json')
+
 
 def serialize_device(device):
     output = {
@@ -46,6 +48,7 @@ def serialize_device(device):
         output['connector'] = device.connector.id
     return output
 
+
 def serialize_scenario(scenario):
     output = {
         'id': scenario.id,
@@ -55,12 +58,14 @@ def serialize_scenario(scenario):
     }
     return output
 
+
 def serialize_room(room):
     output = {
         'id': room.id,
         'name': room.name,
-        }
+    }
     return output
+
 
 def serialize_floor(floor):
     rooms = []
@@ -70,8 +75,9 @@ def serialize_floor(floor):
         'id': floor.id,
         'name': floor.name,
         'rooms': rooms,
-        }
+    }
     return output
+
 
 def serialize_connector(connector):
     output = {
@@ -79,8 +85,9 @@ def serialize_connector(connector):
         'name': connector.name,
         'type': connector.type,
         'code': connector.code,
-        }
+    }
     return output
+
 
 def view(request, view='login', render_json=True):
     if render_json:
@@ -88,6 +95,7 @@ def view(request, view='login', render_json=True):
         return respond_with_json(response, request=request, errors=errors)
     else:
         return globals()[view](request), []
+
 
 def view_auth(request, view='index', render_json=True):
     if request.session.get('auth', default=0) == -1:
@@ -102,6 +110,7 @@ def view_auth(request, view='index', render_json=True):
             return respond_with_json(response, request=request, errors=errors)
         else:
             return globals()[view](request)
+
 
 def index(request):
     response = {}
@@ -124,6 +133,7 @@ def index(request):
 
     return respond_with_json(response, request=request, errors=errors)
 
+
 def login(request):
     response = {}
     errors = []
@@ -138,12 +148,14 @@ def login(request):
 
     return respond_with_json(response, request=request, errors=errors)
 
+
 def version(*args):
     response = {
         'api': API_VERSION,
         'raxa': RAXA_VERSION,
-        }
+    }
     return response, []
+
 
 def devices(request):
     if 'room' in request.REQUEST:
@@ -155,6 +167,7 @@ def devices(request):
     for device in query:
         devices.append(serialize_device(device))
     return devices, []
+
 
 def device(request):
     try:
@@ -175,12 +188,14 @@ def device(request):
     except Device.DoesNotExist:
         return '', ['DoesNotExist:Device']
 
+
 def scenarios(*args):
     query = Scenario.objects.all()
     scenarios = []
     for scenario in query:
         scenarios.append(serialize_scenario(scenario))
     return scenarios, []
+
 
 def scenario(request):
     try:
@@ -194,12 +209,14 @@ def scenario(request):
     except Scenario.DoesNotExist:
         return '', ['DoesNotExist:Scenario']
 
+
 def floors(*args):
     query = Floor.objects.all()
     floors = []
     for floor in query:
         floors.append(serialize_floor(floor))
     return floors, []
+
 
 def connectors(*args):
     query = Connector.objects.all()

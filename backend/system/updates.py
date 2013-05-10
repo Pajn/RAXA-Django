@@ -3,8 +3,8 @@ import urllib
 import xml.etree.ElementTree as ET
 from RAXA.settings import UPDATE_URL
 
-class Update():
 
+class Update():
     def __init__(self, version, patch):
         if isinstance('version', str):
             version = version.split('.')
@@ -12,7 +12,7 @@ class Update():
                 int(version[0]),
                 int(version[1]),
                 int(version[2])
-                )
+            )
 
         self.version = version
         self.patch = patch
@@ -24,24 +24,28 @@ class Update():
         f.write(patch)
         f.close()
 
-        p = subprocess.Popen('patch -p1 < update.patch ', shell = True)
+        p = subprocess.Popen('patch -p1 < update.patch ', shell=True)
         p.wait()
         print p.stdout
         print p.stderr
 
         if p.returncode == 0:
             import update
+
             return update.run()
         else:
             return False
+
 
 def version():
     from version import __version_info__
 
     return __version_info__
 
+
 def write_version(version):
     return '.'.join(map(str, version))
+
 
 def check():
     xml = urllib.urlopen(UPDATE_URL).read()
@@ -56,7 +60,7 @@ def check():
             int(required_version[0]),
             int(required_version[1]),
             int(required_version[2])
-            )
+        )
 
         if version() >= required_version:
             latest_update = update

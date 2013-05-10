@@ -3,19 +3,22 @@
 {% load url from future %}
 
 {% block header %}
-    <a href="{% url 'mobile.views.settings' %}" data-icon="arrow-l" data-direction="reverse" data-prefetch>{% trans "Back" %}</a>
+    <a href="{% url 'mobile.views.settings' %}" data-icon="arrow-l" data-direction="reverse"
+       data-prefetch>{% trans "Back" %}</a>
     <h1>{% trans "Inputs" %}</h1>
 {% endblock %}
 
 {% block content %}
     <div data-role="controlgroup">
-        <a href="{% url 'mobile.views.scan_input' %}" data-role="button" data-rel="dialog" data-transition="pop">{% trans "Scan" %}</a>
+        <a href="{% url 'mobile.views.scan_input' %}" data-role="button" data-rel="dialog"
+           data-transition="pop">{% trans "Scan" %}</a>
     </div>
     <div data-role="controlgroup">
-    {% for input in list %}
-        <a href="{% url 'mobile.views.edit_input' id=input.id %}" data-role="button" data-rel="dialog" data-transition="pop">{{ input.name }}</a>
-    {% empty %}
-        <div align="center">{% blocktrans %}No inputs yet{% endblocktrans %}</div>
-    {% endfor %}
+        {% for input in list %}
+            <a href="{% url 'mobile.views.edit_input' id=input.id %}" data-role="button" data-rel="dialog"
+               data-transition="pop">{{ input.name }}</a>
+        {% empty %}
+            <div align="center">{% blocktrans %}No inputs yet{% endblocktrans %}</div>
+        {% endfor %}
     </div>
 {% endblock %}

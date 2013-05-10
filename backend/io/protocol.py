@@ -1,5 +1,6 @@
 import os
 
+
 def supported_types():
     dir = os.path.join(os.path.dirname(__file__), 'protocols')
     types = []
@@ -10,20 +11,22 @@ def supported_types():
 
     return types
 
+
 def get_class(protocol):
     tmpmodule = __import__('backend.io.protocols.%s' % protocol, fromlist=[protocol])
     tmpclass = getattr(tmpmodule, protocol)
     return tmpclass
+
 
 class Protocol(object):
     CONNECTOR_TYPE = ''
 
     def __init__(self):
         self.SUPPORTED_ACTIONS = {
-            "on" : self.on,
-            "off" : self.off,
-            "toggle" : self.toggle,
-            }
+            "on": self.on,
+            "off": self.off,
+            "toggle": self.toggle,
+        }
 
     def initialize(self, device):
         self.device = device
@@ -57,6 +60,7 @@ class Protocol(object):
             return True
         else:
             return False
+
 
 class DimLevelProtocol(Protocol):
     DIM_MIN = 0

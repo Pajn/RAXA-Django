@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from backend.models.Thermometer import Thermometer
-from django.utils.translation import ugettext as _
+
 
 class Command(BaseCommand):
     args = '<code temp>'

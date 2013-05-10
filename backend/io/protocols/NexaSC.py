@@ -3,8 +3,8 @@ from django.forms import HiddenInput, widgets
 from backend.models.Device import Device
 from backend.io.protocol import Protocol
 
-class CodeSelectWidget(widgets.MultiWidget):
 
+class CodeSelectWidget(widgets.MultiWidget):
     LETTERS = (
         ('A', 'A'),
         ('B', 'B'),
@@ -22,7 +22,7 @@ class CodeSelectWidget(widgets.MultiWidget):
         ('N', 'N'),
         ('O', 'O'),
         ('P', 'P'),
-        )
+    )
 
     DIGITS = (
         (1, 1),
@@ -41,13 +41,13 @@ class CodeSelectWidget(widgets.MultiWidget):
         (14, 14),
         (15, 15),
         (16, 16),
-        )
+    )
 
     def __init__(self, attrs=None, mode=0):
         _widgets = (
             widgets.Select(attrs=attrs, choices=self.LETTERS),
             widgets.Select(attrs=attrs, choices=self.DIGITS),
-            )
+        )
         super(CodeSelectWidget, self).__init__(_widgets, attrs)
 
     def decompress(self, value):
@@ -59,20 +59,17 @@ class CodeSelectWidget(widgets.MultiWidget):
 
     def format_output(self, rendered_widgets):
         prefix = '<table style="display:inline-table; margin: 0; padding: 0; border 0; border-spacing: 0;"><tr>'
-        #join = u''.join(rendered_widgets)
         sufix = '</tr></table>'
-        block = {0:'a',1:'b',2:'c'}
-        i = 0
         join = ''
         for widget in rendered_widgets:
             join = join + '<td>' + widget + '</td>'
-            i += 1
 
-        return prefix+join+sufix
+        return prefix + join + sufix
 
-    def value_from_datadict(self,data,files,name):
-        line_list = [widget.value_from_datadict(data,files,name+'_%s' %i) for i,widget in enumerate(self.widgets)]
+    def value_from_datadict(self, data, files, name):
+        line_list = [widget.value_from_datadict(data, files, name + '_%s' % i) for i, widget in enumerate(self.widgets)]
         return line_list[0] + '/' + line_list[1]
+
 
 class NexaSC(Protocol):
     CONNECTOR_TYPE = "Tellstick"
@@ -102,9 +99,9 @@ class NexaSC(Protocol):
     def __init__(self):
         super(NexaSC, self).__init__()
         extra_actions = {
-            "sync" : self.sync,
-            "dim" : self.dim,
-            }
+            "sync": self.sync,
+            "dim": self.dim,
+        }
         self.SUPPORTED_ACTIONS.update(extra_actions)
 
     def initialize(self, device):
@@ -117,24 +114,24 @@ class NexaSC(Protocol):
             house = 'A'
             device = '1'
         house = self.LETTERS.get(house)
-        device = int(device)-1
+        device = int(device) - 1
         self.connector_string = '"protocol":"NEXASC","house":{0},"device":{1}'.format(house, device)
 
     def sync(self, *args, **kwargs):
-        self.device.connector.object.send(self.connector_string+',"cmd":"on"')
+        self.device.connector.object.send(self.connector_string + ',"cmd":"on"')
 
     def on(self, *args, **kwargs):
-        self.device.connector.object.send(self.connector_string+',"cmd":"on"')
+        self.device.connector.object.send(self.connector_string + ',"cmd":"on"')
         self.device.set_status('on')
 
     def off(self, *args, **kwargs):
         print self.device.connector
         print self.device.connector.object
-        self.device.connector.object.send(self.connector_string+',"cmd":"off"')
+        self.device.connector.object.send(self.connector_string + ',"cmd":"off"')
         self.device.set_status('off')
 
     def dim(self, *args, **kwargs):
-        self.device.connector.object.send(self.connector_string+',"cmd":"on"')
+        self.device.connector.object.send(self.connector_string + ',"cmd":"on"')
         self.device.set_status('dim')
 
     def new(self):

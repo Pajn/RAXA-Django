@@ -9,12 +9,12 @@
         max-width: 60%;
     }
 </style>
-{{ selectfloor }}<br />
+{{ selectfloor }}<br/>
 <select id="type">
     <option value="dot">{% blocktrans %}Dot (device){% endblocktrans %}</option>
     <option value="temp">{% blocktrans %}Temp display{% endblocktrans %}</option>
 </select>
-<input id="grid" type="checkbox" checked="checked" />
+<input id="grid" type="checkbox" checked="checked"/>
 <label for="grid">{% blocktrans %}Snap to grid{% endblocktrans %}</label>
 <div id="floor">
 </div>
@@ -25,14 +25,14 @@
         <form action="{% url 'desktop.views.settings' type='furniture' %}" method="post">{% csrf_token %}
             <input type="hidden" value="dot" name="furniture_type">
             {{ dot_form.as_p }}
-            <input type="submit" name="save" value="{% trans "Save" %}" />
+            <input type="submit" name="save" value="{% trans "Save" %}"/>
         </form>
     </div>
     <div id="temp_form" class="dialog_form">
         <form action="{% url 'desktop.views.settings' type='furniture' %}" method="post">{% csrf_token %}
             <input type="hidden" value="temp" name="furniture_type">
             {{ temp_form.as_p }}
-            <input type="submit" name="save" value="{% trans "Save" %}" />
+            <input type="submit" name="save" value="{% trans "Save" %}"/>
         </form>
     </div>
 </div>
@@ -42,18 +42,19 @@
     function get_floor() {
         var floor = $('#selectfloor').val();
         $('input[name="floor"]').val(floor);
-        $('#floor').load('{{ STATIC_URL }}images/floor'+floor+'.svg');
-        $('#floorOverlay').load('{% url 'common.views.overlay' %}', {'floor': floor}, function() {
+        $('#floor').load('{{ STATIC_URL }}images/floor' + floor + '.svg');
+        $('#floorOverlay').load('{% url 'common.views.overlay' %}', {'floor': floor}, function () {
 
             var svgNamespace = 'http://www.w3.org/2000/svg';
             var $overlay = $('#floorOverlay svg');
 
-            $overlay.on('click', function(e){
+            $overlay.on('click', function (e) {
                 var planGridX = 10;
                 var planGridY = 10;
                 var pt = this.createSVGPoint();
 
-                pt.x = e.clientX; pt.y = e.clientY;
+                pt.x = e.clientX;
+                pt.y = e.clientY;
                 var loc = pt.matrixTransform(this.getScreenCTM().inverse());
 
                 if ($("#grid").attr('checked')) {
@@ -78,12 +79,13 @@
                 e.stopPropagation();
                 return false;
             });
-            $overlay.on('mousemove', function(e){
+            $overlay.on('mousemove', function (e) {
                 var planGridX = 10;
                 var planGridY = 10;
                 var pt = this.createSVGPoint();
 
-                pt.x = e.clientX; pt.y = e.clientY;
+                pt.x = e.clientX;
+                pt.y = e.clientY;
                 var loc = pt.matrixTransform(this.getScreenCTM().inverse());
 
                 if ($("#grid").attr('checked')) {
@@ -121,12 +123,12 @@
                     this.appendChild(svg);
                 }
             });
-            $overlay.mouseout(function(e){
+            $overlay.mouseout(function (e) {
                 if (document.getElementById("hover")) {
                     $('.hover').remove();
                 }
             });
-            $("#floorOverlay svg .dot").on('contextmenu', function(e) {
+            $("#floorOverlay svg .dot").on('contextmenu', function (e) {
                 $.post('{% url 'desktop.views.settings' type='furniture' %}', {'id': this.id});
                 this.parentNode.removeChild(this);
                 update_overlay();
@@ -139,9 +141,9 @@
     function change_type() {
         type = $('#type').val();
         $('.dialog_form').hide();
-        $('#'+type+'_form').show();
+        $('#' + type + '_form').show();
     }
-    $(function() {
+    $(function () {
         get_floor();
         change_type();
         $('#type').change(change_type);

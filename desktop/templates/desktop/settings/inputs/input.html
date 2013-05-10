@@ -4,6 +4,7 @@
     th {
         vertical-align: top;
     }
+
     label[for="id_action"] {
         position: relative;
         top: 5px;
@@ -59,19 +60,19 @@
     }
 
     fieldset .on {
-        background-image:url("{{ STATIC_URL }}images/on.png");
+        background-image: url("{{ STATIC_URL }}images/on.png");
     }
 
     fieldset .off {
-        background-image:url("{{ STATIC_URL }}images/off.png");
+        background-image: url("{{ STATIC_URL }}images/off.png");
     }
 
     fieldset .dim {
-        background-image:url("{{ STATIC_URL }}images/dim.png");
+        background-image: url("{{ STATIC_URL }}images/dim.png");
     }
 
     fieldset .color {
-        background-image:url("{{ STATIC_URL }}images/color.png");
+        background-image: url("{{ STATIC_URL }}images/color.png");
     }
 
     .ui-hidden-accessible {
@@ -94,23 +95,23 @@
         {{ form.as_table }}
     </table>
     {% if add %}
-        <input type="submit" name="add" value="{% trans "Add" %}" />
+        <input type="submit" name="add" value="{% trans "Add" %}"/>
     {% else %}
-        <input type="hidden" name="id" value="{{ object.id }}" />
-        <input type="submit" name="save" value="{% trans "Save" %}" />
-        <input type="submit" name="delete" value="{% trans "Delete" %}" />
+        <input type="hidden" name="id" value="{{ object.id }}"/>
+        <input type="submit" name="save" value="{% trans "Save" %}"/>
+        <input type="submit" name="delete" value="{% trans "Delete" %}"/>
     {% endif %}
 </form>
 {% if 'dim_level' in object.action_object.object.SUPPORTED_ACTIONS and False %}
     <script type="text/javascript">
         var $input, $label, $slider, $container;
 
-        $('input[type="range"]').each(function(index, input) {
+        $('input[type="range"]').each(function (index, input) {
             $input = $(input);
             var inputID = $input.attr('id');
 
             $container = $('<div class="slider" style="width: 195px"/>');
-            $label = $('<span class="label ui-widget-content ui-corner-all">'+parseInt($input.attr('value'), 10)+'</span>');
+            $label = $('<span class="label ui-widget-content ui-corner-all">' + parseInt($input.attr('value'), 10) + '</span>');
 
             //Create a new div, turn it into a slider, and set its attributes based on
             //the attributes of the input.
@@ -119,11 +120,11 @@
                 max: parseInt($input.attr('max'), 10),
                 value: parseInt($input.attr('value'), 10),
                 step: parseInt($input.attr('step'), 10),
-                slide: function(event, ui) {
+                slide: function (event, ui) {
                     //Keep the value of the input[type=range] in sync with the slider.
-                    //$(this).prev('input').val(ui.value);
-                    $('#' + inputID).val(ui.value);
-                    $('#' + inputID).change();
+                    var $input_id = $('#' + inputID);
+                    $input_id.val(ui.value);
+                    $input_id.change();
                     $label.text(ui.value);
                 }
             });
@@ -136,8 +137,8 @@
             $label.after($slider);
 
             $slider.css({
-                position:'relative',
-                top: ($container.height()/2 - $slider.outerHeight()/2)
+                position: 'relative',
+                top: ($container.height() / 2 - $slider.outerHeight() / 2)
             });
         });
     </script>

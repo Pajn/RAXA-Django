@@ -33,9 +33,15 @@
 <div id="setuprooms">
     <div id="roomsmenu">
         <ul>
-            <li><input type="button" data-id="rooms" value="{% trans "Rooms" %}" class="button biggerbutton vertical submenu top {% if subtype == 'rooms' %}verticalSelected{% endif %}" /></li>
-            <li><input type="button" data-id="floors" value="{% trans "Floors" %}" class="button biggerbutton vertical submenu {% if subtype == 'floors' %}verticalSelected{% endif %}" /></li>
-            <li><input type="button" data-id="plan" value="{% trans "Plan" %}" class="button biggerbutton vertical submenu bottom {% if subtype == 'plan' %}verticalSelected{% endif %}" /></li>
+            <li><input type="button" data-id="rooms" value="{% trans "Rooms" %}"
+                       class="button biggerbutton vertical submenu top {% if subtype == 'rooms' %}verticalSelected{% endif %}"/>
+            </li>
+            <li><input type="button" data-id="floors" value="{% trans "Floors" %}"
+                       class="button biggerbutton vertical submenu {% if subtype == 'floors' %}verticalSelected{% endif %}"/>
+            </li>
+            <li><input type="button" data-id="plan" value="{% trans "Plan" %}"
+                       class="button biggerbutton vertical submenu bottom {% if subtype == 'plan' %}verticalSelected{% endif %}"/>
+            </li>
         </ul>
     </div>
     <div id="Roptions" class="border bottom">
@@ -47,16 +53,16 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('.submenu').click(function() {
+    $('.submenu').click(function () {
         $('.submenu').removeClass('verticalSelected');
         $(this).addClass('verticalSelected');
         var type = $(this).attr("data-id");
-        $('#Roptions').load('{% url 'desktop.views.settings' type='room' %}', {'subtype': type}, function() {
-            window.history.pushState('', 'RAXA - '+$(this).val(), '/{{ LANGUAGE_CODE }}/settings/room/'+type+'/');
+        $('#Roptions').load('{% url 'desktop.views.settings' type='room' %}', {'subtype': type}, function () {
+            window.history.pushState('', 'RAXA - ' + $(this).val(), '/{{ LANGUAGE_CODE }}/settings/room/' + type + '/');
         });
     });
     {% if subtype %}
-        window.setTimeout(function() {
+        window.setTimeout(function () {
             window.history.pushState('', 'RAXA - {{ subtype }}', '/{{ LANGUAGE_CODE }}/settings/room/{{ subtype }}/');
         }, 10);
     {% endif %}

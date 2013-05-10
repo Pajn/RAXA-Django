@@ -9,6 +9,6 @@
 {% block content %}
     <form action="{% url 'mobile.views.edit_room' id=object.id %}" method="post">{% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="{% trans "Save" %}" data-theme="b" />
+        <input type="submit" value="{% trans "Save" %}" data-theme="b"/>
     </form>
 {% endblock %}

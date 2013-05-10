@@ -3,17 +3,19 @@
 {% load url from future %}
 
 {% block header %}
-    <a href="{% url 'mobile.views.index' %}" data-icon="arrow-l" data-direction="reverse" data-prefetch>{% trans "Back" %}</a>
+    <a href="{% url 'mobile.views.index' %}" data-icon="arrow-l" data-direction="reverse"
+       data-prefetch>{% trans "Back" %}</a>
     <h1>{% trans "Rooms" %}</h1>
-    <a href="{% url 'mobile.views.settings' %}" data-icon="gear" class="ui-btn-right" data-prefetch>{% trans "Settings" %}</a>
+    <a href="{% url 'mobile.views.settings' %}" data-icon="gear" class="ui-btn-right"
+       data-prefetch>{% trans "Settings" %}</a>
 {% endblock %}
 
 {% block content %}
     <div data-role="controlgroup">
-    {% for room in list %}
-        <a href="{% url 'mobile.views.devices' room=room.id %}" data-role="button">{{ room.name }}</a>
-    {% empty %}
-        <div align="center">{% blocktrans %}No rooms yet{% endblocktrans %}</div>
-    {% endfor %}
+        {% for room in list %}
+            <a href="{% url 'mobile.views.devices' room=room.id %}" data-role="button">{{ room.name }}</a>
+        {% empty %}
+            <div align="center">{% blocktrans %}No rooms yet{% endblocktrans %}</div>
+        {% endfor %}
     </div>
 {% endblock %}

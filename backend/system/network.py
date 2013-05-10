@@ -1,6 +1,8 @@
+from string import Template
+
 from django.forms import Form, ChoiceField, IPAddressField, RadioSelect
 from django.utils.translation import ugettext as _
-from string import Template
+
 
 def read():
     file = open('/etc/network/interfaces', 'r').readlines()
@@ -26,11 +28,13 @@ def read():
 
     return type, ip, dns, netmask, gateway
 
+
 def set_dhcp():
     dynamic = 'auto lo\niface lo inet loopback\n\nauto eth0\niface eth0 inet dhcp\n'
     file = open('/etc/network/interfaces', 'w')
     file.write(dynamic)
     file.close()
+
 
 def set_static(ip, dns, netmask, gateway):
     parts = ip.split('.')
@@ -53,8 +57,9 @@ def set_static(ip, dns, netmask, gateway):
     file.write(static)
     file.close()
 
+
 class NetworkForm(Form):
-    choices=[
+    choices = [
         ('dhcp', _('DHCP')),
         ('static', _('Static')),
     ]

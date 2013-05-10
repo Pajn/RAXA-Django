@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -6,16 +5,20 @@ from django.contrib.contenttypes import generic
 from django.dispatch import Signal
 from django.forms import ModelForm, Form, CharField, HiddenInput
 from django.utils.translation import ugettext_lazy as _
+
+from datetime import datetime, timedelta
 from backend.models.Device import Device
 from backend.models.Scenario import Scenario
 from backend.widgets.DeviceScenario import DeviceScenario, DeviceScenarioHidden
 from backend.widgets import getWidget
 from backend.widgets.Time import Time
 
+
 timer_executed = Signal(providing_args=['timer'])
 
+
 class Timer(models.Model):
-    limit = models.Q(app_label = 'backend', model = 'Device') | models.Q(app_label = 'backend', model = 'Scenario')
+    limit = models.Q(app_label='backend', model='Device') | models.Q(app_label='backend', model='Scenario')
 
     name = models.CharField(_('Name'), max_length=30)
     time = models.TimeField(_('Time'))
@@ -26,7 +29,7 @@ class Timer(models.Model):
     friday = models.BooleanField(_('Friday'))
     saturday = models.BooleanField(_('Saturday'))
     sunday = models.BooleanField(_('Sunday'))
-    content_type = models.ForeignKey(ContentType, limit_choices_to = limit)
+    content_type = models.ForeignKey(ContentType, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     action_object = generic.GenericForeignKey('content_type', 'object_id')
     action = models.CharField(_('Action'), max_length=9, default='off')
@@ -48,8 +51,8 @@ class Timer(models.Model):
     @staticmethod
     def get_timers_within(minutes):
         delta = timedelta(minutes=minutes)
-        timestamp_from = datetime.now() - delta/2
-        timestamp_to = datetime.now() + delta/2
+        timestamp_from = datetime.now() - delta / 2
+        timestamp_to = datetime.now() + delta / 2
 
         day_of_week = datetime.now().isoweekday()
 
@@ -70,6 +73,7 @@ class Timer(models.Model):
         }
 
         return Timer.objects.filter(**kwargs)
+
 
 class TimerForm(ModelForm):
     action_object = CharField(label='')
@@ -145,6 +149,7 @@ class TimerForm(ModelForm):
         model = Timer
         exclude = ('content_type', 'object_id')
         widgets = {'time': Time()}
+
 
 class TimerFormNew(Form):
     device_scenario = CharField(widget=DeviceScenario(), label=_('Device or scenario for the timer to trigger'))

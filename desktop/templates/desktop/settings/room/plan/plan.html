@@ -17,7 +17,7 @@
 <div id="dialog-save-room" title="">
     <form action="{% url 'desktop.views.roomsettings' type='plan' %}" method="post">{% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" name="save" value="{% trans "Save" %}" />
+        <input type="submit" name="save" value="{% trans "Save" %}"/>
     </form>
 </div>
 <script type="text/javascript">
@@ -25,16 +25,17 @@
     function get_floor() {
         var floor = $('#selectfloor').val();
         $('input[name="floor"]').val(floor);
-        $('#floor').load('{{ STATIC_URL }}images/floor'+floor+'.svg');
-        $('#floorOverlay').load('{% url 'common.views.overlay' %}', {'floor': floor, 'edit_rooms': true}, function() {
+        $('#floor').load('{{ STATIC_URL }}images/floor' + floor + '.svg');
+        $('#floorOverlay').load('{% url 'common.views.overlay' %}', {'floor': floor, 'edit_rooms': true}, function () {
 
             var svgNamespace = 'http://www.w3.org/2000/svg';
             var $overlay = $('#floorOverlay svg');
             first = true;
 
-            $overlay.on('click', function(e){
+            $overlay.on('click', function (e) {
                 var pt = this.createSVGPoint();
-                pt.x = e.clientX; pt.y = e.clientY;
+                pt.x = e.clientX;
+                pt.y = e.clientY;
 
                 var loc = pt.matrixTransform(this.getScreenCTM().inverse());
                 x = Math.round(loc.x);
@@ -55,17 +56,17 @@
                     first = false;
                 } else {
                     if (x1 > x) {
-                        $('input[name="width"]').val(x1-x);
+                        $('input[name="width"]').val(x1 - x);
                         $('input[name="x"]').val(x);
                     } else {
-                        $('input[name="width"]').val(x-x1);
+                        $('input[name="width"]').val(x - x1);
                         $('input[name="x"]').val(x1);
                     }
                     if (y1 > y) {
-                        $('input[name="height"]').val(y1-y);
+                        $('input[name="height"]').val(y1 - y);
                         $('input[name="y"]').val(y);
                     } else {
-                        $('input[name="height"]').val(y-y1);
+                        $('input[name="height"]').val(y - y1);
                         $('input[name="y"]').val(y1);
                     }
                     $('#dialog-save-room').dialog('open');
@@ -75,9 +76,10 @@
                 e.stopPropagation();
                 return false;
             });
-            $overlay.on('mousemove', function(e){
+            $overlay.on('mousemove', function (e) {
                 var pt = this.createSVGPoint();
-                pt.x = e.clientX; pt.y = e.clientY;
+                pt.x = e.clientX;
+                pt.y = e.clientY;
 
                 var loc = pt.matrixTransform(this.getScreenCTM().inverse());
                 x = Math.round(loc.x);
@@ -85,22 +87,22 @@
 
                 if (!first) {
                     if (x1 > x) {
-                        svg.setAttributeNS(null, 'width', x1-x);
+                        svg.setAttributeNS(null, 'width', x1 - x);
                         svg.setAttributeNS(null, 'x', x);
                     } else {
-                        svg.setAttributeNS(null, 'width', x-x1);
+                        svg.setAttributeNS(null, 'width', x - x1);
                         svg.setAttributeNS(null, 'x', x1);
                     }
                     if (y1 > y) {
-                        svg.setAttributeNS(null, 'height', y1-y);
+                        svg.setAttributeNS(null, 'height', y1 - y);
                         svg.setAttributeNS(null, 'y', y);
                     } else {
-                        svg.setAttributeNS(null, 'height', y-y1);
+                        svg.setAttributeNS(null, 'height', y - y1);
                         svg.setAttributeNS(null, 'y', y1);
                     }
                 }
             });
-            $overlay.on('contextmenu', function(e) {
+            $overlay.on('contextmenu', function (e) {
                 if (!first) {
                     $('.map').remove();
                     first = true;
@@ -111,17 +113,17 @@
             });
         });
     }
-    $(function() {
+    $(function () {
         get_floor();
         $('#selectfloor').change(get_floor);
         $('#dialog-save-room').dialog({
             modal: true,
             autoOpen: false
         });
-        $('#Roptions').height($('#options').height()*0.8);
+        $('#Roptions').height($('#options').height() * 0.8);
     });
     function delete_room(id) {
-        $.post('{% url 'desktop.views.roomsettings' type='plan' %}', {'id': id}, function() {
+        $.post('{% url 'desktop.views.roomsettings' type='plan' %}', {'id': id}, function () {
             get_floor();
         });
     }

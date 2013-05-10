@@ -1,3 +1,6 @@
+import time
+import pytz
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -5,17 +8,18 @@ from django.contrib.contenttypes import generic
 from django.dispatch import Signal
 from django.forms import ModelForm, Form, CharField, HiddenInput
 from django.utils.translation import ugettext_lazy as _
-import time
+
 import datetime
-import pytz
 from backend.models.Device import Device
 from backend.models.Scenario import Scenario
 from backend.widgets.DeviceScenario import DeviceScenario, DeviceScenarioHidden
 from backend.widgets.Time import Time
 from backend.widgets import getWidget
 
+
 input_received = Signal(providing_args=['protocol', 'data'])
 input_executed = Signal(providing_args=['input'])
+
 
 class Input(models.Model):
     name = models.CharField(_('Name'), max_length=30)
@@ -91,6 +95,7 @@ class Input(models.Model):
         else:
             return None
 
+
 class InputForm(ModelForm):
     action_object = CharField(label='')
     device_scenario = CharField(widget=DeviceScenarioHidden(), required=False)
@@ -156,6 +161,7 @@ class InputForm(ModelForm):
         model = Input
         exclude = ('content_type', 'object_id', 'timestamp')
         widgets = {'time': Time()}
+
 
 class InputFormNew(Form):
     device_scenario = CharField(widget=DeviceScenario(), label=_('Device or scenario for the input to trigger'))

@@ -1,10 +1,13 @@
 import socket
 from string import Template
+import time
+
 from django.forms import Widget, TextInput
 from django.utils.safestring import mark_safe
-import time
+
 from backend.models.Device import Device
 from backend.io.protocol import Protocol
+
 
 class ColorWheelWidget(Widget):
     def render(self, name, value, attrs=None):
@@ -31,6 +34,7 @@ class ColorWheelWidget(Widget):
             </div>''')
         return mark_safe(tpl.safe_substitute(name=name, value=value))
 
+
 class SunricherRGB(Protocol):
     CONNECTOR_TYPE = None
 
@@ -40,9 +44,9 @@ class SunricherRGB(Protocol):
     def __init__(self):
         super(SunricherRGB, self).__init__()
         extra_actions = {
-            "color_wheel" : self.color_wheel,
-            "white" : self.white,
-            }
+            "color_wheel": self.color_wheel,
+            "white": self.white,
+        }
         self.SUPPORTED_ACTIONS.update(extra_actions)
 
     def initialize(self, device):
@@ -67,7 +71,7 @@ class SunricherRGB(Protocol):
         time.sleep(0.2)
 
         angle = int(kwargs.get('angle'))
-        angle = int (1.0 + (4.0 * angle) / 15.0)
+        angle = int(1.0 + (4.0 * angle) / 15.0)
         if angle < 5:
             angle += 92
         else:

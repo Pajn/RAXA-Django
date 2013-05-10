@@ -1,6 +1,7 @@
 import os
 import time
 
+
 def supported_types():
     dir = os.path.join(os.path.dirname(__file__), 'thermometers')
     types = []
@@ -11,16 +12,19 @@ def supported_types():
 
     return types
 
+
 def get_class(thermometer):
     tmpmodule = __import__('backend.io.thermometers.%s' % thermometer, fromlist=[thermometer])
     tmpclass = getattr(tmpmodule, thermometer)
     return tmpclass
+
 
 def scan_thermometers():
     types = supported_types()
     for type in types:
         get_class(type)().scan()
     time.sleep(10)
+
 
 class Thermometer(object):
     TYPE = ''

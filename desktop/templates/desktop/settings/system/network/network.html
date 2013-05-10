@@ -4,6 +4,7 @@
     li {
         list-style-type: none;
     }
+
     th {
         text-align: left;
     }
@@ -13,9 +14,9 @@
     {{ form.errors.as_ul }}
     {{ form.type }}
     <table id="addresses"
-            {% if form.fields.type.initial != 'static' %}
-                style="display: none;"
-            {% endif %}>
+        {% if form.fields.type.initial != 'static' %}
+           style="display: none;"
+        {% endif %}>
         <tr>
             <th>
                 <label for="id_ip">{% trans "IP" %}:</label>
@@ -49,10 +50,10 @@
             </td>
         </tr>
     </table>
-    <input type="submit" name="save" value="{% trans "Save" %}" />
+    <input type="submit" name="save" value="{% trans "Save" %}"/>
 </form>
 <script type="text/javascript">
-    $('input[type="radio"]').change(function() {
+    $('input[type="radio"]').change(function () {
         if ($(this).val() == 'static') {
             $('#addresses').show();
         } else {

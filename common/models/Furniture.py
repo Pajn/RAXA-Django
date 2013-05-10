@@ -1,7 +1,9 @@
 from django.db import models
 from django.forms import ModelForm, HiddenInput, ModelChoiceField
-from backend.models import Device, Floor
 from django.utils.translation import ugettext_lazy as _
+
+from backend.models import Device, Floor
+
 
 class Furniture(models.Model):
     types = {
@@ -17,6 +19,7 @@ class Furniture(models.Model):
 
     class Meta:
         app_label = 'common'
+
 
 class FurnitureForm(ModelForm):
     device = ModelChoiceField(Device.objects, label=_('Device'))

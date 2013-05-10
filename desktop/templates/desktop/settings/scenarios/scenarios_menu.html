@@ -10,19 +10,19 @@
     {% for scenario in scenarios %}
         <li>
             <button class="button biggerbutton vertical submenu"
-                onclick="$('#subsettingsoptions').load('{% url 'desktop.views.edit_scenario' %}', {'scenario': {{ scenario.id}}})">
+                    onclick="$('#subsettingsoptions').load('{% url 'desktop.views.edit_scenario' %}', {'scenario': {{ scenario.id }}})">
                 {{ scenario.name }}
             </button>
         </li>
     {% endfor %}
 </ul>
 <script type="text/javascript">
-    $('.submenu').click(function() {
+    $('.submenu').click(function () {
         $('.submenu').removeClass('verticalSelected');
         $(this).addClass('verticalSelected');
         var type = $(this).attr("data-id");
-        $("#Soptions").load('{% url 'desktop.views.settings' type='system' %}', {'subtype': type}, function() {
-            window.history.pushState('', 'RAXA - '+$(this).val(), '/{{ LANGUAGE_CODE }}/settings/system/'+type+'/');
+        $("#Soptions").load('{% url 'desktop.views.settings' type='system' %}', {'subtype': type}, function () {
+            window.history.pushState('', 'RAXA - ' + $(this).val(), '/{{ LANGUAGE_CODE }}/settings/system/' + type + '/');
         });
     });
 </script>

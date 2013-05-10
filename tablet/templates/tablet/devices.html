@@ -14,7 +14,8 @@
                 {% if 'dim_level' in device.object.SUPPORTED_ACTIONS %}
                     <img src="{{ STATIC_URL }}images/dim.png" class="fastclick" onclick="showdim({{ device.id }})"/>
                 {% elif 'dim' in device.object.SUPPORTED_ACTIONS %}
-                    <img src="{{ STATIC_URL }}images/dim.png" class="fastclick" onclick="device({{ device.id }}, 'dim')"/>
+                    <img src="{{ STATIC_URL }}images/dim.png" class="fastclick"
+                         onclick="device({{ device.id }}, 'dim')"/>
                 {% endif %}
             </td>
         </tr>

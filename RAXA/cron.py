@@ -1,6 +1,7 @@
 from django_cron import CronJobBase, Schedule
 from backend.models.Timer import Timer
 
+
 class Timers(CronJobBase):
     RUN_EVERY_MINS = 5
     RUN_AT_TIMES = [
@@ -280,7 +281,7 @@ class Timers(CronJobBase):
         '22:45',
         '22:50',
         '22:55',
-        ]
+    ]
 
     schedule = Schedule(run_at_times=RUN_AT_TIMES)
     code = 'RAXA.cron.Timers'    # a unique code

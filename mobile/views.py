@@ -13,8 +13,10 @@ from backend.models.Timer import Timer, TimerFormNew, TimerForm
 from backend.models.User import LoginForm
 from backend.widgets.DeviceScenario import DeviceScenarioHidden
 
+
 def index(request):
     return render(request, 'mobile/index.html')
+
 
 def login(request, **kwargs):
     if request.method == 'POST':
@@ -26,6 +28,7 @@ def login(request, **kwargs):
     kwargs['loginform'] = loginform
     return render(request, 'mobile/login.html', kwargs)
 
+
 def devices(request, room=False):
     if not room:
         list = Device.objects.all()
@@ -33,30 +36,37 @@ def devices(request, room=False):
         list = Device.objects.filter(room=room)
     return render(request, 'mobile/devices.html', {'list': list, 'room': room})
 
+
 def device(request, id, action):
     device = Device.objects.get(pk=id)
     device.object.action(action=action)
     return HttpResponseRedirect(reverse('mobile.views.devices'))
 
+
 def scenarios(request):
     list = Scenario.objects.all()
     return render(request, 'mobile/scenarios.html', {'list': list})
+
 
 def scenario(request, id):
     scenario = Scenario.objects.get(pk=id)
     scenario.execute()
     return HttpResponseRedirect(reverse('mobile.views.scenarios'))
 
+
 def rooms(request):
     list = Room.objects.all()
     return render(request, 'mobile/rooms.html', {'list': list})
 
+
 def settings(request):
     return render(request, 'mobile/settings.html')
+
 
 def devices_settings(request):
     list = Device.objects.all()
     return render(request, 'mobile/settings/devices.html', {'list': list})
+
 
 def new_device(request):
     if request.method == 'POST': # If the form has been submitted...
@@ -64,12 +74,13 @@ def new_device(request):
         form.fields['type'].choices = device_supported_types()
         if form.is_valid(): # All validation rules pass
             type = form.cleaned_data['type']
-            return HttpResponseRedirect(reverse('mobile.views.edit_device', kwargs={'type': type,}))
+            return HttpResponseRedirect(reverse('mobile.views.edit_device', kwargs={'type': type, }))
     else:
         form = DeviceFormNew()
         form.fields['type'].choices = device_supported_types()
 
     return render(request, 'mobile/settings/device_new.html', {'object': object, 'form': form})
+
 
 def edit_device(request, id=0, type=None):
     if not type:
@@ -99,9 +110,11 @@ def edit_device(request, id=0, type=None):
 
     return render(request, 'mobile/settings/device.html', {'object': object, 'form': form, 'type': type})
 
+
 def scenarios_settings(request):
     list = Scenario.objects.all()
     return render(request, 'mobile/settings/scenarios.html', {'list': list})
+
 
 def edit_scenario(request, id):
     if id == '0':
@@ -128,10 +141,12 @@ def edit_scenario(request, id):
 
     return render(request, 'mobile/settings/scenario.html', {'object': object, 'form': form})
 
+
 def edit_scenario_devices(request, id):
     object = get_object_or_404(Scenario, pk=id)
     list = ScenarioDevice.objects.filter(scenario=id)
     return render(request, 'mobile/settings/scenario_devices.html', {'object': object, 'list': list})
+
 
 def edit_scenario_device(request, scenario, scenariodevice):
     scenario = get_object_or_404(Scenario, pk=scenario)
@@ -146,12 +161,13 @@ def edit_scenario_device(request, scenario, scenariodevice):
                 form = ScenarioDeviceForm(instance=object)
                 form.fields['device_new'].widget.attrs['value'] = device.id
                 submit = 'save'
-                return render(request, 'mobile/settings/scenario_device.html', {'form': form, 'scenario': scenario, 'scenariodevice': scenariodevice, 'submit': submit})
+                return render(request, 'mobile/settings/scenario_device.html',
+                              {'form': form, 'scenario': scenario, 'scenariodevice': scenariodevice, 'submit': submit})
         elif 'delete' in request.POST:
             # Delete requested
             object = get_object_or_404(ScenarioDevice, pk=scenariodevice)
             object.delete()
-            return HttpResponseRedirect(reverse('mobile.views.edit_scenario_devices', kwargs={'id': scenario.id,}))
+            return HttpResponseRedirect(reverse('mobile.views.edit_scenario_devices', kwargs={'id': scenario.id, }))
         else:
             postdata = request.POST.copy()
             # second step submitted
@@ -166,7 +182,7 @@ def edit_scenario_device(request, scenario, scenariodevice):
             form = ScenarioDeviceForm(postdata, instance=object)
             if form.is_valid(): # All validation rules pass
                 form.save()
-                return HttpResponseRedirect(reverse('mobile.views.edit_scenario_devices', kwargs={'id': scenario.id,}))
+                return HttpResponseRedirect(reverse('mobile.views.edit_scenario_devices', kwargs={'id': scenario.id, }))
     else:
         if scenariodevice == '0':
             form = ScenarioDeviceFormNew()
@@ -175,11 +191,14 @@ def edit_scenario_device(request, scenario, scenariodevice):
             object = get_object_or_404(ScenarioDevice, pk=scenariodevice)
             form = ScenarioDeviceForm(instance=object)
 
-    return render(request, 'mobile/settings/scenario_device.html', {'form': form, 'scenario': scenario, 'scenariodevice': scenariodevice, 'submit': submit})
+    return render(request, 'mobile/settings/scenario_device.html',
+                  {'form': form, 'scenario': scenario, 'scenariodevice': scenariodevice, 'submit': submit})
+
 
 def rooms_settings(request):
     list = Room.objects.all()
     return render(request, 'mobile/settings/rooms.html', {'list': list})
+
 
 def edit_room(request, id):
     object = get_object_or_404(Room, pk=id)
@@ -203,6 +222,7 @@ def scan_connectors(request):
     connector.scan_connectors()
     return HttpResponseRedirect(reverse('mobile.views.connectors_settings'))
 
+
 def edit_connector(request, id):
     object = get_object_or_404(Connector, pk=id)
     if request.method == 'POST': # If the form has been submitted...
@@ -221,9 +241,11 @@ def edit_connector(request, id):
 
     return render(request, 'mobile/settings/connector.html', {'object': object, 'form': form})
 
+
 def inputs_settings(request):
     list = Input.objects.exclude(pk=1)
     return render(request, 'mobile/settings/inputs.html', {'list': list})
+
 
 def scan_input(request):
     input = Input.scan()
@@ -231,6 +253,7 @@ def scan_input(request):
         return HttpResponseRedirect(reverse('mobile.views.inputs_settings'))
     else:
         return HttpResponseRedirect(reverse('mobile.views.edit_input', kwargs={'id': 1}))
+
 
 def edit_input(request, id):
     submit = 'delete'
@@ -278,9 +301,11 @@ def edit_input(request, id):
 
     return render(request, 'mobile/settings/input.html', {'form': form, 'id': id, 'submit': submit})
 
+
 def timers_settings(request):
     list = Timer.objects.all()
     return render(request, 'mobile/settings/timers.html', {'list': list})
+
 
 def edit_timer(request, id):
     submit = 'delete'

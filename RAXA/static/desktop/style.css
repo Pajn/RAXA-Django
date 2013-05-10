@@ -1,5 +1,11 @@
-:focus {outline:none;}
-::-moz-focus-inner {border:0;}
+:focus {
+    outline: none;
+}
+
+::-moz-focus-inner {
+    border: 0;
+}
+
 html, body {
     height: 98%;
     overflow: hidden;
@@ -121,7 +127,6 @@ table {
     text-align: center;
 }
 
-
 #devices {
     position: fixed;
     top: 7%;
@@ -178,59 +183,59 @@ table {
 .horisontal {
     color: #ffffff;
 
-    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
     font-size: 12pt;
     background: #040101;
     background: linear-gradient(top, #040101 0%, #7d7373 50%, #7d7373 51%, #040101 100%);
     background: -o-linear-gradient(top, #040101 0%, #7d7373 50%, #7d7373 51%, #040101 100%);
     background: -ms-linear-gradient(top, #040101 0%, #7d7373 50%, #7d7373 51%, #040101 100%);
     background: -moz-linear-gradient(top, #040101 0%, #7d7373 50%, #7d7373 51%, #040101 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#040101), color-stop(50%,#7d7373), color-stop(51%,#7d7373), color-stop(100%,#040101));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #040101), color-stop(50%, #7d7373), color-stop(51%, #7d7373), color-stop(100%, #040101));
     background: -webkit-linear-gradient(top, #040101 0%, #7d7373 50%, #7d7373 51%, #040101 100%);
 }
 
 .vertical {
     white-space: normal;
     border: 0;
-    color : #ededed;
+    color: #ededed;
     margin: 0;
 
-    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
     font-size: 12pt;
     background: #090202;
     background: linear-gradient(left, #090202 0%, #7d7373 50%, #7d7373 51%, #090202 100%);
     background: -o-linear-gradient(left, #090202 0%, #7d7373 50%, #7d7373 51%, #090202 100%);
     background: -ms-linear-gradient(left, #090202 0%, #7d7373 50%, #7d7373 51%, #090202 100%);
     background: -moz-linear-gradient(left, #090202 0%, #7d7373 50%, #7d7373 51%, #090202 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#090202), color-stop(50%,#7d7373), color-stop(51%,#7d7373), color-stop(100%,#090202));
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, #090202), color-stop(50%, #7d7373), color-stop(51%, #7d7373), color-stop(100%, #090202));
     background: -webkit-linear-gradient(left, #090202 0%, #7d7373 50%, #7d7373 51%, #090202 100%);
 }
 
 .verticalSelected {
     white-space: normal;
     border: 0;
-    color : #ffffff;
+    color: #ffffff;
 
-    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
     font-size: 12pt;
     background: #141010;
     background: linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
     background: -o-linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
     background: -ms-linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
     background: -moz-linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#141010), color-stop(50%,#7d7373), color-stop(51%,#7d7373), color-stop(100%,#141010));
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, #141010), color-stop(50%, #7d7373), color-stop(51%, #7d7373), color-stop(100%, #141010));
     background: -webkit-linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
 }
 
 .button:active {
-    color : #ffffff;
+    color: #ffffff;
 
     background: #141010;
     background: linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
     background: -o-linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
     background: -ms-linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
     background: -moz-linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#141010), color-stop(50%,#7d7373), color-stop(51%,#7d7373), color-stop(100%,#141010));
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, #141010), color-stop(50%, #7d7373), color-stop(51%, #7d7373), color-stop(100%, #141010));
     background: -webkit-linear-gradient(left, #141010 0%, #7d7373 50%, #7d7373 51%, #141010 100%);
     -moz-box-shadow: 0 0 12px #141010;
     box-shadow: 0 0 12px #141010;
@@ -241,7 +246,7 @@ table {
     border-radius: 6px;
     -webkit-transition: -webkit-box-shadow 0.3s ease-in-out;
     -moz-transition: -moz-box-shadow 0.3s ease-in-out;
-    -o-transition:  background-color 0.3s ease-in-out;
+    -o-transition: background-color 0.3s ease-in-out;
     transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 

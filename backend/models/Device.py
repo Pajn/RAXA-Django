@@ -1,13 +1,16 @@
 from django.db import models
 from django.db.models.signals import post_init
 from django.dispatch import receiver, Signal
-from . import Connector
-from . import Room
 from django.forms import ModelForm, HiddenInput
 from django.utils.translation import ugettext_lazy as _
+
+from . import Connector
+from . import Room
 from backend.io.protocol import get_class, supported_types
 
+
 device_status_change = Signal(providing_args=['device', 'status'])
+
 
 class Device(models.Model):
     choices = supported_types()
@@ -33,6 +36,7 @@ class Device(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class DeviceForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -68,10 +72,12 @@ class DeviceForm(ModelForm):
         model = Device
         exclude = ('order', 'status')
 
+
 class DeviceFormNew(ModelForm):
     class Meta:
         model = Device
         exclude = ('name', 'code', 'connector', 'room', 'order', 'action', 'status')
+
 
 @receiver(post_init, sender=Device)
 def initialize_device(instance=None, **kwargs):

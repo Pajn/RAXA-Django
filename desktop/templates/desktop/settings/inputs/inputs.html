@@ -12,7 +12,7 @@
                 <span>{{ input.name }}</span>
                 <span style="float: right; font-size: 0.8em;color: #ccc">{{ input.action_object.name }}</span>
             </div>
-            <div class="container"><br /><br /><br /><br /><br /><br /></div>
+            <div class="container"><br/><br/><br/><br/><br/><br/></div>
         </div>
     {% endfor %}
 </div>
@@ -31,26 +31,26 @@
         active: false,
         heightStyle: "content",
         header: '> div > div[class="header"]',
-        beforeActivate: function(event, ui) {
+        beforeActivate: function (event, ui) {
             var id = ui.newHeader.attr('data-id');
             ui.newPanel.load('{% url 'desktop.views.edit_input' %}', {'id': id}, fix_sliders);
         }
     }).sortable({
-                axis: "y",
-                handle: '.header',
-                start: function( event, ui ) {
-                    $accordion.accordion("activate", false);
-                },
-                stop: function( event, ui ) {
-                    // IE doesn't register the blur when sorting
-                    // so trigger focusout handlers to remove .ui-state-focus
-                    ui.item.children('div[class="header"]').triggerHandler("focusout");
-                }
-            });
-    $accordion.click(function(event) {
+        axis: "y",
+        handle: '.header',
+        start: function (event, ui) {
+            $accordion.accordion("activate", false);
+        },
+        stop: function (event, ui) {
+            // IE doesn't register the blur when sorting
+            // so trigger focusout handlers to remove .ui-state-focus
+            ui.item.children('div[class="header"]').triggerHandler("focusout");
+        }
+    });
+    $accordion.click(function (event) {
         event.stopPropagation();
     });
-    $('#options').click(function() {
+    $('#options').click(function () {
         $('#accordion').accordion("activate", false);
     });
     $('#new').accordion({
@@ -59,9 +59,9 @@
     });
     function scan() {
         $("#newcontainer").html('<img src="{{ STATIC_URL }}desktop/images/ajax-loader.gif" alt="{% trans 'scanning' %}..." />');
-        $('#newcontainer').load('{% url 'desktop.views.edit_input' %}', {'scan':true}, function() {
+        $('#newcontainer').load('{% url 'desktop.views.edit_input' %}', {'scan': true}, function () {
             var $action_object = $('#new select[name="action_object"]');
-            $action_object.change(function() {
+            $action_object.change(function () {
                 get_action_widget($(this).val());
             });
             var $actionrow = $('<tr id="actionrow" style="display: none;">\
@@ -77,7 +77,7 @@
         var type = value.split('/')[0];
         var id = value.split('/')[1];
         if (type == 'D') {
-            $('#actioncell').load('{% url 'desktop.views.widget_action' %}', {'device': id}, function() {
+            $('#actioncell').load('{% url 'desktop.views.widget_action' %}', {'device': id}, function () {
                 fix_sliders();
             });
             $('#actionrow').show();
@@ -86,13 +86,13 @@
         }
     }
     function fix_sliders() {
-        $('input[type="range"]').each(function(index, input) {
+        $('input[type="range"]').each(function (index, input) {
             var $input, $label, $slider, $container;
 
             $input = $(input);
 
             $container = $('<div class="slider" style="width: 195px"/>');
-            $label = $('<span class="label ui-widget-content ui-corner-all">'+parseInt($input.attr('value'), 10)+'</span>');
+            $label = $('<span class="label ui-widget-content ui-corner-all">' + parseInt($input.attr('value'), 10) + '</span>');
 
             //Create a new div, turn it into a slider, and set its attributes based on
             //the attributes of the input.
@@ -101,7 +101,7 @@
                 max: parseInt($input.attr('max'), 10),
                 value: parseInt($input.attr('value'), 10),
                 step: parseInt($input.attr('step'), 10),
-                slide: function(event, ui) {
+                slide: function (event, ui) {
                     //Keep the value of the input[type=range] in sync with the slider.
                     //$(this).prev('input').val(ui.value);
                     $input.val(ui.value);

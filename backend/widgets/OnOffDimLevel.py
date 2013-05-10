@@ -1,15 +1,18 @@
 from __future__ import unicode_literals
 import random
+from string import Template
+
 from django.forms import Widget
 from django.utils.safestring import mark_safe
-from string import Template
 from django.utils.translation import ugettext as _
+
 
 class OnOffDimLevel(Widget):
     def __init__(self, ui='default', device=None, *args, **kwargs):
         super(OnOffDimLevel, self).__init__(*args, **kwargs)
         self.ui = ui
         self.device = device
+
     def render(self, name, value, attrs=None):
         onselected = ''
         offselected = ''
@@ -49,8 +52,9 @@ class OnOffDimLevel(Widget):
             dimhide = 'block'
 
         return mark_safe(tpl.safe_substitute(name=name, value=value,
-            rand=random.randint(0,67234433),
-            on=_('On'), off=_('Off'), dim=_('Dim'), dim_value=_('Dim Value'),
-            onselected=onselected, offselected=offselected, dimselected=dimselected,
-            dimhide=dimhide, dimvalue=dimvalue, dimmin=dimmin, dimmax=dimmax, dimstep=dimstep
-            ))
+                                             rand=random.randint(0, 67234433),
+                                             on=_('On'), off=_('Off'), dim=_('Dim'), dim_value=_('Dim Value'),
+                                             onselected=onselected, offselected=offselected, dimselected=dimselected,
+                                             dimhide=dimhide, dimvalue=dimvalue, dimmin=dimmin, dimmax=dimmax,
+                                             dimstep=dimstep
+        ))

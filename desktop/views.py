@@ -22,17 +22,20 @@ from common.models.Furniture import Furniture, FurnitureForm
 from common.models.Plan import PlanForm, Plan
 from common.models.Temp import TempForm
 
+
 def index(request, template='desktop/index.html', **kwargs):
     floors = Floor.objects.all()
     scenarios = Scenario.objects.all()
-    percent = (98-scenarios.__len__()) / (scenarios.__len__()+1)
+    percent = (98 - scenarios.__len__()) / (scenarios.__len__() + 1)
     kwargs['scenarios'] = scenarios
     kwargs['floors'] = floors
     kwargs['percent'] = percent
     return render(request, template, kwargs)
 
+
 def login(request):
     return common.views.login(request)
+
 
 def devices(request):
     if request.REQUEST.has_key('room'):
@@ -43,20 +46,26 @@ def devices(request):
         raise Http404('No room specified')
     return render(request, 'desktop/devices.html', {'list': list, 'room': room})
 
+
 def setting(request, settings=None, **kwargs):
     return index(request, template='desktop/settings.html', settings=settings, **kwargs)
+
 
 def settings_index(request):
     return Settings(request).render()
 
+
 def settings(request, type=None, **kwargs):
     return Settings(request, type=type, **kwargs).render()
+
 
 def systemsettings(request, type=None, **kwargs):
     return Settings(request, type='system', subtype=type, **kwargs).render()
 
+
 def roomsettings(request, type=None, **kwargs):
     return Settings(request, type='room', subtype=type, **kwargs).render()
+
 
 class Settings():
     template = ''
@@ -132,11 +141,13 @@ class Settings():
             elif self.template.startswith('system/'):
                 self.template = self.template.split('/')[1]
                 print self.template
-                return render(self.request, 'desktop/settings/system/%s/%s.html' % (self.template, self.template), self.kwargs)
+                return render(self.request, 'desktop/settings/system/%s/%s.html' % (self.template, self.template),
+                              self.kwargs)
             elif self.template.startswith('room/'):
                 self.template = self.template.split('/')[1]
                 print self.template
-                return render(self.request, 'desktop/settings/room/%s/%s.html' % (self.template, self.template), self.kwargs)
+                return render(self.request, 'desktop/settings/room/%s/%s.html' % (self.template, self.template),
+                              self.kwargs)
             else:
                 return render(self.request, 'desktop/settings/%s/%s.html' % (self.template, self.template), self.kwargs)
 
@@ -232,7 +243,7 @@ class Settings():
 
     def updates(self):
         if self.request.method == 'POST' and 'update' in self.request.POST:
-            update = updates.Update(self.request.POST['version'],self.request.POST['patch'])
+            update = updates.Update(self.request.POST['version'], self.request.POST['patch'])
             update.apply()
 
             return HttpResponseRedirect(reverse('desktop.views.index'))
@@ -246,7 +257,7 @@ class Settings():
                 head_v = _("Couldn't check")
 
             self.template = 'system/updates'
-            self.kwargs = {'current_v':current_v, 'head_v':head_v, 'update':update}
+            self.kwargs = {'current_v': current_v, 'head_v': head_v, 'update': update}
 
     def roomsmenu(self):
         formset = RoomFormSet()
@@ -301,10 +312,10 @@ class Settings():
                     form.save()
                     form = PlanForm()
 
-        selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id':'selectfloor'})
+        selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id': 'selectfloor'})
 
         self.template = 'room/plan'
-        self.kwargs = {'selectfloor': selectfloor, 'form':form}
+        self.kwargs = {'selectfloor': selectfloor, 'form': form}
 
     def furniture(self):
         floor = None
@@ -336,10 +347,10 @@ class Settings():
                 if form.is_valid(): # All validation rules pass
                     form.save()
 
-        selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id':'selectfloor'})
+        selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id': 'selectfloor'})
 
         self.template = 'furniture'
-        self.kwargs = {'selectfloor': selectfloor, 'dot_form':dot_form, 'temp_form':temp_form}
+        self.kwargs = {'selectfloor': selectfloor, 'dot_form': dot_form, 'temp_form': temp_form}
 
 
 def edit_device(request):
@@ -389,12 +400,14 @@ def edit_device(request):
                 form = DeviceFormNew()
                 return setting(request, settings='devices', devices=list, object=object, form=form)
             else:
-                return render(request, 'desktop/settings/devices/device.html', {'object': object, 'form': form, 'add': True})
+                return render(request, 'desktop/settings/devices/device.html',
+                              {'object': object, 'form': form, 'add': True})
 
     else:
         return False
 
     return render(request, 'desktop/settings/devices/device.html', {'object': object, 'form': form})
+
 
 def scenarios_settings(request, id=0):
     formset = ScenarioFormSet()
@@ -411,9 +424,11 @@ def scenarios_settings(request, id=0):
     if id != 0:
         form = ScenarioDeviceFormNew()
         scenariodevices = ScenarioDevice.objects.filter(scenario=id)
-        return setting(request, settings='scenarios', formset=formset, scenario=id, form=form, scenariodevices=scenariodevices, type='scenarios')
+        return setting(request, settings='scenarios', formset=formset, scenario=id, form=form,
+                       scenariodevices=scenariodevices, type='scenarios')
     else:
         return setting(request, settings='scenarios', formset=formset, type='scenarios')
+
 
 def edit_scenario(request):
     if request.method == 'POST' and 'scenario' in request.POST:
@@ -434,7 +449,8 @@ def edit_scenario(request):
 
         form = ScenarioDeviceFormNew()
 
-        return render(request, 'desktop/settings/scenarios/scenario.html', {'form': form, 'scenario': scenarioid, 'scenariodevices': scenariodevices})
+        return render(request, 'desktop/settings/scenarios/scenario.html',
+                      {'form': form, 'scenario': scenarioid, 'scenariodevices': scenariodevices})
 
     elif request.method == 'POST' and 'id' in request.POST:
         id = request.POST['id']
@@ -448,12 +464,14 @@ def edit_scenario(request):
             form = ScenarioDeviceFormAction(request.POST, instance=object)
             if form.is_valid():
                 form.save()
-                return HttpResponseRedirect(reverse('desktop.views.scenarios_settings', kwargs={'id': object.scenario.id}))
+                return HttpResponseRedirect(
+                    reverse('desktop.views.scenarios_settings', kwargs={'id': object.scenario.id}))
 
         return render(request, 'desktop/settings/scenarios/scenariodevice.html', {'form': form, 'object': object})
 
     else:
         raise Http404('No scenario')
+
 
 def edit_input(request):
     object = None
@@ -506,6 +524,7 @@ def edit_input(request):
 
     return render(request, 'desktop/settings/inputs/input.html', {'object': object, 'form': form, 'add': add})
 
+
 def edit_timer(request):
     if request.method == 'POST':
         if 'id' in request.POST:
@@ -542,6 +561,7 @@ def edit_timer(request):
         return False
 
     return render(request, 'desktop/settings/timers/timer.html', {'object': object, 'form': form})
+
 
 def widget_action(request):
     if request.method == 'POST' and 'device' in request.POST:

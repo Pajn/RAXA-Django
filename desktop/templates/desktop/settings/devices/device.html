@@ -18,15 +18,16 @@
     }
 </style>
 <form action="{% url 'desktop.views.edit_device' %}" method="post">{% csrf_token %}
-    <input type="hidden" name="id" value="{{ object.id }}" />
+    <input type="hidden" name="id" value="{{ object.id }}"/>
     <table style="text-align: left; border: 8px solid transparent; border-spacing: 0;">
         {{ form.as_table }}
     </table>
     {% if add %}
-        <input type="submit" name="add" value="{% trans "Add" %}" />
+        <input type="submit" name="add" value="{% trans "Add" %}"/>
     {% else %}
-        <input type="submit" name="save" value="{% trans "Save" %}" />
-        <input type="submit" name="delete" value="{% trans "Delete" %}" />
-        <input type="submit" name="sync" value="{% trans "Sync" %}" onclick="device({{ object.id }}, 'sync');return false" />
+        <input type="submit" name="save" value="{% trans "Save" %}"/>
+        <input type="submit" name="delete" value="{% trans "Delete" %}"/>
+        <input type="submit" name="sync" value="{% trans "Sync" %}"
+               onclick="device({{ object.id }}, 'sync');return false"/>
     {% endif %}
 </form>

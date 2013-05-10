@@ -1,8 +1,11 @@
-from django.http import HttpResponse
 import json
-from backend.models.Connector import Connector
+
+from django.http import HttpResponse
 from django.utils.translation import ugettext as _
+
+from backend.models.Connector import Connector
 from backend.models.Input import Input
+
 
 def respond_with_json(errors=None, pretty=False, request=None):
     if not errors: errors = []
@@ -16,10 +19,11 @@ def respond_with_json(errors=None, pretty=False, request=None):
     response = {'status': status}
     if pretty:
         jsons = json.dumps(response, sort_keys=True,
-            indent=4, separators=(',', ': '))
+                           indent=4, separators=(',', ': '))
     else:
         jsons = json.dumps(response)
     return HttpResponse(jsons, mimetype='application/json')
+
 
 def connector(request):
     errors = []
@@ -29,7 +33,7 @@ def connector(request):
             if object.__len__() > 0:
                 errors.append('AlreadyExists')
             else:
-                name = _('New ')+request.REQUEST['type']
+                name = _('New ') + request.REQUEST['type']
                 object = Connector(name=name, type=request.REQUEST['type'], code=request.REQUEST['code'])
                 object.save()
         else:
@@ -37,6 +41,7 @@ def connector(request):
     else:
         errors.append('NoType')
     return respond_with_json(errors=errors, request=request)
+
 
 def input(request):
     errors = []

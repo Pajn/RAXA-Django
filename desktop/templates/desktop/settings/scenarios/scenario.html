@@ -61,19 +61,19 @@
     }
 
     fieldset .on {
-        background-image:url("{{ STATIC_URL }}images/on.png");
+        background-image: url("{{ STATIC_URL }}images/on.png");
     }
 
     fieldset .off {
-        background-image:url("{{ STATIC_URL }}images/off.png");
+        background-image: url("{{ STATIC_URL }}images/off.png");
     }
 
     fieldset .dim {
-        background-image:url("{{ STATIC_URL }}images/dim.png");
+        background-image: url("{{ STATIC_URL }}images/dim.png");
     }
 
     fieldset .color {
-        background-image:url("{{ STATIC_URL }}images/color.png");
+        background-image: url("{{ STATIC_URL }}images/color.png");
     }
 
     .ui-hidden-accessible {
@@ -98,7 +98,7 @@
                 <span>{{ scenariodevice.device.name }}</span>
                 <span style="float: right; font-size: 0.8em;color: #ccc">{{ scenariodevice.device.room.floor.name }} / {{ scenariodevice.device.room.name }}</span>
             </div>
-            <div class="container"><br /><br /><br /><br /><br /><br /></div>
+            <div class="container"><br/><br/><br/><br/><br/><br/></div>
         </div>
     {% endfor %}
 </div>
@@ -108,14 +108,15 @@
     </div>
     <div class="container">
         <form action="{% url 'desktop.views.edit_scenario' %}" method="post">{% csrf_token %}
-            <input type="hidden" name="scenario" value="{{ scenario }}" />
+            <input type="hidden" name="scenario" value="{{ scenario }}"/>
             {{ form.as_ul }}
             <div id="actionrow" style="display: none;">
                 <label for="id_action">{% trans "Action" %}:</label>
+
                 <div id="actioncell">
                 </div>
             </div>
-            <input type="submit" name="add" value="{% trans "Add" %}" />
+            <input type="submit" name="add" value="{% trans "Add" %}"/>
         </form>
     </div>
 </div>
@@ -126,38 +127,38 @@
         active: false,
         heightStyle: "content",
         header: '> div > div[class="header"]',
-        beforeActivate: function(event, ui) {
+        beforeActivate: function (event, ui) {
             var id = ui.newHeader.attr('data-id');
-            ui.newPanel.load('{% url 'desktop.views.edit_scenario' %}', {'id': id}, function() {
+            ui.newPanel.load('{% url 'desktop.views.edit_scenario' %}', {'id': id}, function () {
                 fix_sliders();
             });
         }
     }).sortable({
-                axis: "y",
-                handle: '.header',
-                start: function( event, ui ) {
-                    $accordion.accordion("activate", false);
-                },
-                stop: function( event, ui ) {
-                    // IE doesn't register the blur when sorting
-                    // so trigger focusout handlers to remove .ui-state-focus
-                    ui.item.children('div[class="header"]').triggerHandler("focusout");
-                }
-            });
-    $accordion.click(function(event) {
+        axis: "y",
+        handle: '.header',
+        start: function (event, ui) {
+            $accordion.accordion("activate", false);
+        },
+        stop: function (event, ui) {
+            // IE doesn't register the blur when sorting
+            // so trigger focusout handlers to remove .ui-state-focus
+            ui.item.children('div[class="header"]').triggerHandler("focusout");
+        }
+    });
+    $accordion.click(function (event) {
         event.stopPropagation();
     });
-    $('#options').click(function() {
+    $('#options').click(function () {
         $('#accordion').accordion("activate", false);
     });
     $('#new').accordion({
         heightStyle: "content",
         header: 'div[class="header"]'
     });
-    $('#id_device').change(function() {
+    $('#id_device').change(function () {
         var id = $(this).val();
         if (id != '') {
-            $('#actioncell').load('{% url 'desktop.views.widget_action' %}', {'device': id}, function() {
+            $('#actioncell').load('{% url 'desktop.views.widget_action' %}', {'device': id}, function () {
                 fix_sliders();
             });
             $('#actionrow').show();
@@ -169,14 +170,14 @@
     });
     $('input[name="add"]').attr('disabled', 'disabled');
     function fix_sliders() {
-        $('input[type="range"]').each(function(index, input) {
+        $('input[type="range"]').each(function (index, input) {
             var $input, $label, $slider, $container;
 
             $input = $(input);
             var inputID = $input.attr('id');
 
             $container = $('<div class="slider" style="width: 195px"/>');
-            $label = $('<span class="label ui-widget-content ui-corner-all">'+parseInt($input.attr('value'), 10)+'</span>');
+            $label = $('<span class="label ui-widget-content ui-corner-all">' + parseInt($input.attr('value'), 10) + '</span>');
 
             //Create a new div, turn it into a slider, and set its attributes based on
             //the attributes of the input.
@@ -185,11 +186,11 @@
                 max: parseInt($input.attr('max'), 10),
                 value: parseInt($input.attr('value'), 10),
                 step: parseInt($input.attr('step'), 10),
-                slide: function(event, ui) {
+                slide: function (event, ui) {
                     //Keep the value of the input[type=range] in sync with the slider.
-                    //$(this).prev('input').val(ui.value);
-                    $('#' + inputID).val(ui.value);
-                    $('#' + inputID).change();
+                    var $input_id = $('#' + inputID);
+                    $input_id.val(ui.value);
+                    $input_id.change();
                     $label.text(ui.value);
                 }
             });
@@ -202,8 +203,8 @@
             $label.after($slider);
 
             $slider.css({
-                position:'relative',
-                top: ($container.height()/2 - $slider.outerHeight()/2)
+                position: 'relative',
+                top: ($container.height() / 2 - $slider.outerHeight() / 2)
             });
         });
     }

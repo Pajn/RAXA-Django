@@ -1,14 +1,18 @@
-from django.forms import HiddenInput, Widget
 import random
-from backend.models.Device import Device
 from string import Template
+
+from django.forms import HiddenInput, Widget
 from django.utils.safestring import mark_safe
+
+from backend.models.Device import Device
 from backend.io.protocol import DimLevelProtocol
+
 
 class SliderWidget(Widget):
     def render(self, name, value, attrs=None):
         tpl = Template(u'<input name="$name" type="range" class="slider" value="$value" min="0" max="15" />')
         return mark_safe(tpl.substitute(name=name, value=value))
+
 
 class NexaSLdim(DimLevelProtocol):
     CONNECTOR_TYPE = "Tellstick"
@@ -23,20 +27,20 @@ class NexaSLdim(DimLevelProtocol):
     def __init__(self):
         super(NexaSLdim, self).__init__()
         extra_actions = {
-            "sync" : self.sync,
-            "dim" : self.dim,
-            "dim_level" : self.dim_level,
-            }
+            "sync": self.sync,
+            "dim": self.dim,
+            "dim_level": self.dim_level,
+        }
         self.SUPPORTED_ACTIONS.update(extra_actions)
 
     def initialize(self, device):
         assert isinstance(device, Device)
         self.device = device
         self.sender_id = device.code
-        self.connector_string = '"protocol":"NEXASL","senderID":'+self.sender_id
+        self.connector_string = '"protocol":"NEXASL","senderID":' + self.sender_id
 
     def sync(self, *args, **kwargs):
-        self.device.connector.object.send(self.connector_string+',"cmd":"on"')
+        self.device.connector.object.send(self.connector_string + ',"cmd":"on"')
 
     def on(self, *args, **kwargs):
         try:
@@ -47,11 +51,11 @@ class NexaSLdim(DimLevelProtocol):
         self.dim_level(dim_level=on_level)
 
     def off(self, *args, **kwargs):
-        self.device.connector.object.send(self.connector_string+',"cmd":"off"')
+        self.device.connector.object.send(self.connector_string + ',"cmd":"off"')
         self.device.set_status('off')
 
     def dim(self, *args, **kwargs):
-        self.device.connector.object.send(self.connector_string+',"cmd":"on"')
+        self.device.connector.object.send(self.connector_string + ',"cmd":"on"')
         self.device.set_status('dim')
 
     def dim_level(self, *args, **kwargs):
@@ -60,7 +64,7 @@ class NexaSLdim(DimLevelProtocol):
         self.device.set_status(dim_level)
 
     def generateRandom(self):
-        rand = random.randint(0,67234433)
+        rand = random.randint(0, 67234433)
 
         unique = True
 

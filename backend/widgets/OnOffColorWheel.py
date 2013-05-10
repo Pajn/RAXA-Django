@@ -1,15 +1,18 @@
 from __future__ import unicode_literals
 import random
+from string import Template
+
 from django.forms import Widget
 from django.utils.safestring import mark_safe
-from string import Template
 from django.utils.translation import ugettext as _
+
 
 class OnOffColorWheel(Widget):
     def __init__(self, ui='default', device=None, *args, **kwargs):
         super(OnOffColorWheel, self).__init__(*args, **kwargs)
         self.ui = ui
         self.device = device
+
     def render(self, name, value, attrs=None):
         onselected = ''
         offselected = ''
@@ -59,8 +62,8 @@ class OnOffColorWheel(Widget):
             cwhide = 'block'
 
         return mark_safe(tpl.safe_substitute(name=name, value=value,
-            rand=random.randint(0,67234433),
-            on=_('On'), off=_('Off'), color=_('Color'),
-            onselected=onselected, offselected=offselected, cwselected=cwselected,
-            cwhide=cwhide
-            ))
+                                             rand=random.randint(0, 67234433),
+                                             on=_('On'), off=_('Off'), color=_('Color'),
+                                             onselected=onselected, offselected=offselected, cwselected=cwselected,
+                                             cwhide=cwhide
+        ))

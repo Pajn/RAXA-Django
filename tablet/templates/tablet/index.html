@@ -4,14 +4,19 @@
 <html>
     <head>
         <title>RAXA</title>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}floors.css" />
-        <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
-        <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
+
+        <meta charset="UTF-8"/>
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=1.0, height=1.0, user-scalable=no"/>
+
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css"/>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}floors.css"/>
+
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/icon.png"/>
+        <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}images/icon.png"/>
+
         <script type="text/javascript" src="{{ STATIC_URL }}tablet/fastclick.min_.js"></script>
-        <meta name="HandheldFriendly" content="true" />
-        <meta name="viewport" content="width=1.0, height=1.0, user-scalable=no" />
+
         <!--[if IE 9]>
             <style type="text/css">
                 .horisontal {
@@ -36,14 +41,16 @@
             {% endfor %}
             <div id="devices"></div>
         </div>
-        <div id="retholder"><div id="ret" style="Display: None" class="border"></div></div>
+        <div id="retholder">
+            <div id="ret" style="Display: None" class="border"></div>
+        </div>
         <div id="footer">
-            <hr class="border" />
+            <hr class="border"/>
             {% for scenario in scenarios %}
                 <input type="button" value="{{ scenario.name }}"
                        class="button round horisontal border fastclick"
                        style="width: {{ percent }}%;"
-                       onclick="scenario({{ scenario.id }});" />
+                       onclick="scenario({{ scenario.id }});"/>
             {% endfor %}
         </div>
         <script type="text/javascript">
@@ -104,25 +111,25 @@
                 }
             };
             function room(room) {
-                load('{% url 'tablet.views.devices' %}?room='+room, function (data) {
+                load('{% url 'tablet.views.devices' %}?room=' + room, function (data) {
                     document.getElementById("devices").innerHTML = data.responseText;
                 });
             }
             function scenario(id) {
                 document.getElementById("ret").textContent = '{% trans "Executing" %}';
                 document.getElementById('ret').style.display = "block";
-                load('{% url 'api.views.view_auth' view='scenario' %}?id='+id, function (data) {
+                load('{% url 'api.views.view_auth' view='scenario' %}?id=' + id, function (data) {
                     document.getElementById("ret").innerHTML = data.responseText;
-                    window.setTimeout(function() {
+                    window.setTimeout(function () {
                         document.getElementById('ret').style.display = "none";
                     }, 2000);
                 });
             }
             function device(id, cmd, dontLoad) {
-                var callback = function(data) {
+                var callback = function (data) {
                     document.getElementById('ret').innerHTML = data.responseText;
                     document.getElementById('ret').style.display = "block";
-                    window.setTimeout(function() {
+                    window.setTimeout(function () {
                         document.getElementById('ret').style.display = "none";
                     }, 2000);
                     if (supportsSVG()) {
@@ -134,7 +141,7 @@
                         });
                     }
                 };
-                load('{% url 'api.views.view_auth' view='device' %}?id='+id+'&action='+cmd, callback);
+                load('{% url 'api.views.view_auth' view='device' %}?id=' + id + '&action=' + cmd, callback);
             }
             function showdim(id) {
                 if (document.getElementById('dimrow' + id).style.display == "none") {

@@ -6,6 +6,7 @@ from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from backend.io.connector import supported_types, get_class
 
+
 class Connector(models.Model):
     name = models.CharField(_('Name'), max_length=30)
     type = models.CharField(_('Type'), max_length=30)
@@ -24,7 +25,9 @@ class Connector(models.Model):
         for type in supported_types():
             pass
 
+
 connector_form_set = None
+
 
 def ConnectorFormSet(*args, **kwargs):
     global connector_form_set
@@ -33,6 +36,7 @@ def ConnectorFormSet(*args, **kwargs):
         connector_form_set = modelformset_factory(Connector, form=ConnectorForm, can_delete=True, extra=0)
 
     return connector_form_set(*args, **kwargs)
+
 
 class ConnectorForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -54,6 +58,7 @@ class ConnectorForm(ModelForm):
 
     class Meta:
         model = Connector
+
 
 @receiver(post_init, sender=Connector)
 def initialize_connector(**kwargs):

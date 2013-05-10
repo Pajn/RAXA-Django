@@ -5,19 +5,21 @@
         height="100%"
         {{ SVG_ATTR|safe }}>
     {% for room in rooms %}
-        <rect id="{{ room.id }}" x="{{ room.x }}px" y="{{ room.y }}px" width="{{ room.width }}px" height="{{ room.height }}px"
+        <rect id="{{ room.id }}" x="{{ room.x }}px" y="{{ room.y }}px" width="{{ room.width }}px"
+              height="{{ room.height }}px"
             {% if edit_rooms %}
-                fill="rgba(100, 149, 237, 0.5)"
+              fill="rgba(100, 149, 237, 0.5)"
             {% else %}
-                stroke="rgba(0,0,0,0)" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0"
+              stroke="rgba(0,0,0,0)" stroke-width="0" stroke-opacity="0" fill="#00ffff" fill-opacity="0"
             {% endif %}
-        onclick="room({{ room.room_id }})" />
+              onclick="room({{ room.room_id }})"/>
         {% if edit_rooms %}
             <text text-anchor="middle" x="{{ room.center_x }}" y="{{ room.center_y }}" style="fill: #fff;">
                 <tspan x="{{ room.center_x }}">{{ room.room.name }}</tspan>
                 <tspan x="{{ room.center_x }}" dy="15">{{ room.room.floor.name }}</tspan>
             </text>
-            <text x="{{ room.x }}" y="{{ room.y }}" dy="15" style="fill: #f00;" onclick="delete_room({{ room.id }})" cursor="pointer">
+            <text x="{{ room.x }}" y="{{ room.y }}" dy="15" style="fill: #f00;" onclick="delete_room({{ room.id }})"
+                  cursor="pointer">
                 X
             </text>
         {% endif %}
@@ -25,13 +27,14 @@
 
     {% if not edit_rooms %}
         {% for furniture in furnitures %}
-            <circle id="{{ furniture.id }}" class="dot device{{ furniture.device_id }}" cx="{{ furniture.x1 }}px" cy="{{ furniture.y1 }}px" r="{{ radious }}px"
-            {% if furniture.device.object.is_off %}
+            <circle id="{{ furniture.id }}" class="dot device{{ furniture.device_id }}" cx="{{ furniture.x1 }}px"
+                    cy="{{ furniture.y1 }}px" r="{{ radious }}px"
+                {% if furniture.device.object.is_off %}
                     fill="rgba(55,55,55,1)"
-            {% else %}
+                {% else %}
                     fill="rgba(255,255,255,1)"
-            {% endif %}
-                    onclick="device({{ furniture.device_id }}, 'toggle')" />
+                {% endif %}
+                    onclick="device({{ furniture.device_id }}, 'toggle')"/>
         {% endfor %}
 
         {% for temp in temps %}

@@ -4,11 +4,14 @@ from django.dispatch import Signal
 from django.forms import ModelForm, ModelChoiceField, Form, HiddenInput
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
-from . import Device
-from backend.widgets import getWidget
 from django.db import transaction
 
+from . import Device
+from backend.widgets import getWidget
+
+
 scenario_executed = Signal(providing_args=['scenario'])
+
 
 class Scenario(models.Model):
     name = models.CharField(_('Name'), max_length=30)
@@ -36,7 +39,9 @@ class Scenario(models.Model):
 
         scenario_executed.send(sender=self, scenario=self)
 
+
 scenario_form_set = None
+
 
 def ScenarioFormSet(*args, **kwargs):
     global scenario_form_set
@@ -45,10 +50,12 @@ def ScenarioFormSet(*args, **kwargs):
         scenario_form_set = modelformset_factory(Scenario, exclude=('order',), can_delete=True)
     return scenario_form_set(*args, **kwargs)
 
+
 class ScenarioForm(ModelForm):
     class Meta:
         model = Scenario
         exclude = ('order',)
+
 
 class ScenarioDevice(models.Model):
     device = models.ForeignKey(Device)
@@ -58,7 +65,9 @@ class ScenarioDevice(models.Model):
     class Meta:
         app_label = 'backend'
 
+
 scenario_device_form_set = None
+
 
 def ScenarioDeviceFormSet(*args, **kwargs):
     global scenario_device_form_set
@@ -72,8 +81,10 @@ def ScenarioDeviceFormSet(*args, **kwargs):
             form.fields['action'].widget = getWidget(form.instance.device)
     return formset
 
+
 class ScenarioDeviceForm(ModelForm):
     device_new = ModelChoiceField(widget=HiddenInput(), queryset=Device.objects.all(), required=False)
+
     def __init__(self, *args, **kwargs):
         super(ScenarioDeviceForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
@@ -101,8 +112,10 @@ class ScenarioDeviceForm(ModelForm):
         model = ScenarioDevice
         exclude = ('scenario',)
 
+
 class ScenarioDeviceFormAction(ModelForm):
     device_new = ModelChoiceField(widget=HiddenInput(), queryset=Device.objects.all(), required=False)
+
     def __init__(self, *args, **kwargs):
         super(ScenarioDeviceFormAction, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
@@ -115,9 +128,11 @@ class ScenarioDeviceFormAction(ModelForm):
 
     class Meta:
         model = ScenarioDevice
-        exclude = ('scenario','device')
+        exclude = ('scenario', 'device')
+
 
 class ScenarioDeviceFormNew(Form):
     device = ModelChoiceField(label=_('Device'), queryset=Device.objects.all())
+
     def __init__(self, *args, **kwargs):
         super(ScenarioDeviceFormNew, self).__init__(*args, **kwargs)

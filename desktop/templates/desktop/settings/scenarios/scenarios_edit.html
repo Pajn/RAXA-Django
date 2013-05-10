@@ -6,11 +6,13 @@
     <table id="formset" class="form">
         {% for form in formset.forms %}
             {% if forloop.first %}
-                <thead><tr>
-                    {% for field in form.visible_fields %}
-                        <th>{{ field.label|capfirst }}</th>
-                    {% endfor %}
-                </tr></thead>
+                <thead>
+                    <tr>
+                        {% for field in form.visible_fields %}
+                            <th>{{ field.label|capfirst }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
             {% endif %}
             <tr class="{% cycle row1,row2 %}">
                 {% for field in form.visible_fields %}
@@ -28,5 +30,5 @@
             </tr>
         {% endfor %}
     </table>
-    <input type="submit" name="save" value="{% trans "Save" %}" />
+    <input type="submit" name="save" value="{% trans "Save" %}"/>
 </form>

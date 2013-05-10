@@ -14,8 +14,12 @@
     {% endif %}
         {{ form.as_p }}
         <div class="ui-grid-a">
-            <div class="ui-block-a"><input type="submit" name="delete" value="{% trans "Delete" %}" data-theme="c" data-icon="delete" /></div>
-            <div class="ui-block-b"><input type="submit" name="save" value="{% trans "Save" %}" data-theme="b" data-icon="check" /></div>
+            <div class="ui-block-a">
+                <input type="submit" name="delete" value="{% trans "Delete" %}" data-theme="c" data-icon="delete"/>
+            </div>
+            <div class="ui-block-b">
+                <input type="submit" name="save" value="{% trans "Save" %}" data-theme="b" data-icon="check"/>
+            </div>
         </div>
     </form>
 {% endblock %}

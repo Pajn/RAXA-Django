@@ -4,16 +4,16 @@
 <html>
     <head>
         <title>RAXA</title>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8"/>
         <!-- chromeframe metatag -->
-        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
 
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}floors.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}desktop/jquery-ui-1.9.2.custom.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css"/>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}floors.css"/>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}desktop/jquery-ui-1.9.2.custom.min.css"/>
 
-        <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
-        <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}images/icon.png" />
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/icon.png"/>
+        <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}images/icon.png"/>
 
         <script type="text/javascript" src="{{ STATIC_URL }}desktop/jquery-1.8.3.min.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}desktop/jquery-ui-1.9.2.custom.min.js"></script>
@@ -44,33 +44,51 @@
         <div id="settings" style="Display: {% block display_settings %}None{% endblock %}">
             <div id="menu">
                 <ul>
-                    <li><input type="button" data-id="devices" value="{% trans "Devices" %}" class="button normalbutton vertical menu top {% if type == 'devices' %}verticalSelected{% endif %}" /></li>
-                    <li><input type="button" data-id="scenarios" value="{% trans "Scenarios" %}" class="button normalbutton vertical menu {% if type == 'scenarios' %}verticalSelected{% endif %}" /></li>
-                    <li><input type="button" data-id="inputs" value="{% trans "Inputs" %}" class="button normalbutton vertical menu {% if type == 'inputs' %}verticalSelected{% endif %}" /></li>
-                    <li><input type="button" data-id="timers" value="{% trans "Timers" %}" class="button normalbutton vertical menu {% if type == 'timers' %}verticalSelected{% endif %}" /></li>
-                    <li><input type="button" data-id="thermometers" value="{% trans "Thermometers" %}" class="button normalbutton vertical menu {% if type == 'timers' %}verticalSelected{% endif %}" /></li>
+                    <li><input type="button" data-id="devices" value="{% trans "Devices" %}"
+                               class="button normalbutton vertical menu top {% if type == 'devices' %}verticalSelected{% endif %}"/>
+                    </li>
+                    <li><input type="button" data-id="scenarios" value="{% trans "Scenarios" %}"
+                               class="button normalbutton vertical menu {% if type == 'scenarios' %}verticalSelected{% endif %}"/>
+                    </li>
+                    <li><input type="button" data-id="inputs" value="{% trans "Inputs" %}"
+                               class="button normalbutton vertical menu {% if type == 'inputs' %}verticalSelected{% endif %}"/>
+                    </li>
+                    <li><input type="button" data-id="timers" value="{% trans "Timers" %}"
+                               class="button normalbutton vertical menu {% if type == 'timers' %}verticalSelected{% endif %}"/>
+                    </li>
+                    <li><input type="button" data-id="thermometers" value="{% trans "Thermometers" %}"
+                               class="button normalbutton vertical menu {% if type == 'timers' %}verticalSelected{% endif %}"/>
+                    </li>
                     <!--<li><input type="button" data-id="Auto" value="<?php echo $lang->{'automation'};?>" class="button normalbutton vertical menu" /></li>-->
-                    <li><input type="button" data-id="room" value="{% trans "Rooms" %}" class="button normalbutton vertical menu {% if type == 'rooms' %}verticalSelected{% endif %}" /></li>
-                    <li><input type="button" data-id="system" value="{% trans "System" %}" class="button normalbutton vertical menu {% if type == 'system' %}verticalSelected{% endif %}" /></li>
-                    <li><input type="button" data-id="plan" value="{% trans "Plan" %}" class="button normalbutton vertical menu {% if type == 'plan' %}verticalSelected{% endif %}" /></li>
+                    <li><input type="button" data-id="room" value="{% trans "Rooms" %}"
+                               class="button normalbutton vertical menu {% if type == 'rooms' %}verticalSelected{% endif %}"/>
+                    </li>
+                    <li><input type="button" data-id="system" value="{% trans "System" %}"
+                               class="button normalbutton vertical menu {% if type == 'system' %}verticalSelected{% endif %}"/>
+                    </li>
+                    <li><input type="button" data-id="plan" value="{% trans "Plan" %}"
+                               class="button normalbutton vertical menu {% if type == 'plan' %}verticalSelected{% endif %}"/>
+                    </li>
                 </ul>
             </div>
             <div id="options" class="border">
                 {% block settings %}{% endblock %}
             </div>
         </div>
-        <div id="retholder"><div id="ret" style="Display: None" class="border"></div></div>
+        <div id="retholder">
+            <div id="ret" style="Display: None" class="border"></div>
+        </div>
         <div id="footer">
             {% include 'desktop/footer.html' %}
         </div>
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('.menu').on('click', function(){
+            $(document).ready(function () {
+                $('.menu').on('click', function () {
                     $('.menu').removeClass('verticalSelected');
                     $(this).addClass('verticalSelected');
                     var type = $(this).attr('data-id');
-                    $('#options').load('{% url 'desktop.views.settings_index' %}', {'type': type}, function() {
-                        window.history.pushState('', 'RAXA - '+$(this).val(), '/{{ LANGUAGE_CODE }}/settings/'+type+'/');
+                    $('#options').load('{% url 'desktop.views.settings_index' %}', {'type': type}, function () {
+                        window.history.pushState('', 'RAXA - ' + $(this).val(), '/{{ LANGUAGE_CODE }}/settings/' + type + '/');
                     });
                 });
             });
@@ -135,12 +153,12 @@
                 {% endfor %}
             }
             function room(room) {
-                load('{% url 'desktop.views.devices' %}?room='+room, function (data) {
+                load('{% url 'desktop.views.devices' %}?room=' + room, function (data) {
                     document.getElementById("devices").innerHTML = data.responseText;
 
                     var $input, $slider;
 
-                    $('.slider').each(function(index, input) {
+                    $('.slider').each(function (index, input) {
                         $input = $(input);
 
                         //Create a new div, turn it into a slider, and set its attributes based on
@@ -150,11 +168,11 @@
                             max: parseInt($input.attr('max'), 10),
                             value: parseInt($input.attr('value'), 10),
                             step: parseInt($input.attr('step'), 10),
-                            slide: function(event, ui) {
+                            slide: function (event, ui) {
                                 //Keep the value of the input[type=range] in sync with the slider.
                                 $(this).prev('input').val(ui.value);
                             },
-                            stop: function(event, ui) {
+                            stop: function (event, ui) {
                                 var id = $(this).prev('input').attr('data-device');
                                 device(id, ui.value);
                             }
@@ -174,22 +192,22 @@
                     document.getElementById("ret").textContent = '{% trans "Error" %}';
                 }
                 document.getElementById('ret').style.display = "block";
-                window.setTimeout(function() {
+                window.setTimeout(function () {
                     document.getElementById('ret').style.display = "none";
                 }, 2000);
             }
             function scenario(id) {
                 document.getElementById("ret").textContent = '{% trans "Executing" %}';
                 document.getElementById('ret').style.display = "block";
-                load('{% url 'api.views.view_auth' view='scenario' %}?id='+id, function (data) {
+                load('{% url 'api.views.view_auth' view='scenario' %}?id=' + id, function (data) {
                     show_status(data.responseText);
                 });
             }
             function device(id, cmd) {
-                var callback = function(data) {
+                var callback = function (data) {
                     show_status(data.responseText);
                 };
-                load('{% url 'api.views.view_auth' view='device' %}?id='+id+'&action='+cmd, callback);
+                load('{% url 'api.views.view_auth' view='device' %}?id=' + id + '&action=' + cmd, callback);
             }
             function showdim(id) {
                 if (document.getElementById('dimrow' + id).style.display == "none") {
@@ -243,7 +261,7 @@
             }
             $.ajaxSetup({
                 crossDomain: false, // obviates need for sameOrigin test
-                beforeSend: function(xhr, settings) {
+                beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type)) {
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     }

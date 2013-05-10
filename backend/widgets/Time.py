@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 from django.forms import widgets
 
-class Time(widgets.MultiWidget):
 
+class Time(widgets.MultiWidget):
     def generate_hours(self):
         self.hours = []
         for i in range(0, 24):
@@ -20,7 +20,7 @@ class Time(widgets.MultiWidget):
         _widgets = (
             widgets.Select(attrs=attrs, choices=self.hours),
             widgets.Select(attrs=attrs, choices=self.minutes),
-            )
+        )
         super(Time, self).__init__(_widgets, attrs)
 
     def decompress(self, value):
@@ -35,8 +35,8 @@ class Time(widgets.MultiWidget):
         for widget in rendered_widgets:
             join = join + '<td>' + widget + '</td>'
 
-        return prefix+join+sufix
+        return prefix + join + sufix
 
-    def value_from_datadict(self,data,files,name):
-        line_list = [widget.value_from_datadict(data,files,name+'_%s' %i) for i,widget in enumerate(self.widgets)]
+    def value_from_datadict(self, data, files, name):
+        line_list = [widget.value_from_datadict(data, files, name + '_%s' % i) for i, widget in enumerate(self.widgets)]
         return line_list[0] + ':' + line_list[1]

@@ -1,7 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.utils.crypto import get_random_string
-from backend.models.User import User
 from django.http import HttpResponse
+
+from backend.models.User import User
 from RAXA.settings import LOCAL_IP_RANGES
 
 

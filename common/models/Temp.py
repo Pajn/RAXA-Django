@@ -1,7 +1,9 @@
 from django.db import models
 from django.forms import ModelForm, HiddenInput, ModelChoiceField
-from backend.models import Thermometer, Floor
 from django.utils.translation import ugettext_lazy as _
+
+from backend.models import Thermometer, Floor
+
 
 class Temp(models.Model):
     floor = models.ForeignKey(Floor)
@@ -12,6 +14,7 @@ class Temp(models.Model):
     class Meta:
         app_label = 'common'
 
+
 class TempForm(ModelForm):
     thermometer = ModelChoiceField(Thermometer.objects, label=_('Thermometer'))
 
@@ -21,4 +24,4 @@ class TempForm(ModelForm):
             'floor': HiddenInput(),
             'x': HiddenInput(),
             'y': HiddenInput(),
-            }
+        }

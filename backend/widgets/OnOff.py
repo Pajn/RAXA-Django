@@ -1,14 +1,17 @@
 from __future__ import unicode_literals
 import random
+from string import Template
+
 from django.forms import Widget
 from django.utils.safestring import mark_safe
-from string import Template
 from django.utils.translation import ugettext as _
+
 
 class OnOff(Widget):
     def __init__(self, ui='default', *args, **kwargs):
         super(OnOff, self).__init__(*args, **kwargs)
         self.ui = ui
+
     def render(self, name, value, attrs=None):
         onselected = ''
         offselected = ''
@@ -31,6 +34,6 @@ class OnOff(Widget):
             offselected = SELECTED
 
         return mark_safe(tpl.safe_substitute(name=name, value=value,
-                                        rand=random.randint(0,67234433),
-                                        on=_('On'), off=_('Off'),
-                                        onselected=onselected, offselected=offselected))
+                                             rand=random.randint(0, 67234433),
+                                             on=_('On'), off=_('Off'),
+                                             onselected=onselected, offselected=offselected))

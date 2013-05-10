@@ -1,14 +1,14 @@
 {% load i18n %}
-<hr class="border" />
+<hr class="border"/>
 {% for scenario in scenarios %}
     {% if not scenario.is_hidden %}
         <input type="button" value="{{ scenario.name }}"
                class="button round horisontal border"
                style="width: {{ percent }}%;"
-               onclick="scenario({{ scenario.id }});" />
+               onclick="scenario({{ scenario.id }});"/>
     {% endif %}
 {% endfor %}
 <input type="button" value="{% trans "Settings" %}"
        class="button round horisontal border"
        style="width: {{ percent }}%;"
-       onclick="settings();" />
+       onclick="settings();"/>

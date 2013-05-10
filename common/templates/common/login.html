@@ -3,15 +3,15 @@
 <html>
 <head>
     <title>RAXA</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css" />
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css"/>
 </head>
 <body>
 <div id="loginholder">
     <div id="login" class="round border">
         <form method="post">{% csrf_token %}
             {{ loginform.as_p }}
-            <input type="submit" value="{% trans "Login" %}" name="login" />
+            <input type="submit" value="{% trans "Login" %}" name="login"/>
         </form>
     </div>
 </div>

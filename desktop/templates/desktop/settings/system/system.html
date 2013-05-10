@@ -33,10 +33,18 @@
 <div id="setupsystem">
     <div id="systemmenu">
         <ul>
-            <li><input type="button" data-id="connectors" value="{% trans "Connectors" %}" class="button biggerbutton vertical submenu top {% if subtype == 'connectors' %}verticalSelected{% endif %}" /></li>
-            <li><input type="button" data-id="network" value="{% trans "Network" %}" class="button biggerbutton vertical submenu {% if subtype == 'network' %}verticalSelected{% endif %}" /></li>
-            <li><input type="button" data-id="security" value="{% trans "Security" %}" class="button biggerbutton vertical submenu {% if subtype == 'security' %}verticalSelected{% endif %}" /></li>
-            <li><input type="button" data-id="updates" value="{% trans "Updates" %}" class="button biggerbutton vertical submenu bottom {% if subtype == 'updates' %}verticalSelected{% endif %}" /></li>
+            <li><input type="button" data-id="connectors" value="{% trans "Connectors" %}"
+                       class="button biggerbutton vertical submenu top {% if subtype == 'connectors' %}verticalSelected{% endif %}"/>
+            </li>
+            <li><input type="button" data-id="network" value="{% trans "Network" %}"
+                       class="button biggerbutton vertical submenu {% if subtype == 'network' %}verticalSelected{% endif %}"/>
+            </li>
+            <li><input type="button" data-id="security" value="{% trans "Security" %}"
+                       class="button biggerbutton vertical submenu {% if subtype == 'security' %}verticalSelected{% endif %}"/>
+            </li>
+            <li><input type="button" data-id="updates" value="{% trans "Updates" %}"
+                       class="button biggerbutton vertical submenu bottom {% if subtype == 'updates' %}verticalSelected{% endif %}"/>
+            </li>
             <!--<li><input type="button" data-id="theme" value="Theme" class="button normalbutton vertical menu bottom" /></li>-->
         </ul>
     </div>
@@ -49,16 +57,16 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('.submenu').click(function() {
+    $('.submenu').click(function () {
         $('.submenu').removeClass('verticalSelected');
         $(this).addClass('verticalSelected');
         var type = $(this).attr("data-id");
-        $("#Soptions").load('{% url 'desktop.views.settings' type='system' %}', {'subtype': type}, function() {
-            window.history.pushState('', 'RAXA - '+$(this).val(), '/{{ LANGUAGE_CODE }}/settings/system/'+type+'/');
+        $("#Soptions").load('{% url 'desktop.views.settings' type='system' %}', {'subtype': type}, function () {
+            window.history.pushState('', 'RAXA - ' + $(this).val(), '/{{ LANGUAGE_CODE }}/settings/system/' + type + '/');
         });
     });
     {% if subtype %}
-        window.setTimeout(function() {
+        window.setTimeout(function () {
             window.history.pushState('', 'RAXA - {{ subtype }}', '/{{ LANGUAGE_CODE }}/settings/system/{{ subtype }}/');
         }, 10);
     {% endif %}

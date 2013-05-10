@@ -6,6 +6,7 @@ from django.utils.translation import ugettext as _
 from backend.models.Device import Device
 from backend.models.Scenario import Scenario
 
+
 class DeviceScenario(Widget):
     def __init__(self, value=None, *args, **kwargs):
         super(DeviceScenario, self).__init__(*args, **kwargs)
@@ -22,7 +23,7 @@ class DeviceScenario(Widget):
 
         tpl = Template('''<option value="D/$id" $selected>$name</option>''')
         return mark_safe(tpl.safe_substitute(id=device.id,
-            selected=SELECTED, name=device.name))
+                                             selected=SELECTED, name=device.name))
 
     def render_scenario_option(self, selected, scenario):
         SELECTED = ''
@@ -31,7 +32,7 @@ class DeviceScenario(Widget):
 
         tpl = Template('''<option value="S/$id" $selected>$name</option>''')
         return mark_safe(tpl.safe_substitute(id=scenario.id,
-            selected=SELECTED, name=scenario.name))
+                                             selected=SELECTED, name=scenario.name))
 
     def render_options(self, value):
         is_device = False
@@ -90,6 +91,7 @@ class DeviceScenario(Widget):
             return scenario
         else:
             return None
+
 
 class DeviceScenarioHidden(DeviceScenario):
     is_hidden = True

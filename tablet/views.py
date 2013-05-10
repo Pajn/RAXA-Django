@@ -9,11 +9,13 @@ import common.views
 def index(request):
     floors = Floor.objects.all()
     scenarios = Scenario.objects.all()
-    percent = (99-scenarios.__len__()) / scenarios.__len__()
+    percent = (99 - scenarios.__len__()) / scenarios.__len__()
     return render(request, 'tablet/index.html', {'scenarios': scenarios, 'floors': floors, 'percent': percent})
+
 
 def login(request):
     return common.views.login(request)
+
 
 def devices(request):
     if request.REQUEST.has_key('room'):

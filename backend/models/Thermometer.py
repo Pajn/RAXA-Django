@@ -4,7 +4,8 @@ from django.dispatch import receiver
 from django.forms import ModelForm
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
-from backend.io.thermometer import supported_types, get_class
+from backend.io.thermometer import get_class
+
 
 class Thermometer(models.Model):
     name = models.CharField(_('Name'), max_length=30)
@@ -23,7 +24,9 @@ class Thermometer(models.Model):
     def temp(self):
         return round(self.temperature, 1)
 
+
 thermometer_form_set = None
+
 
 def ThermometerFormSet(*args, **kwargs):
     global thermometer_form_set
@@ -32,6 +35,7 @@ def ThermometerFormSet(*args, **kwargs):
         thermometer_form_set = modelformset_factory(Thermometer, form=ThermometerForm, can_delete=True, extra=0)
 
     return thermometer_form_set(*args, **kwargs)
+
 
 class ThermometerForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -59,6 +63,7 @@ class ThermometerForm(ModelForm):
 
     class Meta:
         model = Thermometer
+
 
 @receiver(post_init, sender=Thermometer)
 def initialize_thermometer(**kwargs):

@@ -12,7 +12,7 @@
                 <span>{{ device.name }}</span>
                 <span style="float: right; font-size: 0.8em;color: #ccc">{{ device.room.floor.name }} / {{ device.room.name }}</span>
             </div>
-            <div class="container"><br /><br /><br /><br /><br /><br /></div>
+            <div class="container"><br/><br/><br/><br/><br/><br/></div>
         </div>
     {% endfor %}
 </div>
@@ -35,26 +35,26 @@
         active: false,
         heightStyle: "content",
         header: '> div > div[class="header"]',
-        beforeActivate: function(event, ui) {
+        beforeActivate: function (event, ui) {
             var id = ui.newHeader.attr('data-id');
             ui.newPanel.load('{% url 'desktop.views.edit_device' %}', {'id': id}, fix_sliders);
         }
     }).sortable({
         axis: "y",
         handle: '.header',
-        start: function( event, ui ) {
+        start: function (event, ui) {
             $accordion.accordion("activate", false);
         },
-        stop: function( event, ui ) {
+        stop: function (event, ui) {
             // IE doesn't register the blur when sorting
             // so trigger focusout handlers to remove .ui-state-focus
             ui.item.children('div[class="header"]').triggerHandler("focusout");
         }
     });
-    $accordion.click(function(event) {
+    $accordion.click(function (event) {
         event.stopPropagation();
     });
-    $('#options').click(function() {
+    $('#options').click(function () {
         $('#accordion').accordion("activate", false);
     });
     $('#new').accordion({
@@ -62,7 +62,7 @@
         header: 'div[class="header"]'
     });
     function type_event() {
-        $('#new #id_type').off().on('change', function() {
+        $('#new #id_type').off().on('change', function () {
             var type = $(this).val();
             if (type != null && type != '') {
                 $('#new .container').load('{% url 'desktop.views.edit_device' %}', {'type': type}, type_event);
@@ -72,7 +72,7 @@
     }
     type_event();
     function fix_sliders() {
-        $('input[type="range"]').each(function(index, input) {
+        $('input[type="range"]').each(function (index, input) {
             var $input, $label, $slider;
 
             $input = $(input);
@@ -80,7 +80,7 @@
             if ($input.attr('data-fixed') != 'true') {
 
                 $container = $('<div class="slider"/>');
-                $label = $('<span class="label ui-widget-content ui-corner-all">'+parseInt($input.attr('value'), 10)+'</span>');
+                $label = $('<span class="label ui-widget-content ui-corner-all">' + parseInt($input.attr('value'), 10) + '</span>');
 
                 //Create a new div, turn it into a slider, and set its attributes based on
                 //the attributes of the input.
@@ -89,7 +89,7 @@
                     max: parseInt($input.attr('max'), 10),
                     value: parseInt($input.attr('value'), 10),
                     step: parseInt($input.attr('step'), 10),
-                    slide: function(event, ui) {
+                    slide: function (event, ui) {
                         //Keep the value of the input[type=range] in sync with the slider.
                         $(this).prev('input').val(ui.value);
                         $input.val(ui.value);
@@ -110,8 +110,8 @@
                 $slider.width($container.width() - $label.width() - 15);
 
                 $slider.css({
-                    position:'relative',
-                    top: ($container.height()/2 - $slider.outerHeight()/2)
+                    position: 'relative',
+                    top: ($container.height() / 2 - $slider.outerHeight() / 2)
                 });
             }
         });
