@@ -75,7 +75,7 @@ class Timer(models.Model):
             DAYS[day_of_week]: True
         }
 
-        return Timer.objects.filter(**kwargs)
+        return Timer.objects.filter(**kwargs).select_related('action_object')
 
 
 class TimerForm(ModelForm):

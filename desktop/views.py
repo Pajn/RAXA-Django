@@ -152,7 +152,7 @@ class Settings():
                 return render(self.request, 'desktop/settings/%s/%s.html' % (self.template, self.template), self.kwargs)
 
     def devices(self):
-        list = Device.objects.select_related().all()
+        list = Device.objects.all().select_related('room__floor')
         form = DeviceFormNew()
 
         self.template = 'devices'
@@ -172,7 +172,7 @@ class Settings():
         self.kwargs = {'inputs': list}
 
     def timers(self):
-        list = Timer.objects.all()
+        list = Timer.objects.all().select_related('action_object')
         form = TimerForm()
 
         self.template = 'timers'
@@ -396,7 +396,7 @@ def edit_device(request):
                     form.save()
                     return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'devices'}))
 
-                list = Device.objects.all()
+                list = Device.objects.all().select_related('room__floor')
                 form = DeviceFormNew()
                 return setting(request, settings='devices', devices=list, object=object, form=form)
             else:

@@ -160,9 +160,9 @@ def version(*args):
 def devices(request):
     if 'room' in request.REQUEST:
         room = request.REQUEST['room']
-        query = Device.objects.filter(room=room)
+        query = Device.objects.filter(room=room).select_related('connector')
     else:
-        query = Device.objects.all()
+        query = Device.objects.all().select_related('connector')
     devices = []
     for device in query:
         devices.append(serialize_device(device))

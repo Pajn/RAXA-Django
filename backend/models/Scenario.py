@@ -32,10 +32,10 @@ class Scenario(models.Model):
         transaction.managed(True)
 
         if action is None:
-            for scenario_device in self.scenariodevice_set.all().select_related():
+            for scenario_device in self.scenariodevice_set.all().select_related('device'):
                 scenario_device.device.object.action(action=scenario_device.action)
         else:
-            for scenario_device in self.scenariodevice_set.all():
+            for scenario_device in self.scenariodevice_set.all().select_related('device'):
                 scenario_device.device.object.action(action=action)
 
         transaction.commit()
