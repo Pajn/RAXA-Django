@@ -16,5 +16,4 @@ class Command(BaseCommand):
             therm = Thermometer(type='OneWire', code=code)
             therm.name = 'New OneWire Sensor'
 
-        therm.temperature = temp
-        therm.save()
+        therm.set_temp(temp)

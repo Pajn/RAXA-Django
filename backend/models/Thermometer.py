@@ -1,10 +1,13 @@
 from django.db import models
 from django.db.models.signals import post_init
-from django.dispatch import receiver
+from django.dispatch import receiver, Signal
 from django.forms import ModelForm
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from backend.io.thermometer import get_class
+
+
+temperature_changed = Signal(providing_args=['thermometer', 'temperature'])
 
 
 class Thermometer(models.Model):
@@ -21,7 +24,12 @@ class Thermometer(models.Model):
     def __unicode__(self):
         return self.name
 
-    def temp(self):
+    def set_temp(self, temp):
+        self.temperature = temp
+        self.save()
+        temperature_changed.send(sender=self, thermometer=self, temperature=temp)
+
+    def get_temp(self):
         return round(self.temperature, 1)
 
 

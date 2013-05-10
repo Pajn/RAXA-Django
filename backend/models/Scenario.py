@@ -10,6 +10,7 @@ from . import Device
 from backend.widgets import getWidget
 
 
+scenario_executing = Signal(providing_args=['scenario'])
 scenario_executed = Signal(providing_args=['scenario'])
 
 
@@ -25,6 +26,8 @@ class Scenario(models.Model):
         return self.name
 
     def execute(self, action=None):
+        scenario_executing.send(sender=self, scenario=self)
+
         transaction.enter_transaction_management()
         transaction.managed(True)
 

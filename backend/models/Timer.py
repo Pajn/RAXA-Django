@@ -14,6 +14,7 @@ from backend.widgets import getWidget
 from backend.widgets.Time import Time
 
 
+timer_executing = Signal(providing_args=['timer'])
 timer_executed = Signal(providing_args=['timer'])
 
 
@@ -41,6 +42,8 @@ class Timer(models.Model):
         return self.name
 
     def execute(self):
+        timer_executing.send(sender=self, timer=self)
+
         if isinstance(self.action_object, Device):
             self.action_object.object.action(action=self.action)
         elif isinstance(self.action_object, Scenario):
