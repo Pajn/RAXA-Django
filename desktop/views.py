@@ -155,7 +155,7 @@ class Settings():
         self.kwargs = {'scenarios': scenarios, 'formset': formset}
 
     def inputs(self):
-        list = Input.objects.exclude(pk=0)
+        list = Input.objects.exclude(pk=1)
 
         self.template = 'inputs'
         self.kwargs = {'inputs': list}

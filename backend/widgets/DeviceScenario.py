@@ -100,9 +100,9 @@ class DeviceScenarioHidden(DeviceScenario):
         try:
             id = value.id
             if isinstance(value, Device):
-                self.value = 'D%s' % id
+                self.value = 'D/%s' % id
             elif isinstance(value, Scenario):
-                self.value = 'S%s' % id
+                self.value = 'S/%s' % id
         except AttributeError:
             self.value = ''
 

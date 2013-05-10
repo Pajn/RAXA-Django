@@ -222,7 +222,7 @@ def edit_connector(request, id):
     return render(request, 'mobile/settings/connector.html', {'object': object, 'form': form})
 
 def inputs_settings(request):
-    list = Input.objects.exclude(pk=0)
+    list = Input.objects.exclude(pk=1)
     return render(request, 'mobile/settings/inputs.html', {'list': list})
 
 def scan_input(request):
@@ -230,7 +230,7 @@ def scan_input(request):
     if input is None:
         return HttpResponseRedirect(reverse('mobile.views.inputs_settings'))
     else:
-        return HttpResponseRedirect(reverse('mobile.views.edit_input', kwargs={'id': 0,}))
+        return HttpResponseRedirect(reverse('mobile.views.edit_input', kwargs={'id': 1}))
 
 def edit_input(request, id):
     submit = 'delete'
@@ -241,6 +241,9 @@ def edit_input(request, id):
             if form.is_valid(): # All validation rules pass
                 action_object = form._raw_value('device_scenario')
                 object = Input(action_object=action_object)
+                found = Input.objects.get(pk=1)
+                object.protocol = found.protocol
+                object.data = found.data
                 form = InputForm(instance=object)
                 form.fields['device_scenario'].widget = DeviceScenarioHidden(value=object.action_object)
                 submit = 'save'
@@ -255,17 +258,18 @@ def edit_input(request, id):
             postdata = request.POST.copy()
             postdata['action_object'] = postdata['device_scenario']
             object = get_object_or_404(Input, pk=id)
-            if id == '0':
+            if id == '1':
                 form = InputForm(request.POST)
                 action_object = form._raw_value('device_scenario')
                 object.action_object = action_object
+                object.id = None
                 submit = 'save'
             form = InputForm(postdata, instance=object)
             if form.is_valid(): # All validation rules pass
                 form.save()
                 return HttpResponseRedirect(reverse('mobile.views.inputs_settings'))
     else:
-        if id == '0':
+        if id == '1':
             form = InputFormNew()
             submit = 'next'
         else:
