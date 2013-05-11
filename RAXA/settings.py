@@ -91,10 +91,6 @@ MIDDLEWARE_CLASSES = (
     'backend.authorization.Auth',
 )
 
-CRON_CLASSES = (
-    'RAXA.cron.Timers',
-)
-
 ROOT_URLCONF = 'RAXA.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -111,7 +107,6 @@ INSTALLED_APPS = (
     #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'django_cron',
     'django_jinja2'
     'south',
     'backend',
@@ -162,6 +157,8 @@ LOCAL_IP_RANGES = [
     '192.168.',
     '10.'
 ]
+
+TIMER_MINUTES_BETWEEN = 5
 
 try:
     from RAXA.local_settings import *

@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.forms import widgets
+from RAXA.settings import TIMER_MINUTES_BETWEEN
 
 
 class Time(widgets.MultiWidget):
@@ -10,7 +11,7 @@ class Time(widgets.MultiWidget):
 
     def generate_minutes(self):
         self.minutes = []
-        for i in range(0, 60, 5):
+        for i in range(0, 60, TIMER_MINUTES_BETWEEN):
             self.minutes.append((str(i), str(i).zfill(2)))
 
     def __init__(self, attrs=None, mode=0):
