@@ -1,0 +1,8 @@
+common/static/images/floor1.svg
+common/static/images/floor2.svg
+RAXA/local_settings.py
+sqlite.db
+.idea/*
+*.pyc
+*.pyo
+*~

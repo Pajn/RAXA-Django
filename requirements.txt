@@ -1,0 +1,7 @@
+Django==1.5.1
+South==0.7.6
+django-cron==0.2.8
+python-memcached==1.51
+pytz==2013b
+jinja2
+django-jinja2
