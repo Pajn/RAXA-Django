@@ -33,6 +33,6 @@ def overlay(request, floor=1):
     furnitures = Furniture.objects.select_related('device').filter(floor=floor)
     temps = Temp.objects.select_related('thermometer').filter(floor=floor)
     radious = 10
-    return render(request, 'common/floor.svg',
+    return render(request, 'common/floor.jinja.svg',
                   {'SVG_ATTR': SVG_ATTR[int(floor)], 'rooms': rooms, 'furnitures': furnitures, 'temps': temps,
                    'radious': radious, 'edit_rooms': edit_rooms})
