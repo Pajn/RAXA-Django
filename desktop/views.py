@@ -172,7 +172,7 @@ class Settings():
         self.kwargs = {'inputs': list}
 
     def timers(self):
-        list = Timer.objects.all().select_related('action_object')
+        list = Timer.objects.all()
         form = TimerForm()
 
         self.template = 'timers'

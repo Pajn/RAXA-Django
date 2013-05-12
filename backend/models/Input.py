@@ -2,7 +2,7 @@ import time
 import pytz
 
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.db import models, transaction
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.dispatch import Signal
@@ -19,6 +19,20 @@ from backend.widgets import getWidget
 
 input_received = Signal(providing_args=['protocol', 'data'])
 input_executed = Signal(providing_args=['input'])
+
+
+@transaction.commit_manually
+def _flush_transaction():
+    """
+    Flush the current transaction so we don't read stale data
+
+    Use in long running processes to make sure fresh data is read from
+    the database.  This is a problem with MySQL and the default
+    transaction mode.  You can fix it by setting
+    "transaction-isolation = READ-COMMITTED" in my.cnf or by calling
+    this function at the appropriate moment
+    """
+    transaction.commit()
 
 
 class Input(models.Model):
@@ -48,7 +62,7 @@ class Input(models.Model):
     def received(protocol, data):
         input_received.send(sender=None, protocol=protocol, data=data)
         try:
-            object = Input.objects.exclude(pk=1).get(protocol=protocol, data=data).select_related('action_object')
+            object = Input.objects.exclude(pk=1).get(protocol=protocol, data=data)
             object.execute()
         except Input.DoesNotExist:
             try:
@@ -85,6 +99,7 @@ class Input(models.Model):
                 input = Input.objects.get(pk=1, name='found')
                 found = True
             except Input.DoesNotExist:
+                _flush_transaction()
                 current_time = time.time() - start_time
                 if current_time >= timeout:
                     timedout = True
