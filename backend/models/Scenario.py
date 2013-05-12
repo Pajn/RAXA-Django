@@ -40,6 +40,8 @@ class Scenario(models.Model):
 
         transaction.commit()
 
+        transaction.leave_transaction_management()
+
         scenario_executed.send(sender=self, scenario=self)
 
 
