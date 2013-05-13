@@ -1,12 +1,12 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from backend.authorization import get_user
+from backend.models import Floor
 from backend.models.User import LoginForm
 from common.models import Temp
 from common.models.Furniture import Furniture
 from common.models.Plan import Plan
-from RAXA.local_settings import SVG_ATTR
 
 
 def login(request, template='common/login.html', **kwargs):
@@ -29,10 +29,11 @@ def overlay(request, floor=1):
         if 'edit_rooms' in request.POST:
             edit_rooms = True
 
+    floor = get_object_or_404(Floor, id=floor)
     rooms = Plan.objects.select_related('room__id').filter(floor=floor)
     furnitures = Furniture.objects.select_related('device').filter(floor=floor)
     temps = Temp.objects.select_related('thermometer').filter(floor=floor)
     radious = 10
     return render(request, 'common/floor.jinja.svg',
-                  {'SVG_ATTR': SVG_ATTR[int(floor)], 'rooms': rooms, 'furnitures': furnitures, 'temps': temps,
+                  {'viewbox': floor.viewbox, 'rooms': rooms, 'furnitures': furnitures, 'temps': temps,
                    'radious': radious, 'edit_rooms': edit_rooms})

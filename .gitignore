@@ -1,7 +1,3 @@
-common/static/images/floor1.svg
-common/static/images/floor2.svg
-RAXA/static/images/floor1.svg
-RAXA/static/images/floor2.svg
 RAXA/local_settings.py
 sqlite.db
 .idea/*

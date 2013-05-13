@@ -281,7 +281,7 @@ class Settings():
     def floors(self):
         if self.request.method == 'POST':
             if 'save' in self.request.POST:
-                formset = FloorFormSet(self.request.POST)
+                formset = FloorFormSet(self.request.POST, self.request.FILES)
                 if formset.is_valid():
                     formset.save()
 

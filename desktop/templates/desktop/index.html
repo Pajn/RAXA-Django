@@ -106,44 +106,20 @@
             }
             window.onload = function () {
                 var floor_img = '';
-                if (supportsSVG()) {
-                    {% for floor in floors %}
-                        floor_img = document.createElement('div');
-                        floor_img.setAttribute('id', 'floor{{ floor.id }}img');
-                        document.getElementById('floor{{ floor.id }}').appendChild(floor_img);
-                        load('{{ STATIC_URL }}images/floor{{ floor.id }}.svg', function (data) {
-                            document.getElementById("floor{{ floor.id }}img").innerHTML = data.responseText;
-                        });
-                        var floor_img_overlay = document.createElement('div');
-                        floor_img_overlay.setAttribute('id', 'floor{{ floor.id }}imgoverlay');
-                        document.getElementById('floor{{ floor.id }}').appendChild(floor_img_overlay);
-                        load('{% url 'common.views.overlay' floor=floor.id %}', function (data) {
-                            document.getElementById("floor{{ floor.id }}imgoverlay").innerHTML = data.responseText;
-                        });
-                    {% endfor %}
-                } else {
-                    var css = document.createElement('link');
-                    css.setAttribute('rel', 'stylesheet');
-                    css.setAttribute('type', 'text/css');
-                    css.setAttribute('href', '{{ STATIC_URL }}rooms.css');
-                    document.getElementById('body').appendChild(css);
-
-                    {% for floor in floors %}
-                        floor_img = document.createElement('img');
-                        floor_img.setAttribute('id', 'floor{{ floor.id }}img');
-                        floor_img.setAttribute('src', '{{ STATIC_URL }}images/floor{{ floor.id }}.gif');
-                        document.getElementById('floor{{ floor.id }}').appendChild(floor_img);
-                    {% endfor %}
-
-                    {% for room in backend.models.Room.all %}
-                        var room = document.createElement('div');
-                        room.setAttribute('id', 'iroom{{ room.id }}');
-                        room.setAttribute('class', 'fastclick');
-                        room.setAttribute('style', 'z-Index: 100');
-                        room.setAttribute('onclick', 'room({{ room.id }})');
-                        document.getElementById('floor{{ room.floor.id }}').appendChild(room);
-                    {% endfor %}
-                }
+                {% for floor in floors %}
+                    floor_img = document.createElement('div');
+                    floor_img.setAttribute('id', 'floor{{ floor.id }}img');
+                    document.getElementById('floor{{ floor.id }}').appendChild(floor_img);
+                    load('{{ floor.image.url }}', function (data) {
+                        document.getElementById("floor{{ floor.id }}img").innerHTML = data.responseText;
+                    });
+                    var floor_img_overlay = document.createElement('div');
+                    floor_img_overlay.setAttribute('id', 'floor{{ floor.id }}imgoverlay');
+                    document.getElementById('floor{{ floor.id }}').appendChild(floor_img_overlay);
+                    load('{% url 'common.views.overlay' floor=floor.id %}', function (data) {
+                        document.getElementById("floor{{ floor.id }}imgoverlay").innerHTML = data.responseText;
+                    });
+                {% endfor %}
             };
             function update_overlay() {
                 {% for floor in floors %}
@@ -219,10 +195,6 @@
             function dim(id) {
                 var dim_level = document.getElementById('dim' + id).value;
                 device(id, dim_level);
-            }
-            function supportsSVG() {
-                return !!document.createElementNS &&
-                       !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
             }
             var $settings = $('#settings');
             var $container = $('#container');
