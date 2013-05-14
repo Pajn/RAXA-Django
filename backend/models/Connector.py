@@ -11,6 +11,8 @@ class Connector(models.Model):
     name = models.CharField(_('Name'), max_length=30)
     type = models.CharField(_('Type'), max_length=30)
     code = models.CharField(_('Code'), max_length=30)
+    version = models.CharField(_('Version'), max_length=30)
+    usable = models.BooleanField(_('Usable'))
 
     object = None
 
@@ -45,8 +47,13 @@ class ConnectorForm(ModelForm):
         if instance and instance.id:
             self.fields['type'].required = False
             self.fields['type'].widget.attrs['disabled'] = 'disabled'
+            self.fields['type'].widget.attrs['size'] = '10'
             self.fields['code'].required = False
             self.fields['code'].widget.attrs['disabled'] = 'disabled'
+            self.fields['code'].widget.attrs['size'] = '10'
+            self.fields['version'].required = False
+            self.fields['version'].widget.attrs['disabled'] = 'disabled'
+            self.fields['version'].widget.attrs['size'] = '10'
 
     def clean_type(self):
         instance = getattr(self, 'instance', None)
@@ -56,8 +63,13 @@ class ConnectorForm(ModelForm):
         instance = getattr(self, 'instance', None)
         return instance.code
 
+    def clean_version(self):
+        instance = getattr(self, 'instance', None)
+        return instance.version
+
     class Meta:
         model = Connector
+        exclude = ('usable',)
 
 
 @receiver(post_init, sender=Connector)

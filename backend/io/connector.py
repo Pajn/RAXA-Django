@@ -23,7 +23,7 @@ def scan_connectors():
     types = supported_types()
     for type in types:
         get_class(type)().scan()
-    time.sleep(10)
+    time.sleep(5)
 
 
 class Connector(object):
@@ -31,6 +31,12 @@ class Connector(object):
 
     def initialize(self, connector):
         self.connector = connector
+
+    def is_usable(self):
+        return False
+
+    def update(self):
+        raise NotImplementedError
 
     def scan(self):
         pass

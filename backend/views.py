@@ -2,6 +2,7 @@ import json
 
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
+from backend.io.connector import supported_types
 
 from backend.models.Connector import Connector
 from backend.models.Input import Input
@@ -27,15 +28,35 @@ def respond_with_json(errors=None, pretty=False, request=None):
 
 def connector(request):
     errors = []
-    if request.REQUEST.has_key('type'):
-        if request.REQUEST.has_key('code'):
-            object = Connector.objects.filter(type=request.REQUEST['type'], code=request.REQUEST['code'])
-            if object.__len__() > 0:
-                errors.append('AlreadyExists')
+    if 'type' in request.REQUEST:
+        if 'code' in request.REQUEST:
+            if 'version' in request.REQUEST:
+                if request.REQUEST['type'] in supported_types():
+                    objects = Connector.objects.filter(type=request.REQUEST['type'], code=request.REQUEST['code'])
+                    if objects.__len__() > 0:
+                        if objects.__len__() == 1:
+                            object = objects[0]
+                            if object.version == request.REQUEST['version']:
+                                errors.append('AlreadyExists')
+                            else:
+                                object.version = request.REQUEST['version']
+                                object.usable = object.object.is_usable()
+                                object.save()
+                        else:
+                            objects.delete()
+                            name = _('New ') + request.REQUEST['type']
+                            object = Connector(name=name, type=request.REQUEST['type'], code=request.REQUEST['code'],
+                                               version=request.REQUEST['version'])
+                            object.save()
+                    else:
+                        name = _('New ') + request.REQUEST['type']
+                        object = Connector(name=name, type=request.REQUEST['type'], code=request.REQUEST['code'],
+                                           version=request.REQUEST['version'])
+                        object.save()
+                else:
+                    errors.append('TypeNotSupported')
             else:
-                name = _('New ') + request.REQUEST['type']
-                object = Connector(name=name, type=request.REQUEST['type'], code=request.REQUEST['code'])
-                object.save()
+                errors.append('NoVersion')
         else:
             errors.append('NoCode')
     else:

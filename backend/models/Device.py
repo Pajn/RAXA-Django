@@ -6,14 +6,14 @@ from django.utils.translation import ugettext_lazy as _
 
 from . import Connector
 from . import Room
-from backend.io.protocol import get_class, supported_types
+from backend.io import protocol
 
 
 device_status_change = Signal(providing_args=['device', 'status'])
 
 
 class Device(models.Model):
-    choices = supported_types()
+    choices = protocol.supported_types()
 
     name = models.CharField(_('Name'), max_length=30)
     type = models.CharField(_('Type'), max_length=30, choices=choices)
@@ -44,12 +44,12 @@ class DeviceForm(ModelForm):
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Device)
 
-        if instance.object.CONNECTOR_TYPE is None:
+        if instance.object.CONNECTOR_TYPE is not None:
+            if instance and instance.type:
+                connector_type = protocol.get_class(instance.type)().CONNECTOR_TYPE
+                self.fields['connector'].queryset = Connector.objects.filter(type=connector_type, usable=True)
+        else:
             self.fields.pop('connector')
-
-        if instance and instance.type:
-            connector_type = get_class(instance.type)().CONNECTOR_TYPE
-            self.fields['type'].queryset = Connector.objects.filter(type=connector_type)
 
         if instance and instance.id:
             self.fields['type'].required = False
@@ -86,6 +86,6 @@ def initialize_device(instance=None, **kwargs):
     assert isinstance(instance, Device)
     if instance and instance.type:
         # get the protocols class
-        instance.object = get_class(instance.type)()
+        instance.object = protocol.get_class(instance.type)()
         # initialize the object
         instance.object.initialize(instance)

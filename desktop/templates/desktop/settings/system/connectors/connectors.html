@@ -27,6 +27,14 @@
                         {{ field }}
                     </td>
                 {% endfor %}
+                {% if not form.instance.usable %}
+                    <td>
+                        <a href="javascript:void(0)"
+                           onclick="update('{{ form.instance.id }}','{{ form.instance.name }}');">
+                            {% blocktrans %}Update Needed{% endblocktrans %}
+                        </a>
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
@@ -36,6 +44,8 @@
 <div id="dialog-scan" title="">
     {% blocktrans %}Searching for new connectors, please wait...{% endblocktrans %}
 </div>
+<div id="dialog-update" title="">
+</div>
 <script type="text/javascript">
     function search() {
         $('#Soptions').load('{% url 'desktop.views.settings' type='system' %}', {'subtype': 'connectors', 'search': ''}, function () {
@@ -43,8 +53,22 @@
         });
         $('#dialog-scan').dialog('open');
     }
+    function update(id, name) {
+        $('#Soptions').load('{% url 'desktop.views.settings' type='system' %}', {'subtype': 'connectors', 'update': id}, function () {
+            $('#dialog-update').dialog('close');
+            search();
+        });
+        $('#dialog-update').text('{% blocktrans %}Updating Connector "{% endblocktrans %}'+ name + '"');
+        $('#dialog-update').dialog('open');
+    }
     $(function () {
         $('#dialog-scan').dialog({
+            modal: true,
+            autoOpen: false
+        });
+    });
+    $(function () {
+        $('#dialog-update').dialog({
             modal: true,
             autoOpen: false
         });

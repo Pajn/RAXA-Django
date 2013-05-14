@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
 from backend.authorization import get_user
 from backend.models import ConnectorFormSet, InputForm, ThermometerFormSet, RoomFormSet, FloorFormSet
+from backend.models.Connector import Connector
 from backend.models.Device import Device, DeviceForm, DeviceFormNew
 from backend.models.Input import Input
 from backend.models.Room import Room, Floor
@@ -205,6 +206,9 @@ class Settings():
                     formset.save()
             elif 'search' in self.request.POST:
                 scan_connectors()
+            elif 'update' in self.request.POST:
+                connector = get_object_or_404(Connector, id=self.request.POST['update'])
+                connector.object.update()
 
         formset = ConnectorFormSet()
 

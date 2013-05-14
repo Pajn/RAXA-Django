@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from backend.authorization import get_user
 from backend.io import connector
 from backend.models.Device import Device, DeviceForm, DeviceFormNew
-from backend.models.Device import supported_types as device_supported_types
+from backend.io.protocol import supported_types as device_supported_types
 from backend.models.Scenario import Scenario, ScenarioDevice, ScenarioForm, ScenarioDeviceForm, ScenarioDeviceFormNew
 from backend.models.Room import Room, RoomForm
 from backend.models.Connector import Connector, ConnectorForm
