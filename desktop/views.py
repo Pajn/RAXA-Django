@@ -141,12 +141,10 @@ class Settings():
                 return render(self.request, 'desktop/settings.html')
             elif self.template.startswith('system/'):
                 self.template = self.template.split('/')[1]
-                print self.template
                 return render(self.request, 'desktop/settings/system/%s/%s.html' % (self.template, self.template),
                               self.kwargs)
             elif self.template.startswith('room/'):
                 self.template = self.template.split('/')[1]
-                print self.template
                 return render(self.request, 'desktop/settings/room/%s/%s.html' % (self.template, self.template),
                               self.kwargs)
             else:
@@ -236,8 +234,6 @@ class Settings():
                 form = SecurityForm(self.request.POST, instance=user)
                 if form.is_valid():
                     form.save()
-                    print 'saving'
-                    print form.cleaned_data['password1']
                     user.set_password(form.cleaned_data['password1'])
             elif 'logout' in self.request.POST:
                 self.request.session['auth'] = 0
@@ -304,7 +300,6 @@ class Settings():
         if self.request.method == 'POST':
             if 'floor' in self.request.POST:
                 floor = self.request.POST['floor']
-                print floor
             if 'id' in self.request.POST:
                 id = self.request.POST['id']
                 object = get_object_or_404(Plan, pk=id)
@@ -333,7 +328,6 @@ class Settings():
             if 'floor' in self.request.POST:
                 floor = self.request.POST['floor']
 
-            print self.request.POST
             if 'id' in self.request.POST:
                 id = self.request.POST['id']
                 if self.request.POST['furniture_type'] == 'dot':
@@ -363,7 +357,6 @@ def edit_device(request):
             id = request.POST['id']
             object = get_object_or_404(Device, pk=id)
             if 'delete' in request.POST:
-                print 'delete'
                 object.delete()
                 return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'devices'}))
 
@@ -486,7 +479,6 @@ def edit_input(request):
             id = request.POST['id']
             object = get_object_or_404(Input, pk=id)
             if 'delete' in request.POST:
-                print 'delete'
                 object.delete()
                 return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'inputs'}))
 
@@ -535,7 +527,6 @@ def edit_timer(request):
             id = request.POST['id']
             object = get_object_or_404(Timer, pk=id)
             if 'delete' in request.POST:
-                print 'delete'
                 object.delete()
                 return HttpResponseRedirect(reverse('desktop.views.settings', kwargs={'type': 'timers'}))
 
