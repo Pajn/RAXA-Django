@@ -2,5 +2,5 @@ Django==1.5.1
 South==0.7.6
 python-memcached==1.51
 pytz==2013b
-jinja2
-django-jinja2
+jinja2=2.6
+django-jinja2=0.1
