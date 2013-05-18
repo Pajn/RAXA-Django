@@ -1,6 +1,5 @@
 import os
 import socket
-import tftpy
 import time
 from RAXA.settings import PROJECT_ROOT
 from backend.io.connector import Connector
