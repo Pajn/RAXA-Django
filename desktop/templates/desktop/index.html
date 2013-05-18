@@ -108,18 +108,20 @@
                 var floor_img = '';
                 {% for floor in floors %}
                     {% if floor.image %}
-                    floor_img = document.createElement('div');
-                    floor_img.setAttribute('id', 'floor{{ floor.id }}img');
-                    document.getElementById('floor{{ floor.id }}').appendChild(floor_img);
-                    load('{{ floor.image.url }}', function (data) {
-                        document.getElementById("floor{{ floor.id }}img").innerHTML = data.responseText;
-                    });
-                    var floor_img_overlay = document.createElement('div');
-                    floor_img_overlay.setAttribute('id', 'floor{{ floor.id }}imgoverlay');
-                    document.getElementById('floor{{ floor.id }}').appendChild(floor_img_overlay);
-                    load('{% url 'common.views.overlay' floor=floor.id %}', function (data) {
-                        document.getElementById("floor{{ floor.id }}imgoverlay").innerHTML = data.responseText;
-                    });
+                        floor_img = document.createElement('div');
+                        floor_img.setAttribute('id', 'floor{{ floor.id }}img');
+                        floor_img.setAttribute('class', 'floorimg');
+                        document.getElementById('floor{{ floor.id }}').appendChild(floor_img);
+                        load('{{ floor.image.url }}', function (data) {
+                            document.getElementById("floor{{ floor.id }}img").innerHTML = data.responseText;
+                        });
+                        var floor_img_overlay = document.createElement('div');
+                        floor_img_overlay.setAttribute('id', 'floor{{ floor.id }}imgoverlay');
+                        floor_img_overlay.setAttribute('class', 'floorimgoverlay');
+                        document.getElementById('floor{{ floor.id }}').appendChild(floor_img_overlay);
+                        load('{% url 'common.views.overlay' floor=floor.id %}', function (data) {
+                            document.getElementById("floor{{ floor.id }}imgoverlay").innerHTML = data.responseText;
+                        });
                     {% endif %}
                 {% endfor %}
             };
