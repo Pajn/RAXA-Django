@@ -42,7 +42,7 @@
     function get_floor() {
         var floor = $('#selectfloor').val();
         $('input[name="floor"]').val(floor);
-        $('#floor').load('{{ STATIC_URL }}images/floor' + floor + '.svg');
+        $('#floor').load('{% url 'common.views.floor' %}' + floor + '/');
         $('#floorOverlay').load('{% url 'common.views.overlay' %}', {'floor': floor}, function () {
 
             var svgNamespace = 'http://www.w3.org/2000/svg';

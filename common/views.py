@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from RAXA.settings import MEDIA_URL
 from backend.authorization import get_user
 from backend.models import Floor
 from backend.models.User import LoginForm
@@ -37,3 +38,7 @@ def overlay(request, floor=1):
     return render(request, 'common/floor.jinja.svg',
                   {'viewbox': floor.viewbox, 'rooms': rooms, 'furnitures': furnitures, 'temps': temps,
                    'radious': radious, 'edit_rooms': edit_rooms})
+
+def floor(request, floor=1):
+    floor = get_object_or_404(Floor, id=floor)
+    return HttpResponseRedirect(MEDIA_URL + floor.image.__str__())
