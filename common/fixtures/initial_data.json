@@ -1,0 +1,11 @@
+[
+  {
+    "model": "common.Theme",
+    "pk": 1,
+    "fields": {
+      "name": "Black & White",
+      "builtin": true,
+      "css": "themes/builtin/Black&White.css"
+    }
+  }
+]

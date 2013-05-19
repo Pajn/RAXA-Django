@@ -1,22 +1,5 @@
 {% load i18n %}
 {% load url from future %}
-<style type="text/css">
-
-    .ui-hidden-accessible {
-        display: none;
-    }
-
-    .slider {
-        display: inline-block;
-        margin-top: 3px;
-    }
-
-    .slider .label {
-        display: inline-block;
-        padding: 5px;
-        width: 1.5em;
-    }
-</style>
 <form action="{% url 'desktop.views.edit_device' %}" method="post">{% csrf_token %}
     <input type="hidden" name="id" value="{{ object.id }}"/>
     <table style="text-align: left; border: 8px solid transparent; border-spacing: 0;">

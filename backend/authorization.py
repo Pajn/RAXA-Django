@@ -55,6 +55,9 @@ class Auth():
             user.set_password('')
             user.save()
 
+        request.session['user'] = user
+        request.session['theme'] = user.theme
+
         if not request.path.endswith('/login/'):
             if not request.session.get('auth', default=0) == 1:
                 if user.is_active:

@@ -6,11 +6,15 @@ from backend.models.Scenario import Scenario
 import common.views
 
 
-def index(request):
+def index(request, **kwargs):
     floors = Floor.objects.all()
     scenarios = Scenario.objects.all()
     percent = (99 - scenarios.__len__()) / scenarios.__len__()
-    return render(request, 'tablet/index.html', {'scenarios': scenarios, 'floors': floors, 'percent': percent})
+    kwargs['theme'] = request.session['theme']
+    kwargs['scenarios'] = scenarios
+    kwargs['floors'] = floors
+    kwargs['percent'] = percent
+    return render(request, 'tablet/index.html', kwargs)
 
 
 def login(request):

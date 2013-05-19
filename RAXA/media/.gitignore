@@ -1,4 +1,8 @@
-# Ignore everything in this directory
-*
-# Except this file
-!.gitignore
+# Ignore floor images
+floors/*
+
+# Ignore themes
+themes/*
+
+# Except built in themes
+!themes/builtin

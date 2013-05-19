@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.forms import Select
+from django import forms
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
@@ -12,11 +12,12 @@ from backend.models.Room import Room, Floor
 from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, ScenarioDeviceFormNew, ScenarioDeviceFormAction
 from backend.models.Timer import Timer, TimerForm
 from backend.io.connector import scan_connectors
-from backend.models.User import SecurityForm
+from backend.models.User import SecurityForm, ThemeForm
 from backend.system import updates
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
 from backend.widgets.OnOffColorWheel import OnOffColorWheel
+from common.models.Theme import ThemeFormSet
 import common.views
 from common.models import Temp
 from common.models.Furniture import Furniture, FurnitureForm
@@ -28,6 +29,7 @@ def index(request, template='desktop/index.html', **kwargs):
     floors = Floor.objects.all()
     scenarios = Scenario.objects.all()
     percent = (98 - scenarios.__len__()) / (scenarios.__len__() + 1)
+    kwargs['theme'] = request.session['theme']
     kwargs['scenarios'] = scenarios
     kwargs['floors'] = floors
     kwargs['percent'] = percent
@@ -105,6 +107,8 @@ class Settings():
                     self.security()
                 elif subtype == 'updates':
                     self.updates()
+                elif subtype == 'themes':
+                    self.themes()
                 else:
                     self.system()
             elif type == 'room':
@@ -259,6 +263,25 @@ class Settings():
             self.template = 'system/updates'
             self.kwargs = {'current_v': current_v, 'head_v': head_v, 'update': update}
 
+    def themes(self):
+        self.kwargs['reload'] = False
+
+        if self.request.method == 'POST' and 'save' in self.request.POST:
+                formset = ThemeFormSet(self.request.session['user'].theme.id, self.request.POST, self.request.FILES)
+                if formset.is_valid():
+                    formset.save()
+                    self.kwargs['reload'] = True
+
+                form = ThemeForm(self.request.POST, instance=self.request.session['user'])
+                if form.is_valid():
+                    form.save()
+                    self.kwargs['reload'] = True
+        else:
+            formset = ThemeFormSet(self.request.session['theme'].id)
+
+        self.template = 'system/themes'
+        self.kwargs['formset'] = formset
+
     def roomsmenu(self):
         formset = RoomFormSet()
         self.default = 'rooms'
@@ -311,7 +334,7 @@ class Settings():
                     form.save()
                     form = PlanForm()
 
-        selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id': 'selectfloor'})
+        selectfloor = forms.Select(choices=floors).render('selectfloor', floor, attrs={'id': 'selectfloor'})
 
         self.template = 'room/plan'
         self.kwargs = {'selectfloor': selectfloor, 'form': form}
@@ -345,7 +368,7 @@ class Settings():
                 if form.is_valid(): # All validation rules pass
                     form.save()
 
-        selectfloor = Select(choices=floors).render('selectfloor', floor, attrs={'id': 'selectfloor'})
+        selectfloor = forms.Select(choices=floors).render('selectfloor', floor, attrs={'id': 'selectfloor'})
 
         self.template = 'furniture'
         self.kwargs = {'selectfloor': selectfloor, 'dot_form': dot_form, 'temp_form': temp_form}

@@ -1,11 +1,12 @@
 from django.core.exceptions import ValidationError
 from django.forms.models import ModelForm
-from django.forms.fields import CharField
-from django.forms.widgets import PasswordInput
+from django.forms.fields import CharField, ChoiceField
+from django.forms.widgets import PasswordInput, RadioSelect
 from django.forms.forms import Form
 from django.db import models
 from django.utils.crypto import salted_hmac
 from django.utils.translation import ugettext_lazy as _
+from common.models.Theme import Theme
 
 
 class User(models.Model):
@@ -14,6 +15,7 @@ class User(models.Model):
     api_key = models.CharField(_('Api key'), max_length=40, unique=True, db_index=True)
     allow_local = models.BooleanField(_('Allow local'), default=True)
     is_active = models.BooleanField(default=False)
+    theme = models.ForeignKey(Theme, default=1)
 
     class Meta:
         app_label = 'backend'
@@ -51,3 +53,12 @@ class SecurityForm(ModelForm):
     class Meta:
         model = User
         exclude = ('api_key', 'username', 'password')
+
+
+class ThemeForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ('theme',)
+        widgets = {
+            'theme': RadioSelect()
+        }

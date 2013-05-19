@@ -46,6 +46,10 @@ form table tr th {
     padding-right: 5px;
 }
 
+ul {
+    list-style: none;
+}
+
 #loginholder {
     position: fixed;
     top: 50%;
@@ -97,6 +101,33 @@ form table tr th {
     height: 90%;
 }
 
+#subsettings {
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+
+#subsettingsmenu {
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    width: 100%;
+}
+
+#subsettingsmenu ul {
+    margin: 0;
+    padding: 0;
+}
+
+#subsettingsoptions {
+    position: absolute;
+    left: 15%;
+    top: -1px;
+    width: 74%;
+
+    padding: 2%;
+}
+
 #menu {
     position: absolute;
     left: 1.5%;
@@ -105,7 +136,6 @@ form table tr th {
 }
 
 #menu ul {
-    list-style: none;
     margin: 1px 0 0;
     padding: 0 0.5%;
 }
@@ -270,4 +300,112 @@ form table tr th {
     -moz-border-radius-bottomleft: 6px;
     border-bottom-right-radius: 6px;
     border-bottom-left-radius: 6px;
+}
+
+.container {
+    background: none;
+}
+
+th {
+    vertical-align: top;
+}
+
+label[for="id_action"] {
+    position: relative;
+    top: 5px;
+}
+
+fieldset {
+    display: inline-block;
+    height: 58px;
+    margin: 10px 0 0 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+}
+
+fieldset input[type="radio"] {
+    display: none;
+}
+
+fieldset label {
+    float: left;
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    color: transparent;
+    margin: 0;
+    padding: 5px, 0;
+    background-color: #222;
+}
+
+fieldset label:first-of-type {
+    padding-left: 5px;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    background-position: 5px, 0;
+}
+
+fieldset label:last-of-type {
+    padding-right: 5px;
+    -webkit-border-top-right-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    -moz-border-radius-topright: 6px;
+    -moz-border-radius-bottomright: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+fieldset input[type="radio"]:checked + label {
+    background-color: #666;
+}
+
+fieldset .on {
+    background-image: url("/static/images/on.png");
+}
+
+fieldset .off {
+    background-image: url("/static/images/off.png");
+}
+
+fieldset .dim {
+    background-image: url("/static/images/dim.png");
+}
+
+fieldset .color {
+    background-image: url("/static/images/color.png");
+}
+
+.ui-hidden-accessible {
+    display: none;
+}
+
+.slider {
+    display: inline-block;
+    margin-bottom: 1em;
+}
+
+.slider .label {
+    display: inline-block;
+    padding: 5px;
+    width: 1.5em;
+}
+
+/* SVG image classes */
+
+.walls {
+    fill: #ffffff;
+}
+
+.lines {
+    stroke: #000000 !important;
+}
+
+.windows {
+    fill: #454040;
+    stroke: #454040;
 }

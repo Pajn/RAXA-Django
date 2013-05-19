@@ -43,9 +43,11 @@
                        class="button biggerbutton vertical submenu {% if subtype == 'security' %}verticalSelected{% endif %}"/>
             </li>
             <li><input type="button" data-id="updates" value="{% trans "Updates" %}"
-                       class="button biggerbutton vertical submenu bottom {% if subtype == 'updates' %}verticalSelected{% endif %}"/>
+                       class="button biggerbutton vertical submenu {% if subtype == 'updates' %}verticalSelected{% endif %}"/>
             </li>
-            <!--<li><input type="button" data-id="theme" value="Theme" class="button normalbutton vertical menu bottom" /></li>-->
+            <li><input type="button" data-id="themes" value="{% trans "Themes" %}"
+                       class="button biggerbutton vertical submenu bottom {% if subtype == 'themes' %}verticalSelected{% endif %}"/>
+            </li>
         </ul>
     </div>
     <div id="Soptions" class="border bottom">
