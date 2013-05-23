@@ -147,8 +147,6 @@ LANGUAGES = (
     ('en', ugettext('English')),
 )
 
-UPDATE_URL = 'http://updates.raxa.se/updates.xml'
-
 LOCAL_IP_RANGES = [
     '192.168.',
     '10.'

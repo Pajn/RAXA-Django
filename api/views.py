@@ -5,10 +5,10 @@ from backend.models.Connector import Connector
 from backend.models.Device import Device
 from backend.models.Scenario import Scenario
 from backend.models.Room import Floor
-from backend.system import updates
+import version
 
 API_VERSION = 2
-RAXA_VERSION = updates.version()
+RAXA_VERSION = version.__version__
 
 
 def respond_with_json(data, errors=None, pretty=False, request=None):
@@ -20,7 +20,7 @@ def respond_with_json(data, errors=None, pretty=False, request=None):
         status = {'status': 'ok', 'errors': errors}
     else:
         status = {'status': 'error', 'errors': errors}
-    status['version'], err = version()
+    status['version'], err = RAXA_VERSION
     response = {'response': data, 'status': status}
     if pretty:
         jsons = json.dumps(response, sort_keys=True,

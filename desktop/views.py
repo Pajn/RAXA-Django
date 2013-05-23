@@ -13,7 +13,6 @@ from backend.models.Scenario import Scenario, ScenarioFormSet, ScenarioDevice, S
 from backend.models.Timer import Timer, TimerForm
 from backend.io.connector import scan_connectors
 from backend.models.User import SecurityForm, ThemeForm
-from backend.system import updates
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
 from backend.widgets.OnOffColorWheel import OnOffColorWheel
@@ -105,8 +104,6 @@ class Settings():
                     self.network()
                 elif subtype == 'security':
                     self.security()
-                elif subtype == 'updates':
-                    self.updates()
                 elif subtype == 'themes':
                     self.themes()
                 else:
@@ -244,24 +241,6 @@ class Settings():
 
         self.template = 'system/security'
         self.kwargs = {'form': form}
-
-    def updates(self):
-        if self.request.method == 'POST' and 'update' in self.request.POST:
-            update = updates.Update(self.request.POST['version'], self.request.POST['patch'])
-            update.apply()
-
-            return HttpResponseRedirect(reverse('desktop.views.index'))
-
-        else:
-            current_v = updates.write_version(updates.version())
-            checked, update = updates.check()
-            if checked:
-                head_v = updates.write_version(update.version)
-            else:
-                head_v = _("Couldn't check")
-
-            self.template = 'system/updates'
-            self.kwargs = {'current_v': current_v, 'head_v': head_v, 'update': update}
 
     def themes(self):
         self.kwargs['reload'] = False
