@@ -44,30 +44,45 @@
         <div id="settings" style="Display: {% block display_settings %}None{% endblock %}">
             <div id="menu">
                 <ul>
-                    <li><input type="button" data-id="devices" value="{% trans "Devices" %}"
-                               class="button normalbutton vertical menu top {% if type == 'devices' %}verticalSelected{% endif %}"/>
+                    <li>
+                        <input type="button" data-id="devices" value="{% trans "Devices" %}"
+                               class="button normalbutton vertical menu top
+                                      {% if type == 'devices' %}verticalSelected{% endif %}"/>
                     </li>
-                    <li><input type="button" data-id="scenarios" value="{% trans "Scenarios" %}"
-                               class="button normalbutton vertical menu {% if type == 'scenarios' %}verticalSelected{% endif %}"/>
+                    <li>
+                        <input type="button" data-id="scenarios" value="{% trans "Scenarios" %}"
+                               class="button normalbutton vertical menu
+                                      {% if type == 'scenarios' %}verticalSelected{% endif %}"/>
                     </li>
-                    <li><input type="button" data-id="inputs" value="{% trans "Inputs" %}"
-                               class="button normalbutton vertical menu {% if type == 'inputs' %}verticalSelected{% endif %}"/>
+                    <li>
+                        <input type="button" data-id="inputs" value="{% trans "Inputs" %}"
+                               class="button normalbutton vertical menu
+                                      {% if type == 'inputs' %}verticalSelected{% endif %}"/>
                     </li>
-                    <li><input type="button" data-id="timers" value="{% trans "Timers" %}"
-                               class="button normalbutton vertical menu {% if type == 'timers' %}verticalSelected{% endif %}"/>
+                    <li>
+                        <input type="button" data-id="timers" value="{% trans "Timers" %}"
+                               class="button normalbutton vertical menu
+                                      {% if type == 'timers' %}verticalSelected{% endif %}"/>
                     </li>
-                    <li><input type="button" data-id="thermometers" value="{% trans "Thermometers" %}"
-                               class="button normalbutton vertical menu {% if type == 'timers' %}verticalSelected{% endif %}"/>
+                    <li>
+                        <input type="button" data-id="thermometers" value="{% trans "Thermometers" %}"
+                               class="button normalbutton vertical menu
+                                      {% if type == 'timers' %}verticalSelected{% endif %}"/>
                     </li>
-                    <!--<li><input type="button" data-id="Auto" value="<?php echo $lang->{'automation'};?>" class="button normalbutton vertical menu" /></li>-->
-                    <li><input type="button" data-id="room" value="{% trans "Rooms" %}"
-                               class="button normalbutton vertical menu {% if type == 'rooms' %}verticalSelected{% endif %}"/>
+                    <li>
+                        <input type="button" data-id="room" value="{% trans "Rooms" %}"
+                               class="button normalbutton vertical menu
+                                      {% if type == 'rooms' %}verticalSelected{% endif %}"/>
                     </li>
-                    <li><input type="button" data-id="system" value="{% trans "System" %}"
-                               class="button normalbutton vertical menu {% if type == 'system' %}verticalSelected{% endif %}"/>
+                    <li>
+                        <input type="button" data-id="system" value="{% trans "System" %}"
+                               class="button normalbutton vertical menu
+                                      {% if type == 'system' %}verticalSelected{% endif %}"/>
                     </li>
-                    <li><input type="button" data-id="plan" value="{% trans "Plan" %}"
-                               class="button normalbutton vertical menu bottom {% if type == 'plan' %}verticalSelected{% endif %}"/>
+                    <li>
+                        <input type="button" data-id="plan" value="{% trans "Plan" %}"
+                               class="button normalbutton vertical menu bottom
+                                      {% if type == 'plan' %}verticalSelected{% endif %}"/>
                     </li>
                 </ul>
             </div>
@@ -88,7 +103,8 @@
                     $(this).addClass('verticalSelected');
                     var type = $(this).attr('data-id');
                     $('#options').load('{% url 'desktop.views.settings_index' %}', {'type': type}, function () {
-                        window.history.pushState('', 'RAXA - ' + $(this).val(), '/{{ LANGUAGE_CODE }}/settings/' + type + '/');
+                        window.history.pushState('', 'RAXA - ' + $(this).val(),
+                                                 '/{{ LANGUAGE_CODE }}/settings/' + type + '/');
                     });
                 });
             });
@@ -105,7 +121,7 @@
                 xmlhttp.send();
             }
             window.onload = function () {
-                var floor_img = '';
+                var floor_img, floor_img_overlay;
                 {% for floor in floors %}
                     {% if floor.image %}
                         floor_img = document.createElement('div');
@@ -115,7 +131,7 @@
                         load('{{ floor.image.url }}', function (data) {
                             document.getElementById("floor{{ floor.id }}img").innerHTML = data.responseText;
                         });
-                        var floor_img_overlay = document.createElement('div');
+                        floor_img_overlay = document.createElement('div');
                         floor_img_overlay.setAttribute('id', 'floor{{ floor.id }}imgoverlay');
                         floor_img_overlay.setAttribute('class', 'floorimgoverlay');
                         document.getElementById('floor{{ floor.id }}').appendChild(floor_img_overlay);
