@@ -1,11 +1,11 @@
 {% load i18n %}
 {% load url from future %}
 <div id="accordion">
-    {% for timer in timers %}
+    {% for input in inputs %}
         <div class="group">
-            <div class="header" data-id="{{ timer.id }}" style="line-height: 1;">
-                <span>{{ timer.name }}</span>
-                <span style="float: right; font-size: 0.8em;color: #ccc">{{ timer.action_object.name }}</span>
+            <div class="header" data-id="{{ input.id }}" style="line-height: 1;">
+                <span>{{ input.name }}</span>
+                <span style="float: right; font-size: 0.8em;color: #ccc">{{ input.action_object.name }}</span>
             </div>
             <div class="container"><br/><br/><br/><br/><br/><br/></div>
         </div>
@@ -13,22 +13,10 @@
 </div>
 <div id="new">
     <div class="header" data-id="0" style="line-height: 1;">
-        <span>{% blocktrans %}New Timer{% endblocktrans %}</span>
+        <span>{% blocktrans %}New Input{% endblocktrans %}</span>
     </div>
-    <div class="container">
-        <form action="{% url 'desktop.views.edit_timer' %}" method="post">{% csrf_token %}
-            <table style="text-align: left; border: 8px solid transparent; border-spacing: 0;">
-                {{ form.as_table }}
-                <tr id="actionrow" style="display: none;">
-                    <th>
-                        <label for="id_action">{% trans "Action" %}:</label>
-                    </th>
-                    <td id="actioncell">
-                    </td>
-                </tr>
-            </table>
-            <input type="submit" name="add" value="{% trans "Add" %}"/>
-        </form>
+    <div id="newcontainer" class="container">
+        <input type="button" value="{% trans "Scan" %}" onclick="scan()"/>
     </div>
 </div>
 <script type="text/javascript">
@@ -40,9 +28,7 @@
         header: '> div > div[class="header"]',
         beforeActivate: function (event, ui) {
             var id = ui.newHeader.attr('data-id');
-            ui.newPanel.load('{% url 'desktop.views.edit_timer' %}', {'id': id}, function () {
-                fix_sliders();
-            });
+            ui.newPanel.load('{% url 'settings_input' %}', {'id': id}, fix_sliders);
         }
     }).sortable({
         axis: "y",
@@ -66,11 +52,22 @@
         heightStyle: "content",
         header: 'div[class="header"]'
     });
-    var $device_scenario = $('select[name="device_scenario"]');
-    $device_scenario.change(function () {
-        get_action_widget($(this).val());
-    });
-    get_action_widget($device_scenario.val());
+    function scan() {
+        $("#newcontainer").html('<img src="{{ STATIC_URL }}desktop/images/ajax-loader.gif" alt="{% trans 'scanning' %}..." />');
+        $('#newcontainer').load('', {'scan': true}, function () {
+            var $action_object = $('#new select[name="action_object"]');
+            $action_object.change(function () {
+                get_action_widget($(this).val());
+            });
+            var $actionrow = $('<tr id="actionrow" style="display: none;">\
+                <th><label for="id_action">{% trans "Action" %}:</label></th>\
+                <td id="actioncell"></td>\
+            </tr>');
+            $('#new input[name="action"]').remove();
+            $('#new tbody').append($actionrow);
+            get_action_widget($action_object.val());
+        });
+    }
     function get_action_widget(value) {
         var type = value.split('/')[0];
         var id = value.split('/')[1];
@@ -88,7 +85,6 @@
             var $input, $label, $slider, $container;
 
             $input = $(input);
-            var inputID = $input.attr('id');
 
             $container = $('<div class="slider" style="width: 195px"/>');
             $label = $('<span class="label ui-widget-content ui-corner-all">' + parseInt($input.attr('value'), 10) + '</span>');
@@ -102,9 +98,9 @@
                 step: parseInt($input.attr('step'), 10),
                 slide: function (event, ui) {
                     //Keep the value of the input[type=range] in sync with the slider.
-                    var $input_id = $('#' + inputID);
-                    $input_id.val(ui.value);
-                    $input_id.change();
+                    //$(this).prev('input').val(ui.value);
+                    $input.val(ui.value);
+                    $input.change();
                     $label.text(ui.value);
                 }
             });

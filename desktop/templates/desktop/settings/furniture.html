@@ -22,14 +22,14 @@
 </div>
 <div id="dialog-save" title="">
     <div id="dot_form" class="dialog_form">
-        <form action="{% url 'desktop.views.settings' type='furniture' %}" method="post">{% csrf_token %}
+        <form action="{% url 'settings_furniture' %}" method="post">{% csrf_token %}
             <input type="hidden" value="dot" name="furniture_type">
             {{ dot_form.as_p }}
             <input type="submit" name="save" value="{% trans "Save" %}"/>
         </form>
     </div>
     <div id="temp_form" class="dialog_form">
-        <form action="{% url 'desktop.views.settings' type='furniture' %}" method="post">{% csrf_token %}
+        <form action="{% url 'settings_furniture' %}" method="post">{% csrf_token %}
             <input type="hidden" value="temp" name="furniture_type">
             {{ temp_form.as_p }}
             <input type="submit" name="save" value="{% trans "Save" %}"/>
@@ -128,8 +128,8 @@
                     $('.hover').remove();
                 }
             });
-            $("#floorOverlay svg .dot").on('contextmenu', function (e) {
-                $.post('{% url 'desktop.views.settings' type='furniture' %}', {'id': this.id});
+            $("#floorOverlay svg .furniture").on('contextmenu', function (e) {
+                $.post('{% url 'settings_furniture' %}', {'id': this.id, 'furniture_type': $(this).attr('data-type')});
                 this.parentNode.removeChild(this);
                 update_overlay();
                 e.preventDefault();

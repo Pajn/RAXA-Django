@@ -46,43 +46,52 @@
                 <ul>
                     <li>
                         <input type="button" data-id="devices" value="{% trans "Devices" %}"
+                               data-url="{% url 'settings_devices' %}"
                                class="button normalbutton vertical menu top
-                                      {% if type == 'devices' %}verticalSelected{% endif %}"/>
+                                      {% if setting == 'devices' %}verticalSelected{% endif %}"/>
                     </li>
                     <li>
                         <input type="button" data-id="scenarios" value="{% trans "Scenarios" %}"
+                               data-url="{% url 'settings_scenarios' %}"
                                class="button normalbutton vertical menu
-                                      {% if type == 'scenarios' %}verticalSelected{% endif %}"/>
+                                      {% if setting == 'scenarios' %}verticalSelected{% endif %}"/>
                     </li>
                     <li>
                         <input type="button" data-id="inputs" value="{% trans "Inputs" %}"
+                               data-url="{% url 'settings_inputs' %}"
                                class="button normalbutton vertical menu
-                                      {% if type == 'inputs' %}verticalSelected{% endif %}"/>
+                                      {% if setting == 'inputs' %}verticalSelected{% endif %}"/>
                     </li>
                     <li>
                         <input type="button" data-id="timers" value="{% trans "Timers" %}"
+                               data-url="{% url 'settings_timers' %}"
                                class="button normalbutton vertical menu
-                                      {% if type == 'timers' %}verticalSelected{% endif %}"/>
+                                      {% if setting == 'timers' %}verticalSelected{% endif %}"/>
                     </li>
                     <li>
                         <input type="button" data-id="thermometers" value="{% trans "Thermometers" %}"
+                               data-url="{% url 'settings_thermometers' %}"
                                class="button normalbutton vertical menu
-                                      {% if type == 'timers' %}verticalSelected{% endif %}"/>
+                                      {% if setting == 'thermometers' %}verticalSelected{% endif %}"/>
                     </li>
                     <li>
                         <input type="button" data-id="room" value="{% trans "Rooms" %}"
+                               data-url="{% url 'room_rooms' %}"
                                class="button normalbutton vertical menu
-                                      {% if type == 'rooms' %}verticalSelected{% endif %}"/>
+                                      {% if setting == 'room' %}verticalSelected{% endif %}"/>
                     </li>
                     <li>
                         <input type="button" data-id="system" value="{% trans "System" %}"
+                               data-url="{% url 'system_connectors' %}"
                                class="button normalbutton vertical menu
-                                      {% if type == 'system' %}verticalSelected{% endif %}"/>
+                                      {% if setting == 'system' %}verticalSelected{% endif %}"/>
                     </li>
                     <li>
-                        <input type="button" data-id="plan" value="{% trans "Plan" %}"
-                               class="button normalbutton vertical menu bottom
-                                      {% if type == 'plan' %}verticalSelected{% endif %}"/>
+                        <input type="button" data-id="furniture" value="{% trans "Plan" %}"
+                               data-url="{% url 'settings_furniture' %}"
+                               class="button normalbutton vertical menu
+                                      {% if addon.settings_menu_items.length == 0 %}bottom{% endif %}
+                                      {% if setting == 'furniture' %}verticalSelected{% endif %}"/>
                     </li>
                 </ul>
             </div>
@@ -98,13 +107,12 @@
         </div>
         <script type="text/javascript">
             $(document).ready(function () {
-                $('.menu').on('click', function () {
+                $('.menu').off().on('click', function () {
                     $('.menu').removeClass('verticalSelected');
                     $(this).addClass('verticalSelected');
-                    var type = $(this).attr('data-id');
-                    $('#options').load('{% url 'desktop.views.settings_index' %}', {'type': type}, function () {
-                        window.history.pushState('', 'RAXA - ' + $(this).val(),
-                                                 '/{{ LANGUAGE_CODE }}/settings/' + type + '/');
+                    var url = $(this).attr('data-url');
+                    $('#options').load(url, {'post': true}, function () {
+                        window.history.pushState('', 'RAXA - ' + $(this).val(), url);
                     });
                 });
             });
@@ -149,7 +157,7 @@
                 {% endfor %}
             }
             function room(room) {
-                load('{% url 'desktop.views.devices' %}?room=' + room, function (data) {
+                load('{% url 'devices' %}' + room + '/', function (data) {
                     document.getElementById("devices").innerHTML = data.responseText;
 
                     var $input, $slider;

@@ -10,7 +10,7 @@
     }
 </style>
 {% blocktrans %}Warning, setting wrong settings here may make RAXA inaccesible{% endblocktrans %}
-<form action="{% url 'desktop.views.systemsettings' type='network' %}" method="post">{% csrf_token %}
+<form action="{% url 'system_network' %}" method="post">{% csrf_token %}
     {{ form.errors.as_ul }}
     {{ form.type }}
     <table id="addresses"

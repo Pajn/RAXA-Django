@@ -1,0 +1,23 @@
+{% extends "desktop/subsettings.html" %}
+{% load i18n %}
+{% block subsettingsmenu %}
+    <li>
+        <input type="button" data-id="rooms" value="{% trans "Rooms" %}"
+               class="button biggerbutton vertical submenu top
+                      {% if subsetting == 'rooms' %}verticalSelected{% endif %}"
+               data-url="{% url 'room_rooms' %}"/>
+    </li>
+    <li>
+        <input type="button" data-id="floors" value="{% trans "Floors" %}"
+               class="button biggerbutton vertical submenu
+                      {% if subsetting == 'floors' %}verticalSelected{% endif %}"
+               data-url="{% url 'room_floors' %}"/>
+    </li>
+    <li>
+        <input type="button" data-id="plan" value="{% trans "Plan" %}"
+               class="button biggerbutton vertical submenu
+                      {% if addon.system_settings_menu_items.length == 0 %}bottom{% endif %}
+                      {% if subsetting == 'plan' %}verticalSelected{% endif %}"
+               data-url="{% url 'room_plan' %}"/>
+    </li>
+{% endblock %}

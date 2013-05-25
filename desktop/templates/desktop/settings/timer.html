@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load url from future %}
-<form action="{% url 'desktop.views.edit_timer' %}" method="post">{% csrf_token %}
-    <input type="hidden" name="id" value="{{ object.id }}"/>
+<form action="{% url 'settings_timer' %}" method="post">{% csrf_token %}
+    <input type="hidden" name="id" value="{{ timer.id }}"/>
     <table style="text-align: left; border: 8px solid transparent; border-spacing: 0;">
         {{ form.as_table }}
     </table>

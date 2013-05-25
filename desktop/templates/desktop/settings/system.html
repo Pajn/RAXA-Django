@@ -1,0 +1,29 @@
+{% extends "desktop/subsettings.html" %}
+{% load i18n %}
+{% block subsettingsmenu %}
+    <li>
+        <input type="button" data-id="connectors" value="{% trans "Connectors" %}"
+               class="button biggerbutton vertical submenu top
+                      {% if subsetting == 'connectors' %}verticalSelected{% endif %}"
+               data-url="{% url 'system_connectors' %}"/>
+    </li>
+    <li>
+        <input type="button" data-id="network" value="{% trans "Network" %}"
+               class="button biggerbutton vertical submenu
+                      {% if subsetting == 'network' %}verticalSelected{% endif %}"
+               data-url="{% url 'system_network' %}"/>
+    </li>
+    <li>
+        <input type="button" data-id="security" value="{% trans "Security" %}"
+               class="button biggerbutton vertical submenu
+                      {% if subsetting == 'security' %}verticalSelected{% endif %}"
+               data-url="{% url 'system_security' %}"/>
+    </li>
+    <li>
+        <input type="button" data-id="themes" value="{% trans "Themes" %}"
+               class="button biggerbutton vertical submenu
+                      {% if addon.system_settings_menu_items.length == 0 %}bottom{% endif %}
+                      {% if subsetting == 'themes' %}verticalSelected{% endif %}"
+               data-url="{% url 'system_themes' %}"/>
+    </li>
+{% endblock %}

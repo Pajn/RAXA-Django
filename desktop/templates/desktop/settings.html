@@ -2,8 +2,8 @@
 {% block display_container %}None{% endblock %}
 {% block display_settings %}block{% endblock %}
 {% block settings %}
-    {% if settings %}
-        {% with "desktop/settings/"|add:settings|add:"/"|add:settings|add:".html" as template %}
+    {% if setting %}
+        {% with "desktop/settings/"|add:setting|add:".html" as template %}
             {% include template %}
         {% endwith %}
     {% endif %}

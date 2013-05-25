@@ -1,6 +1,11 @@
 {% load i18n %}
 {% load url from future %}
-<form action="{% url 'desktop.views.roomsettings' type='rooms' %}" method="post">{% csrf_token %}
+{% if reload %}
+    <script type="text/javascript">
+        window.location = window.location.href;
+    </script>
+{% endif %}
+<form action="{% url 'system_themes' %}" method="post" enctype="multipart/form-data">
     {{ formset.management_form }}
     {{ formset.non_form_errors.as_ul }}
     <table id="formset" class="form">
@@ -11,6 +16,7 @@
                         {% for field in form.visible_fields %}
                             <th>{% trans field.label %}</th>
                         {% endfor %}
+                        <th>{% trans "Delete" %}</th>
                     </tr>
                 </thead>
             {% endif %}

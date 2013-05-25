@@ -16,8 +16,7 @@
         <span>{% blocktrans %}New Device{% endblocktrans %}</span>
     </div>
     <div class="container">
-        <form action="{% url 'desktop.views.edit_scenario' %}" method="post">{% csrf_token %}
-            <input type="hidden" name="scenario" value="{{ scenario }}"/>
+        <form action="{% url 'settings_scenario' id=scenario.id %}" method="post">{% csrf_token %}
             {{ form.as_ul }}
             <div id="actionrow" style="display: none;">
                 <label for="id_action">{% trans "Action" %}:</label>
@@ -38,7 +37,7 @@
         header: '> div > div[class="header"]',
         beforeActivate: function (event, ui) {
             var id = ui.newHeader.attr('data-id');
-            ui.newPanel.load('{% url 'desktop.views.edit_scenario' %}', {'id': id}, function () {
+            ui.newPanel.load('{% url 'settings_scenariodevice' %}', {'id': id}, function () {
                 fix_sliders();
             });
         }

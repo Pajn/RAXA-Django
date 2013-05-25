@@ -28,16 +28,9 @@ class Connector(models.Model):
             pass
 
 
-connector_form_set = None
-
-
 def ConnectorFormSet(*args, **kwargs):
-    global connector_form_set
-
-    if connector_form_set is None:
-        connector_form_set = modelformset_factory(Connector, form=ConnectorForm, can_delete=True, extra=0)
-
-    return connector_form_set(*args, **kwargs)
+    formset = modelformset_factory(Connector, form=ConnectorForm, can_delete=True, extra=0)
+    return formset(*args, **kwargs)
 
 
 class ConnectorForm(ModelForm):

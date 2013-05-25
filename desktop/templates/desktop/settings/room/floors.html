@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load url from future %}
-<form action="{% url 'desktop.views.settings' type='thermometers' %}" method="post">{% csrf_token %}
+<form action="{% url 'room_floors' %}" method="post" enctype="multipart/form-data">
     {{ formset.management_form }}
     {{ formset.non_form_errors.as_ul }}
     <table id="formset" class="form">

@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load url from future %}
-<form action="{% url 'desktop.views.scenarios_settings' %}" method="post">{% csrf_token %}
+<form action="{% url 'settings_scenarios' %}" method="post">{% csrf_token %}
     {{ formset.management_form }}
     {{ formset.non_form_errors.as_ul }}
     <table id="formset" class="form">

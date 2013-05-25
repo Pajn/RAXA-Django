@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load url from future %}
-<form action="{% url 'desktop.views.systemsettings' type='connectors' %}" method="post">{% csrf_token %}
+<form action="{% url 'system_connectors' %}" method="post">{% csrf_token %}
     {{ formset.management_form }}
     {{ formset.non_form_errors.as_ul }}
     <table id="formset" class="form">
@@ -48,13 +48,13 @@
 </div>
 <script type="text/javascript">
     function search() {
-        $('#Soptions').load('{% url 'desktop.views.settings' type='system' %}', {'subtype': 'connectors', 'search': ''}, function () {
+        $('#options').load('{% url 'system_connectors' %}', {'search': ''}, function () {
             $('#dialog-scan').dialog('close');
         });
         $('#dialog-scan').dialog('open');
     }
     function update(id, name) {
-        $('#Soptions').load('{% url 'desktop.views.settings' type='system' %}', {'subtype': 'connectors', 'update': id}, function () {
+        $('#options').load('{% url 'system_connectors' %}', {'update': id}, function () {
             $('#dialog-update').dialog('close');
             search();
         });

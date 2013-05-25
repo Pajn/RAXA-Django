@@ -1,0 +1,20 @@
+{% extends "desktop/subsettings.html" %}
+{% load i18n %}
+{% block subsettingsmenu %}
+    <li>
+        <button class="button biggerbutton vertical submenu top
+                       {% if subsetting == 'scenarios_edit' %}verticalSelected{% endif %}"
+                data-id="edit" data-url="{% url 'settings_scenarios' %}">
+            {% trans "Edit Scenarios" %}
+        </button>
+    </li>
+    {% for scenario_loop in scenarios %}
+        <li>
+            <button class="button biggerbutton vertical submenu {% if forloop.last %}bottom{% endif %}
+                           {% if scenario_loop.id == scenario.id %}verticalSelected{% endif %}"
+                    data-id="{{ scenario_loop.id }}" data-url="{% url 'settings_scenario' scenario_loop.id %}">
+                {{ scenario_loop.name }}
+            </button>
+        </li>
+    {% endfor %}
+{% endblock %}

@@ -27,19 +27,19 @@
 
     {% if not edit_rooms %}
         {% for furniture in furnitures %}
-            <circle id="{{ furniture.id }}" class="dot device{{ furniture.device_id }}" cx="{{ furniture.x1 }}px"
+            <circle id="{{ furniture.id }}" class="furniture dot device{{ furniture.device_id }}" cx="{{ furniture.x1 }}px"
                     cy="{{ furniture.y1 }}px" r="{{ radious }}px"
                 {% if furniture.device.object.is_off %}
                     fill="rgba(55,55,55,1)"
                 {% else %}
                     fill="rgba(255,255,255,1)"
                 {% endif %}
-                    onclick="device({{ furniture.device_id }}, 'toggle')"/>
+                    onclick="device({{ furniture.device_id }}, 'toggle')" data-type="dot"/>
         {% endfor %}
 
         {% for temp in temps %}
-            <text id="{{ temp.id }}" class="temp" x="{{ temp.x }}px" y="{{ temp.y }}px" fill="rgba(255,255,255,1)"
-                  font-size="3em" font-family="arial" style="text-anchor: middle;">
+            <text id="{{ temp.id }}" class="furniture temp" x="{{ temp.x }}px" y="{{ temp.y }}px" fill="rgba(255,255,255,1)"
+                  font-size="3em" font-family="arial" style="text-anchor: middle;" data-type="temp">
                 {{ temp.thermometer.get_temp }}°
             </text>
         {% endfor %}

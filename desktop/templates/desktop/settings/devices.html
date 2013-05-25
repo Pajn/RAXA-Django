@@ -21,7 +21,7 @@
         <span>{% blocktrans %}New Device{% endblocktrans %}</span>
     </div>
     <div class="container">
-        <form action="{% url 'desktop.views.edit_device' %}" method="post">{% csrf_token %}
+        <form action="{% url 'settings_device' %}" method="post">{% csrf_token %}
             <table style="text-align: left; border: 8px solid transparent; border-spacing: 0;">
                 {{ form.as_table }}
             </table>
@@ -37,7 +37,7 @@
         header: '> div > div[class="header"]',
         beforeActivate: function (event, ui) {
             var id = ui.newHeader.attr('data-id');
-            ui.newPanel.load('{% url 'desktop.views.edit_device' %}', {'id': id}, fix_sliders);
+            ui.newPanel.load('{% url 'settings_device' %}', {'id': id}, fix_sliders);
         }
     }).sortable({
         axis: "y",
@@ -65,7 +65,7 @@
         $('#new #id_type').off().on('change', function () {
             var type = $(this).val();
             if (type != null && type != '') {
-                $('#new .container').load('{% url 'desktop.views.edit_device' %}', {'type': type}, type_event);
+                $('#new .container').load('{% url 'settings_device' %}', {'type': type}, type_event);
             }
         });
         fix_sliders();

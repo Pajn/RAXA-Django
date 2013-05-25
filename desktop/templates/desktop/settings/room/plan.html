@@ -15,7 +15,7 @@
 <div id="floorOverlay">
 </div>
 <div id="dialog-save-room" title="">
-    <form action="{% url 'desktop.views.roomsettings' type='plan' %}" method="post">{% csrf_token %}
+    <form action="{% url 'room_plan' %}" method="post">{% csrf_token %}
         {{ form.as_p }}
         <input type="submit" name="save" value="{% trans "Save" %}"/>
     </form>
@@ -123,7 +123,7 @@
         $('#Roptions').height($('#options').height() * 0.8);
     });
     function delete_room(id) {
-        $.post('{% url 'desktop.views.roomsettings' type='plan' %}', {'id': id}, function () {
+        $.post('{% url 'room_plan' %}', {'id': id}, function () {
             get_floor();
         });
     }

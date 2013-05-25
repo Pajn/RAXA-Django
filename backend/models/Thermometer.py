@@ -33,16 +33,9 @@ class Thermometer(models.Model):
         return round(self.temperature, 1)
 
 
-thermometer_form_set = None
-
-
 def ThermometerFormSet(*args, **kwargs):
-    global thermometer_form_set
-
-    if thermometer_form_set is None:
-        thermometer_form_set = modelformset_factory(Thermometer, form=ThermometerForm, can_delete=True, extra=0)
-
-    return thermometer_form_set(*args, **kwargs)
+    formset = modelformset_factory(Thermometer, form=ThermometerForm, can_delete=True, extra=0)
+    return formset(*args, **kwargs)
 
 
 class ThermometerForm(ModelForm):

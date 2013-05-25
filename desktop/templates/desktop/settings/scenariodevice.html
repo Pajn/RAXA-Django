@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load url from future %}
-<form action="{% url 'desktop.views.edit_scenario' %}" method="post">{% csrf_token %}
-    <input type="hidden" name="id" value="{{ object.id }}"/>
+<form action="{% url 'settings_scenariodevice' %}" method="post">{% csrf_token %}
+    <input type="hidden" name="id" value="{{ scenario_device.id }}"/>
     {{ form.as_ul }}
     <input type="submit" name="save" value="{% trans "Save" %}"/>
     <input type="submit" name="delete" value="{% trans "Delete" %}"/>

@@ -1,5 +1,5 @@
 {% load i18n %}
-<form action="{% url 'desktop.views.systemsettings' type='security' %}" method="post">{% csrf_token %}
+<form action="{% url 'system_security' %}" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
     {{ form.is_active.errors }}
     {{ form.is_active }}

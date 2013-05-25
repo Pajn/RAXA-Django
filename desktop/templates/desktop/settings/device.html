@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load url from future %}
-<form action="{% url 'desktop.views.edit_device' %}" method="post">{% csrf_token %}
-    <input type="hidden" name="id" value="{{ object.id }}"/>
+<form action="{% url 'settings_device' %}" method="post">{% csrf_token %}
+    <input type="hidden" name="id" value="{{ device.id }}"/>
     <table style="text-align: left; border: 8px solid transparent; border-spacing: 0;">
         {{ form.as_table }}
     </table>
@@ -11,6 +11,6 @@
         <input type="submit" name="save" value="{% trans "Save" %}"/>
         <input type="submit" name="delete" value="{% trans "Delete" %}"/>
         <input type="submit" name="sync" value="{% trans "Sync" %}"
-               onclick="device({{ object.id }}, 'sync');return false"/>
+               onclick="device({{ device.id }}, 'sync');return false"/>
     {% endif %}
 </form>
