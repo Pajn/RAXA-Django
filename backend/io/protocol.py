@@ -53,7 +53,10 @@ class Protocol(object):
         action = kwargs.get('action')
         if action is '':
             action = self.device.action
-        self.SUPPORTED_ACTIONS[action](self, **kwargs)
+        try:
+            self.SUPPORTED_ACTIONS[action](self, **kwargs)
+        except IOError:
+            return 'ConnectionError'
 
     def is_off(self):
         if self.device.status == 'off':
@@ -77,7 +80,10 @@ class DimLevelProtocol(Protocol):
             kwargs['dim_level'] = dim_level
         except ValueError:
             pass
-        self.SUPPORTED_ACTIONS[action](self, **kwargs)
+        try:
+            self.SUPPORTED_ACTIONS[action](self, **kwargs)
+        except IOError:
+            return 'ConnectionError'
 
     def getSteps(self):
         steps = []

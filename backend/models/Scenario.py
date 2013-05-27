@@ -31,18 +31,22 @@ class Scenario(models.Model):
         transaction.enter_transaction_management()
         transaction.managed(True)
 
+        errors = {}
+
         if action is None:
             for scenario_device in self.scenariodevice_set.all().select_related('device'):
-                scenario_device.device.object.action(action=scenario_device.action)
+                errors[scenario_device] = scenario_device.device.object.action(action=scenario_device.action)
         else:
             for scenario_device in self.scenariodevice_set.all().select_related('device'):
-                scenario_device.device.object.action(action=action)
+                errors[scenario_device] = scenario_device.device.object.action(action=action)
 
         transaction.commit()
 
         transaction.leave_transaction_management()
 
-        scenario_executed.send(sender=self, scenario=self)
+        scenario_executed.send(sender=self, scenario=self, errors=errors)
+
+        return errors
 
 
 scenario_form_set = None

@@ -20,7 +20,7 @@ def respond_with_json(data, errors=None, pretty=False, request=None):
         status = {'status': 'ok', 'errors': errors}
     else:
         status = {'status': 'error', 'errors': errors}
-    status['version'], err = RAXA_VERSION
+    status['version'] = RAXA_VERSION
     response = {'response': data, 'status': status}
     if pretty:
         jsons = json.dumps(response, sort_keys=True,
@@ -181,7 +181,9 @@ def device(request):
     try:
         device = Device.objects.get(pk=pk)
         try:
-            device.object.action(**request.REQUEST)
+            error = device.object.action(**request.REQUEST)
+            if error == 'ConnectionError':
+                return '', ['DeviceConnectionError:%i' % device.id]
         except KeyError:
             return '', ['ActionNotSupported:' + action]
         return '', []
@@ -204,8 +206,12 @@ def scenario(request):
         return '', ['NotSet:id']
     try:
         scenario = Scenario.objects.get(pk=pk)
-        scenario.execute()
-        return '', []
+        return_errors = []
+        scenario_errors = scenario.execute()
+        for scenario_device, error in scenario_errors.items():
+            if error == 'ConnectionError':
+                return_errors.append('DeviceConnectionError:%i' % scenario_device.device.id)
+        return '', return_errors
     except Scenario.DoesNotExist:
         return '', ['DoesNotExist:Scenario']
 
