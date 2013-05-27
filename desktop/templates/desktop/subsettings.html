@@ -8,7 +8,7 @@
     </div>
     <div id="subsettingsoptions" class="border bottom">
         {% if subsetting %}
-            {% with "desktop/settings/"|add:setting|add:"/"|add:subsetting|add:".html" as template %}
+            {% with app|add:"/settings/"|add:setting|add:"/"|add:subsetting|add:".html" as template %}
                 {% include template %}
             {% endwith %}
         {% endif %}

@@ -90,9 +90,18 @@
                         <input type="button" data-id="furniture" value="{% trans "Plan" %}"
                                data-url="{% url 'settings_furniture' %}"
                                class="button normalbutton vertical menu
-                                      {% if addon.settings_menu_items.length == 0 %}bottom{% endif %}
+                                      {% if plugins.settings_menu.length == 0 %}bottom{% endif %}
                                       {% if setting == 'furniture' %}verticalSelected{% endif %}"/>
                     </li>
+                    {% for plugin in plugins.settings_menu %}
+                        <li>
+                            <input type="button" value="{{ plugin.label }}"
+                                   data-url="{{ plugin.url }}"
+                                   class="button normalbutton vertical menu
+                                          {% if forloop.last %}bottom{% endif %}
+                                          {% if setting == plugin.setting %}verticalSelected{% endif %}"/>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
             <div id="options" class="border">

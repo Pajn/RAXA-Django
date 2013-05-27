@@ -22,7 +22,7 @@ TIME_ZONE = 'Europe/Stockholm'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 SITE_ID = 1
 
@@ -73,6 +73,7 @@ TEMPLATE_LOADERS = (
     #'django.template.loaders.app_directories.Loader',
     #'django.template.loaders.eggs.Loader',
     'django_jinja2.loaders.app_directories.Loader',
+    'django.template.loaders.app_directories.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -112,6 +113,8 @@ INSTALLED_APPS = (
     'mobile',
     'api',
 )
+
+INSTALLED_PLUGINS = ()
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -158,3 +161,5 @@ try:
     from RAXA.local_settings import *
 except ImportError:
     pass
+
+INSTALLED_APPS += INSTALLED_PLUGINS

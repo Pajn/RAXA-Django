@@ -22,11 +22,24 @@ from common.models.Furniture import Furniture, FurnitureForm
 from common.models.Plan import PlanForm, Plan
 from common.models.Temp import TempForm
 from desktop.model_helpers.floors import floor_select
+from desktop.plugin_mounts import SettingsMenuItem
+
+plugins = None
+
+
+def load_plugins():
+    global plugins
+
+    if plugins is None:
+        plugins = {
+            'settings_menu': SettingsMenuItem.get_plugins()
+        }
 
 
 class DesktopView(TemplateView):
     template_name = 'desktop/index.html'
     template_args = {}
+    app = 'desktop'
 
     floors = Floor.objects.all()
     scenarios = Scenario.objects.all()
@@ -49,10 +62,14 @@ class DesktopView(TemplateView):
 
         context.update(self.template_args)
 
+        context['app'] = self.app
         context['scenarios'] = self.scenarios
         context['floors'] = self.floors
         context['percent'] = self.percent
         context['theme'] = self.request.session['theme']
+
+        load_plugins()
+        context['plugins'] = plugins
 
         return context
 
@@ -76,7 +93,7 @@ class DevicesView(TemplateView):
 
 class SettingsView(DesktopView):
     setting = None
-    template_finder = 'desktop/settings/%(setting)s.html'
+    template_finder = 'desktop/settings/{0}.html'
 
     def on_get(self, request, *args, **kwargs):
         pass
@@ -94,7 +111,7 @@ class SettingsView(DesktopView):
         if self.setting is None or full:
             self.template_name = 'desktop/settings.html'
         else:
-            self.template_name = self.template_finder % {'setting': self.setting}
+            self.template_name = self.template_finder.format(self.setting)
         return super(SettingsView, self).post(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):

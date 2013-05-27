@@ -3,7 +3,7 @@
 {% block display_settings %}block{% endblock %}
 {% block settings %}
     {% if setting %}
-        {% with "desktop/settings/"|add:setting|add:".html" as template %}
+        {% with app|add:"/settings/"|add:setting|add:".html" as template %}
             {% include template %}
         {% endwith %}
     {% endif %}
