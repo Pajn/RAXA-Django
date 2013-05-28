@@ -27,14 +27,17 @@
 
     {% if not edit_rooms %}
         {% for furniture in furnitures %}
-            <circle id="{{ furniture.id }}" class="furniture dot device{{ furniture.device_id }}" cx="{{ furniture.x1 }}px"
-                    cy="{{ furniture.y1 }}px" r="{{ radious }}px"
-                {% if furniture.device.object.is_off %}
-                    fill="rgba(55,55,55,1)"
-                {% else %}
-                    fill="rgba(255,255,255,1)"
-                {% endif %}
-                    onclick="device({{ furniture.device_id }}, 'toggle')" data-type="dot"/>
+            <g>
+                <title>{{ furniture.device.name }}{{ furniture.device.object.CONNECTOR_TYPE }}</title>
+                <circle id="{{ furniture.id }}" class="furniture dot device{{ furniture.device_id }}" cx="{{ furniture.x1 }}px"
+                        cy="{{ furniture.y1 }}px" r="{{ radious }}px"
+                    {% if furniture.device.object.is_off %}
+                        fill="rgba(55,55,55,1)"
+                    {% else %}
+                        fill="rgba(255,255,255,1)"
+                    {% endif %}
+                        onclick="device({{ furniture.device_id }}, 'toggle')" data-type="dot"/>
+            </g>
         {% endfor %}
 
         {% for temp in temps %}

@@ -41,7 +41,7 @@ class Protocol(object):
         raise NotImplementedError
 
     def toggle(self, *args, **kwargs):
-        if self.is_off():
+        if self.is_off:
             self.on()
         else:
             self.off()
@@ -58,6 +58,7 @@ class Protocol(object):
         except IOError:
             return 'ConnectionError'
 
+    @property
     def is_off(self):
         if self.device.status == 'off':
             return True
