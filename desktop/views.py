@@ -16,7 +16,7 @@ from backend.models.User import SecurityForm, ThemeForm
 from backend.system.network import NetworkForm
 from backend.widgets import OnOff, OnOffDimLevel
 from backend.widgets.OnOffColorWheel import OnOffColorWheel
-from common.models.Theme import ThemeFormSet
+from common.models.Theme import ThemeFormSet, Theme
 from common.models import Temp
 from common.models.Furniture import Furniture, FurnitureForm
 from common.models.Plan import PlanForm, Plan
@@ -66,7 +66,11 @@ class DesktopView(TemplateView):
         context['scenarios'] = self.scenarios
         context['floors'] = self.floors
         context['percent'] = self.percent
-        context['theme'] = self.request.session['theme']
+
+        try:
+            context['theme'] = self.request.session['theme']
+        except KeyError:
+            context['theme'] = Theme.objects.get(id=1)
 
         load_plugins()
         context['plugins'] = plugins
