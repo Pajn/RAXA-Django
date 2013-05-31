@@ -8,12 +8,6 @@ ugettext = lambda s: s
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    ('rasmus', 'rasmus@eneman.eu'),
-)
-
-MANAGERS = ADMINS
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -61,17 +55,10 @@ STATIC_URL = '/static/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'e36c1yh7z_8p_phsk)9-ynvv)k5@d66#y*0&amp;31nqflqb$n7-%('
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    #'django.template.loaders.filesystem.Loader',
-    #'django.template.loaders.app_directories.Loader',
-    #'django.template.loaders.eggs.Loader',
     'django_jinja2.loaders.app_directories.Loader',
     'django.template.loaders.app_directories.Loader',
 )
@@ -80,11 +67,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
-    #'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'backend.authorization.Auth',
 )
 
@@ -94,16 +77,11 @@ ROOT_URLCONF = 'RAXA.urls'
 WSGI_APPLICATION = 'RAXA.wsgi.application'
 
 INSTALLED_APPS = (
-    #'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    #'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
     'django_jinja2',
     'south',
     'backend',
