@@ -7,200 +7,191 @@ msgstr ""
 "Project-Id-Version: RAXAdesktop\n"
 "Language: en\n"
 
-#: views.py:245
-msgid "Couldn't check"
-msgstr "Couldn't check"
-
-#: views.py:486 templates/desktop/settings/inputs/inputs.html:24
+#: views.py:320 templates/desktop/settings/inputs.html:19
 msgid "Scan"
 msgstr "Scan"
 
-#: templates/desktop/footer.html:11 templates/desktop/index.html:219
+#: templates/desktop/footer.html:11 templates/desktop/index.html:246
 msgid "Settings"
 msgstr "Settings"
 
-#: templates/desktop/index.html:47
+#: templates/desktop/index.html:48
 msgid "Devices"
 msgstr "Devices"
 
-#: templates/desktop/index.html:48
+#: templates/desktop/index.html:54
 msgid "Scenarios"
 msgstr "Scenarios"
 
-#: templates/desktop/index.html:49
+#: templates/desktop/index.html:60
 msgid "Inputs"
 msgstr "Inputs"
 
-#: templates/desktop/index.html:50
+#: templates/desktop/index.html:66
 msgid "Timers"
 msgstr "Timers"
 
-#: templates/desktop/index.html:53
-#: templates/desktop/settings/room/room.html:36
+#: templates/desktop/index.html:78 templates/desktop/settings/room.html:5
 msgid "Rooms"
 msgstr "Rooms"
 
-#: templates/desktop/index.html:54
+#: templates/desktop/index.html:84
 msgid "System"
 msgstr "System"
 
-#: templates/desktop/index.html:55
-#: templates/desktop/settings/room/room.html:38
+#: templates/desktop/index.html:90 templates/desktop/settings/room.html:17
 msgid "Plan"
 msgstr "Plan"
 
-#: templates/desktop/index.html:182
+#: templates/desktop/index.html:213
 msgid "Executing"
 msgstr "Executing"
 
-#: templates/desktop/settings/devices/device.html:26
-#: templates/desktop/settings/inputs/input.html:93
-#: templates/desktop/settings/scenarios/scenario.html:114
-#: templates/desktop/settings/timers/timers.html:120
+#: templates/desktop/settings/device.html:9
+#: templates/desktop/settings/input.html:8
+#: templates/desktop/settings/timers.html:30
+#: templates/desktop/settings/scenarios/scenario.html:27
 msgid "Add"
 msgstr "Add"
 
-#: templates/desktop/settings/devices/device.html:28
-#: templates/desktop/settings/furniture/furniture.html:28
-#: templates/desktop/settings/furniture/furniture.html:35
-#: templates/desktop/settings/inputs/input.html:96
-#: templates/desktop/settings/room/floors/floors.html:31
-#: templates/desktop/settings/room/plan/plan.html:20
-#: templates/desktop/settings/room/rooms/rooms.html:31
-#: templates/desktop/settings/scenarios/scenariodevice.html:6
-#: templates/desktop/settings/scenarios/scenarios_edit.html:31
-#: templates/desktop/settings/system/connectors/connectors.html:31
-#: templates/desktop/settings/system/network/network.html:52
-#: templates/desktop/settings/system/security/security.html:6
-#: templates/desktop/settings/system/security/security.html:20
-#: templates/desktop/settings/thermometers/thermometers.html:31
-#: templates/desktop/settings/timers/timer.html:8
+#: templates/desktop/settings/device.html:11
+#: templates/desktop/settings/furniture.html:28
+#: templates/desktop/settings/furniture.html:35
+#: templates/desktop/settings/input.html:11
+#: templates/desktop/settings/scenariodevice.html:6
+#: templates/desktop/settings/thermometers.html:33
+#: templates/desktop/settings/timer.html:8
+#: templates/desktop/settings/room/floors.html:33
+#: templates/desktop/settings/room/plan.html:20
+#: templates/desktop/settings/room/rooms.html:33
+#: templates/desktop/settings/scenarios/scenarios_edit.html:33
+#: templates/desktop/settings/system/connectors.html:41
+#: templates/desktop/settings/system/network.html:53
+#: templates/desktop/settings/system/security.html:15
+#: templates/desktop/settings/system/themes.html:39
 msgid "Save"
 msgstr "Save"
 
-#: templates/desktop/settings/devices/device.html:29
-#: templates/desktop/settings/inputs/input.html:97
-#: templates/desktop/settings/scenarios/scenariodevice.html:7
-#: templates/desktop/settings/timers/timer.html:9
+#: templates/desktop/settings/device.html:12
+#: templates/desktop/settings/input.html:12
+#: templates/desktop/settings/scenariodevice.html:7
+#: templates/desktop/settings/timer.html:9
+#: templates/desktop/settings/system/themes.html:19
 msgid "Delete"
 msgstr "Delete"
 
-#: templates/desktop/settings/devices/device.html:30
+#: templates/desktop/settings/device.html:13
 msgid "Sync"
 msgstr "Sync"
 
-#: templates/desktop/settings/devices/devices.html:21
-#: templates/desktop/settings/scenarios/scenario.html:103
+#: templates/desktop/settings/devices.html:21
+#: templates/desktop/settings/scenarios/scenario.html:16
 msgid "New Device"
 msgstr "New Device"
 
-#: templates/desktop/settings/furniture/furniture.html:18
+#: templates/desktop/settings/furniture.html:18
 msgid "Snap to grid"
 msgstr "Snap to grid"
 
-#: templates/desktop/settings/inputs/inputs.html:21
+#: templates/desktop/settings/inputs.html:16
 msgid "New Input"
 msgstr "New Input"
 
-#: templates/desktop/settings/inputs/inputs.html:61
+#: templates/desktop/settings/inputs.html:56
 msgid "scanning"
 msgstr "scanning"
 
-#: templates/desktop/settings/inputs/inputs.html:68
-#: templates/desktop/settings/scenarios/scenario.html:110
-#: templates/desktop/settings/timers/timers.html:114
+#: templates/desktop/settings/inputs.html:63
+#: templates/desktop/settings/timers.html:24
+#: templates/desktop/settings/scenarios/scenario.html:22
 msgid "Action"
 msgstr "Action"
 
-#: templates/desktop/settings/scenarios/scenarios_menu.html:7
+#: templates/desktop/settings/scenarios.html:8
 msgid "Edit Scenarios"
 msgstr "Edit Scenarios"
 
-#: templates/desktop/settings/system/connectors/connectors.html:32
+#: templates/desktop/settings/system/connectors.html:42
 msgid "Search"
 msgstr "Search"
 
-#: templates/desktop/settings/system/connectors/connectors.html:35
+#: templates/desktop/settings/system/connectors.html:45
 msgid "Searching for new connectors, please wait..."
 msgstr "Searching for new connectors, please wait..."
 
-#: templates/desktop/settings/system/network/network.html:11
+#: templates/desktop/settings/system/network.html:12
 msgid "Warning, setting wrong settings here may make RAXA inaccesible"
 msgstr "Warning, setting wrong settings here may make RAXA inaccesible"
 
-#: templates/desktop/settings/system/network/network.html:21
+#: templates/desktop/settings/system/network.html:22
 msgid "IP"
 msgstr "IP"
 
-#: templates/desktop/settings/system/network/network.html:29
+#: templates/desktop/settings/system/network.html:30
 msgid "Netmask"
 msgstr "Netmask"
 
-#: templates/desktop/settings/system/network/network.html:37
+#: templates/desktop/settings/system/network.html:38
 msgid "DNS"
 msgstr "DNS"
 
-#: templates/desktop/settings/system/network/network.html:45
+#: templates/desktop/settings/system/network.html:46
 msgid "Gateway"
 msgstr "Gateway"
 
-#: templates/desktop/settings/system/updates/updates.html:8
-msgid "Update"
-msgstr "Update"
-
-#: templates/desktop/settings/timers/timers.html:106
+#: templates/desktop/settings/timers.html:16
 msgid "New Timer"
 msgstr "New Timer"
 
-#: templates/desktop/settings/system/system.html:36
+#: templates/desktop/settings/system.html:5
 msgid "Connectors"
 msgstr "Connectors"
 
-#: templates/desktop/settings/system/system.html:37
+#: templates/desktop/settings/system.html:11
 msgid "Network"
 msgstr "Network"
 
-#: templates/desktop/settings/system/system.html:38
+#: templates/desktop/settings/system.html:17
 msgid "Security"
 msgstr "Security"
 
-#: templates/desktop/settings/system/system.html:39
-msgid "Updates"
-msgstr "Updates"
-
-#: templates/desktop/settings/system/updates/updates.html:3
-msgid "Current version"
-msgstr "Current version"
-
-#: templates/desktop/settings/system/updates/updates.html:4
-msgid "Latest version"
-msgstr "Latest version"
-
-#: templates/desktop/index.html:51
+#: templates/desktop/index.html:72
 msgid "Thermometers"
 msgstr "Thermometers"
 
-#: templates/desktop/settings/furniture/furniture.html:14
+#: templates/desktop/settings/furniture.html:14
 msgid "Dot (device)"
 msgstr "Dot (device)"
 
-#: templates/desktop/settings/furniture/furniture.html:15
+#: templates/desktop/settings/furniture.html:15
 msgid "Temp display"
 msgstr "Temp display"
 
-#: templates/desktop/index.html:172
+#: templates/desktop/index.html:203
 msgid "Done"
 msgstr "Done"
 
-#: templates/desktop/index.html:174
+#: templates/desktop/index.html:205
 msgid "Error"
 msgstr "Error"
 
-#: templates/desktop/settings/room/room.html:37
+#: templates/desktop/settings/room.html:11
 msgid "Floors"
 msgstr "Floors"
 
-#: templates/desktop/settings/system/security/security.html:7
-#: templates/desktop/settings/system/security/security.html:21
+#: templates/desktop/settings/system/security.html:16
 msgid "Logout"
 msgstr "Logout"
+
+#: templates/desktop/settings/system.html:23
+msgid "Themes"
+msgstr "Themes"
+
+#: templates/desktop/settings/system/connectors.html:34
+msgid "Update Needed"
+msgstr "Update Needed"
+
+#: templates/desktop/settings/system/connectors.html:61
+msgid "Updating Connector"
+msgstr "Updating Connector"
+

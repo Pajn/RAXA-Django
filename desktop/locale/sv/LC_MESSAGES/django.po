@@ -7,200 +7,191 @@ msgstr ""
 "Project-Id-Version: RAXAdesktop\n"
 "Language: sv\n"
 
-#: views.py:245
-msgid "Couldn't check"
-msgstr "Kunde inte kontrollera"
-
-#: views.py:486 templates/desktop/settings/inputs/inputs.html:24
+#: views.py:320 templates/desktop/settings/inputs.html:19
 msgid "Scan"
 msgstr "Sök"
 
-#: templates/desktop/footer.html:11 templates/desktop/index.html:219
+#: templates/desktop/footer.html:11 templates/desktop/index.html:246
 msgid "Settings"
 msgstr "Inställningar"
 
-#: templates/desktop/index.html:47
+#: templates/desktop/index.html:48
 msgid "Devices"
 msgstr "Enheter"
 
-#: templates/desktop/index.html:48
+#: templates/desktop/index.html:54
 msgid "Scenarios"
 msgstr "Scenarion"
 
-#: templates/desktop/index.html:49
+#: templates/desktop/index.html:60
 msgid "Inputs"
 msgstr "Ingångar"
 
-#: templates/desktop/index.html:50
+#: templates/desktop/index.html:66
 msgid "Timers"
 msgstr "Timers"
 
-#: templates/desktop/index.html:53
-#: templates/desktop/settings/room/room.html:36
+#: templates/desktop/index.html:78 templates/desktop/settings/room.html:5
 msgid "Rooms"
 msgstr "Rum"
 
-#: templates/desktop/index.html:54
+#: templates/desktop/index.html:84
 msgid "System"
 msgstr "System"
 
-#: templates/desktop/index.html:55
-#: templates/desktop/settings/room/room.html:38
+#: templates/desktop/index.html:90 templates/desktop/settings/room.html:17
 msgid "Plan"
 msgstr "Karta"
 
-#: templates/desktop/index.html:182
+#: templates/desktop/index.html:213
 msgid "Executing"
 msgstr "Kör"
 
-#: templates/desktop/settings/devices/device.html:26
-#: templates/desktop/settings/inputs/input.html:93
-#: templates/desktop/settings/scenarios/scenario.html:114
-#: templates/desktop/settings/timers/timers.html:120
+#: templates/desktop/settings/device.html:9
+#: templates/desktop/settings/input.html:8
+#: templates/desktop/settings/timers.html:30
+#: templates/desktop/settings/scenarios/scenario.html:27
 msgid "Add"
 msgstr "Lägg till"
 
-#: templates/desktop/settings/devices/device.html:28
-#: templates/desktop/settings/furniture/furniture.html:28
-#: templates/desktop/settings/furniture/furniture.html:35
-#: templates/desktop/settings/inputs/input.html:96
-#: templates/desktop/settings/room/floors/floors.html:31
-#: templates/desktop/settings/room/plan/plan.html:20
-#: templates/desktop/settings/room/rooms/rooms.html:31
-#: templates/desktop/settings/scenarios/scenariodevice.html:6
-#: templates/desktop/settings/scenarios/scenarios_edit.html:31
-#: templates/desktop/settings/system/connectors/connectors.html:31
-#: templates/desktop/settings/system/network/network.html:52
-#: templates/desktop/settings/system/security/security.html:6
-#: templates/desktop/settings/system/security/security.html:20
-#: templates/desktop/settings/thermometers/thermometers.html:31
-#: templates/desktop/settings/timers/timer.html:8
+#: templates/desktop/settings/device.html:11
+#: templates/desktop/settings/furniture.html:28
+#: templates/desktop/settings/furniture.html:35
+#: templates/desktop/settings/input.html:11
+#: templates/desktop/settings/scenariodevice.html:6
+#: templates/desktop/settings/thermometers.html:33
+#: templates/desktop/settings/timer.html:8
+#: templates/desktop/settings/room/floors.html:33
+#: templates/desktop/settings/room/plan.html:20
+#: templates/desktop/settings/room/rooms.html:33
+#: templates/desktop/settings/scenarios/scenarios_edit.html:33
+#: templates/desktop/settings/system/connectors.html:41
+#: templates/desktop/settings/system/network.html:53
+#: templates/desktop/settings/system/security.html:15
+#: templates/desktop/settings/system/themes.html:39
 msgid "Save"
 msgstr "Spara"
 
-#: templates/desktop/settings/devices/device.html:29
-#: templates/desktop/settings/inputs/input.html:97
-#: templates/desktop/settings/scenarios/scenariodevice.html:7
-#: templates/desktop/settings/timers/timer.html:9
+#: templates/desktop/settings/device.html:12
+#: templates/desktop/settings/input.html:12
+#: templates/desktop/settings/scenariodevice.html:7
+#: templates/desktop/settings/timer.html:9
+#: templates/desktop/settings/system/themes.html:19
 msgid "Delete"
 msgstr "Ta bort"
 
-#: templates/desktop/settings/devices/device.html:30
+#: templates/desktop/settings/device.html:13
 msgid "Sync"
 msgstr "Synca"
 
-#: templates/desktop/settings/devices/devices.html:21
-#: templates/desktop/settings/scenarios/scenario.html:103
+#: templates/desktop/settings/devices.html:21
+#: templates/desktop/settings/scenarios/scenario.html:16
 msgid "New Device"
 msgstr "Ny Enhet"
 
-#: templates/desktop/settings/furniture/furniture.html:18
+#: templates/desktop/settings/furniture.html:18
 msgid "Snap to grid"
 msgstr "Fäst vid rutnät"
 
-#: templates/desktop/settings/inputs/inputs.html:21
+#: templates/desktop/settings/inputs.html:16
 msgid "New Input"
 msgstr "Ny Ingång"
 
-#: templates/desktop/settings/inputs/inputs.html:61
+#: templates/desktop/settings/inputs.html:56
 msgid "scanning"
 msgstr "söker"
 
-#: templates/desktop/settings/inputs/inputs.html:68
-#: templates/desktop/settings/scenarios/scenario.html:110
-#: templates/desktop/settings/timers/timers.html:114
+#: templates/desktop/settings/inputs.html:63
+#: templates/desktop/settings/timers.html:24
+#: templates/desktop/settings/scenarios/scenario.html:22
 msgid "Action"
 msgstr "Åtgärd"
 
-#: templates/desktop/settings/scenarios/scenarios_menu.html:7
+#: templates/desktop/settings/scenarios.html:8
 msgid "Edit Scenarios"
 msgstr "Ändra Scenarion"
 
-#: templates/desktop/settings/system/connectors/connectors.html:32
+#: templates/desktop/settings/system/connectors.html:42
 msgid "Search"
 msgstr "Sök"
 
-#: templates/desktop/settings/system/connectors/connectors.html:35
+#: templates/desktop/settings/system/connectors.html:45
 msgid "Searching for new connectors, please wait..."
 msgstr "Söker efter nya anslutare, var snäll och vänta"
 
-#: templates/desktop/settings/system/network/network.html:11
+#: templates/desktop/settings/system/network.html:12
 msgid "Warning, setting wrong settings here may make RAXA inaccesible"
 msgstr "Varning, att sätta fel inställningar här kan göra så att RAXA inte går att nå"
 
-#: templates/desktop/settings/system/network/network.html:21
+#: templates/desktop/settings/system/network.html:22
 msgid "IP"
 msgstr "IP"
 
-#: templates/desktop/settings/system/network/network.html:29
+#: templates/desktop/settings/system/network.html:30
 msgid "Netmask"
 msgstr "Nätmask"
 
-#: templates/desktop/settings/system/network/network.html:37
+#: templates/desktop/settings/system/network.html:38
 msgid "DNS"
 msgstr "DNS"
 
-#: templates/desktop/settings/system/network/network.html:45
+#: templates/desktop/settings/system/network.html:46
 msgid "Gateway"
 msgstr "Gateway"
 
-#: templates/desktop/settings/system/updates/updates.html:8
-msgid "Update"
-msgstr "Uppdatera"
-
-#: templates/desktop/settings/timers/timers.html:106
+#: templates/desktop/settings/timers.html:16
 msgid "New Timer"
 msgstr "Ny Timer"
 
-#: templates/desktop/settings/system/system.html:36
+#: templates/desktop/settings/system.html:5
 msgid "Connectors"
 msgstr "Anslutare"
 
-#: templates/desktop/settings/system/system.html:37
+#: templates/desktop/settings/system.html:11
 msgid "Network"
 msgstr "Nätverk"
 
-#: templates/desktop/settings/system/system.html:38
+#: templates/desktop/settings/system.html:17
 msgid "Security"
 msgstr "Säkerhet"
 
-#: templates/desktop/settings/system/system.html:39
-msgid "Updates"
-msgstr "Uppdateringar"
-
-#: templates/desktop/settings/system/updates/updates.html:3
-msgid "Current version"
-msgstr "Installerad version"
-
-#: templates/desktop/settings/system/updates/updates.html:4
-msgid "Latest version"
-msgstr "Senaste version"
-
-#: templates/desktop/index.html:51
+#: templates/desktop/index.html:72
 msgid "Thermometers"
 msgstr "Termometrar"
 
-#: templates/desktop/settings/furniture/furniture.html:14
+#: templates/desktop/settings/furniture.html:14
 msgid "Dot (device)"
 msgstr "Prick (Enhet)"
 
-#: templates/desktop/settings/furniture/furniture.html:15
+#: templates/desktop/settings/furniture.html:15
 msgid "Temp display"
 msgstr "Temperaturvisning"
 
-#: templates/desktop/index.html:172
+#: templates/desktop/index.html:203
 msgid "Done"
 msgstr "Klar"
 
-#: templates/desktop/index.html:174
+#: templates/desktop/index.html:205
 msgid "Error"
 msgstr "Fel"
 
-#: templates/desktop/settings/room/room.html:37
+#: templates/desktop/settings/room.html:11
 msgid "Floors"
 msgstr "Våningar"
 
-#: templates/desktop/settings/system/security/security.html:7
-#: templates/desktop/settings/system/security/security.html:21
+#: templates/desktop/settings/system/security.html:16
 msgid "Logout"
 msgstr "Logga ut"
+
+#: templates/desktop/settings/system.html:23
+msgid "Themes"
+msgstr "Teman"
+
+#: templates/desktop/settings/system/connectors.html:34
+msgid "Update Needed"
+msgstr "Uppdatering krävs"
+
+#: templates/desktop/settings/system/connectors.html:61
+msgid "Updating Connector"
+msgstr "Uppdaterar Anslutare"
+
