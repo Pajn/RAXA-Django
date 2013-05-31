@@ -20,7 +20,11 @@ def respond_with_json(data, errors=None, pretty=False, request=None):
         status = {'status': 'ok', 'errors': errors}
     else:
         status = {'status': 'error', 'errors': errors}
-    status['version'] = RAXA_VERSION
+    version = {
+        'api': API_VERSION,
+        'RAXA': RAXA_VERSION
+    }
+    status['version'] = version
     response = {'response': data, 'status': status}
     if pretty:
         jsons = json.dumps(response, sort_keys=True,
