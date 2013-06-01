@@ -12,7 +12,6 @@ class Connector(models.Model):
     type = models.CharField(_('Type'), max_length=30)
     code = models.CharField(_('Code'), max_length=30)
     version = models.CharField(_('Version'), max_length=30)
-    usable = models.BooleanField(_('Usable'))
 
     object = None
 

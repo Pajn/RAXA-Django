@@ -41,9 +41,14 @@ class DesktopView(TemplateView):
     template_args = {}
     app = 'desktop'
 
-    floors = Floor.objects.all()
-    scenarios = Scenario.objects.all()
-    percent = (98 - scenarios.__len__()) / (scenarios.__len__() + 1)
+    #Without this I get and IDE warning that request is missing
+    request = None
+
+    def __init__(self, **kwargs):
+        super(DesktopView, self).__init__(**kwargs)
+        self.floors = Floor.objects.all()
+        self.scenarios = Scenario.objects.all()
+        self.percent = (98 - self.scenarios.__len__()) / (self.scenarios.__len__() + 1)
 
     def on_request(self, request, *args, **kwargs):
         pass
@@ -220,9 +225,9 @@ class ScenariosSettingsView(SubSettingsView):
 class EditScenariosSettingsView(ScenariosSettingsView):
     setting = 'scenarios_edit'
 
-    template_args = {
-        'formset': ScenarioFormSet()
-    }
+    def __init__(self, **kwargs):
+        super(EditScenariosSettingsView, self).__init__(**kwargs)
+        self.template_args['formset'] = ScenarioFormSet()
 
     def on_post(self, request, *args, **kwargs):
         if 'save' in request.POST:
@@ -283,9 +288,9 @@ class ScenarioDeviceSettingsView(SettingsView):
 class InputsSettingsView(SettingsView):
     setting = 'inputs'
 
-    template_args = {
-        'inputs': Input.objects.exclude(pk=1)
-    }
+    def __init__(self, **kwargs):
+        super(InputsSettingsView, self).__init__(**kwargs)
+        self.template_args['inputs'] = Input.objects.exclude(pk=1)
 
 
 class InputSettingsView(SettingsView):
@@ -344,10 +349,10 @@ class InputSettingsView(SettingsView):
 class TimersSettingsView(SettingsView):
     setting = 'timers'
 
-    template_args = {
-        'timers': Timer.objects.all(),
-        'form': TimerForm()
-    }
+    def __init__(self, **kwargs):
+        super(TimersSettingsView, self).__init__(**kwargs)
+        self.template_args['timers'] = Timer.objects.all()
+        self.template_args['form'] = TimerForm()
 
 
 class TimerSettingsView(SettingsView):
@@ -391,9 +396,9 @@ class TimerSettingsView(SettingsView):
 class ThermometersSettingsView(SettingsView):
     setting = 'thermometers'
 
-    template_args = {
-        'formset': ThermometerFormSet(),
-    }
+    def __init__(self, **kwargs):
+        super(ThermometersSettingsView, self).__init__(**kwargs)
+        self.template_args['formset'] = ThermometerFormSet()
 
     def on_post(self, request, *args, **kwargs):
         if 'save' in request.POST:
@@ -411,10 +416,10 @@ class FurnitureSettingsView(SettingsView):
 
     floor = None
 
-    template_args = {
-        'dot_form': FurnitureForm(),
-        'temp_form': TempForm()
-    }
+    def __init__(self, **kwargs):
+        super(FurnitureSettingsView, self).__init__(**kwargs)
+        self.template_args['dot_form'] = FurnitureForm()
+        self.template_args['temp_form'] = TempForm()
 
     def on_post(self, request, *args, **kwargs):
         if 'floor' in request.POST:
@@ -453,15 +458,16 @@ class FurnitureSettingsView(SettingsView):
 class ConnectorsSettingsView(SystemSettingsView):
     setting = 'connectors'
 
-    template_args = {
-        'formset': ConnectorFormSet()
-    }
+    def __init__(self, **kwargs):
+        super(ConnectorsSettingsView, self).__init__(**kwargs)
+        self.template_args['formset'] = ConnectorFormSet()
 
     def on_post(self, request, *args, **kwargs):
         if 'save' in request.POST:
-            formset = ThermometerFormSet(request.POST)
+            formset = ConnectorFormSet(request.POST)
             if formset.is_valid():
                 formset.save()
+                formset = ConnectorFormSet()
             self.template_args['formset'] = formset
             return True
         elif 'search' in request.POST:
@@ -475,9 +481,9 @@ class ConnectorsSettingsView(SystemSettingsView):
 class NetworkSettingsView(SystemSettingsView):
     setting = 'network'
 
-    template_args = {
-        'form': NetworkForm()
-    }
+    def __init__(self, **kwargs):
+        super(NetworkSettingsView, self).__init__(**kwargs)
+        self.template_args['form'] = NetworkForm()
 
     def on_post(self, request, *args, **kwargs):
         if 'save' in request.POST:
@@ -491,9 +497,9 @@ class NetworkSettingsView(SystemSettingsView):
 class SecuritySettingsView(SystemSettingsView):
     setting = 'security'
 
-    template_args = {
-        'form': SecurityForm()
-    }
+    def __init__(self, **kwargs):
+        super(SecuritySettingsView, self).__init__(**kwargs)
+        self.template_args['form'] = SecurityForm()
 
     def on_post(self, request, *args, **kwargs):
         if 'save' in request.POST:
@@ -535,9 +541,9 @@ class ThemesSettingsView(SystemSettingsView):
 class RoomsSettingsView(RoomSettingsView):
     setting = 'rooms'
 
-    template_args = {
-        'formset': RoomFormSet()
-    }
+    def __init__(self, **kwargs):
+        super(RoomsSettingsView, self).__init__(**kwargs)
+        self.template_args['formset'] = RoomFormSet()
 
     def on_post(self, request, *args, **kwargs):
         if 'save' in request.POST:
@@ -551,9 +557,9 @@ class RoomsSettingsView(RoomSettingsView):
 class FloorsSettingsView(RoomSettingsView):
     setting = 'floors'
 
-    template_args = {
-        'formset': FloorFormSet()
-    }
+    def __init__(self, **kwargs):
+        super(FloorsSettingsView, self).__init__(**kwargs)
+        self.template_args['formset'] = FloorFormSet()
 
     def on_post(self, request, *args, **kwargs):
         if 'save' in request.POST:
@@ -569,9 +575,9 @@ class PlanSettingsView(RoomSettingsView):
 
     floor = None
 
-    template_args = {
-        'form': PlanForm()
-    }
+    def __init__(self, **kwargs):
+        super(PlanSettingsView, self).__init__(**kwargs)
+        self.template_args['formset'] = PlanForm()
 
     def on_post(self, request, *args, **kwargs):
         if 'floor' in request.POST:

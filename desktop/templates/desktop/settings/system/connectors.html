@@ -27,7 +27,7 @@
                         {{ field }}
                     </td>
                 {% endfor %}
-                {% if not form.instance.usable %}
+                {% if not form.instance.object.is_usable %}
                     <td>
                         <a href="javascript:void(0)"
                            onclick="update('{{ form.instance.id }}','{{ form.instance.name }}');">

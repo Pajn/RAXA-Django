@@ -40,7 +40,6 @@ def connector(request):
                                 errors.append('AlreadyExists')
                             else:
                                 object.version = request.REQUEST['version']
-                                object.usable = object.object.is_usable()
                                 object.save()
                         else:
                             objects.delete()
