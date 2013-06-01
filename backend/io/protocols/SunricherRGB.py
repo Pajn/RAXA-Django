@@ -71,18 +71,18 @@ class SunricherRGB(Protocol):
         self.ip = device.code
 
     def on(self, *args, **kwargs):
-        data = bytearray.fromhex('02 00 02 12 ab')
+        data = bytearray.fromhex(u'02 00 02 12 ab')
         self._send(data, self.ip, 8899)
         self.device.set_status('on')
 
     def off(self, *args, **kwargs):
-        data = bytearray.fromhex('02 00 02 12 a9')
+        data = bytearray.fromhex(u'02 00 02 12 a9')
         self._send(data, self.ip, 8899)
         self.device.set_status('off')
 
     def color_wheel(self, *args, **kwargs):
         # On
-        data = bytearray.fromhex('02 00 02 12 ab')
+        data = bytearray.fromhex(u'02 00 02 12 ab')
         self._send(data, self.ip, 8899)
         time.sleep(0.2)
 
@@ -93,25 +93,25 @@ class SunricherRGB(Protocol):
         else:
             angle += -4
         angle = '%0.2X' % angle
-        data = bytearray.fromhex('02 00 01 01 %s' % angle)
+        data = bytearray.fromhex(u'02 00 01 01 %s' % angle)
         self._send(data, self.ip, 8899)
         self.device.set_status('CW%s' % int(kwargs.get('angle')))
 
     def white(self, *args, **kwargs):
         # On
-        data = bytearray.fromhex('02 00 02 12 ab')
+        data = bytearray.fromhex(u'02 00 02 12 ab')
         self._send(data, self.ip, 8899)
         time.sleep(0.2)
         # Blue
-        data = bytearray.fromhex('02 00 02 03 87')
+        data = bytearray.fromhex(u'02 00 02 03 87')
         self._send(data, self.ip, 8899)
         time.sleep(0.1)
         # Green
-        data = bytearray.fromhex('02 00 02 03 84')
+        data = bytearray.fromhex(u'02 00 02 03 84')
         self._send(data, self.ip, 8899)
         time.sleep(0.1)
         # Red
-        data = bytearray.fromhex('02 00 02 03 81')
+        data = bytearray.fromhex(u'02 00 02 03 81')
         self._send(data, self.ip, 8899)
         self.device.set_status('white')
 
@@ -136,8 +136,8 @@ class SunricherRGB(Protocol):
         datarow.insert(10, 0xAA)
         datarow.insert(11, 0xAA)
 
+        print(''.join("0x%0.2X" % byte for byte in datarow))
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ip, port))
-        print(''.join("0x%0.2X" % byte for byte in datarow))
         s.sendall(datarow)
         s.close()
