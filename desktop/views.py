@@ -593,7 +593,7 @@ class PlanSettingsView(RoomSettingsView):
 
     def __init__(self, **kwargs):
         super(PlanSettingsView, self).__init__(**kwargs)
-        self.template_args['formset'] = PlanForm()
+        self.template_args['form'] = PlanForm()
 
     def on_post(self, request, *args, **kwargs):
         if 'floor' in request.POST:
