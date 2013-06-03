@@ -176,10 +176,10 @@ class RoomSettingsView(SubSettingsView):
 class DevicesSettingsView(SettingsView):
     setting = 'devices'
 
-    template_args = {
-        'devices': Device.objects.all().select_related('room__floor'),
-        'form': DeviceFormNew()
-    }
+    def __init__(self, **kwargs):
+        super(DevicesSettingsView, self).__init__(**kwargs)
+        self.template_args['devices'] = Device.objects.all().select_related('room__floor')
+        self.template_args['form'] = DeviceFormNew()
 
 
 class DeviceSettingsView(SettingsView):
@@ -258,7 +258,8 @@ class EditScenariosSettingsView(ScenariosSettingsView):
 class ScenarioSettingsView(ScenariosSettingsView):
     setting = 'scenario'
 
-    def on_request(self, request, *args, **kwargs):
+    def __init__(self, **kwargs):
+        super(ScenarioSettingsView, self).__init__(**kwargs)
         self.template_args['scenario'] = get_object_or_404(Scenario, id=kwargs['id'])
         self.template_args['scenariodevices'] = ScenarioDevice.objects.select_related().filter(scenario=kwargs['id'])
         self.template_args['form'] = ScenarioDeviceFormNew()

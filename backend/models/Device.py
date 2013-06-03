@@ -63,7 +63,7 @@ class DeviceForm(ModelForm):
         if instance.object.CONNECTOR_TYPE is not None:
             if instance and instance.type:
                 connector_type = protocol.get_class(instance.type)().CONNECTOR_TYPE
-                self.fields['connector'].queryset = Connector.objects.filter(type=connector_type, usable=True)
+                self.fields['connector'].queryset = Connector.objects.filter(type=connector_type)
         else:
             self.fields.pop('connector')
 
