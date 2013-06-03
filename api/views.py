@@ -23,7 +23,7 @@ from backend.models.Scenario import Scenario
 from backend.models.Room import Floor
 import version
 
-API_VERSION = 2
+API_VERSION = 2.1
 RAXA_VERSION = version.__version__
 
 
@@ -179,8 +179,11 @@ def version(*args):
 
 def devices(request):
     if 'room' in request.REQUEST:
-        room = request.REQUEST['room']
-        query = Device.objects.filter(room=room).select_related('connector')
+        try:
+            room = request.REQUEST['room']
+            query = Device.objects.filter(room=room).select_related('connector')
+        except ValueError:
+            return '', ['InvalidValue:room']
     else:
         query = Device.objects.all().select_related('connector')
     devices = []
@@ -204,9 +207,13 @@ def device(request):
             error = device.object.action(**request.REQUEST)
             if error == 'ConnectionError':
                 return '', ['DeviceConnectionError:%i' % device.id]
+        except ValueError:
+            return '', ['InvalidValue:action']
         except KeyError:
             return '', ['ActionNotSupported:' + action]
         return '', []
+    except ValueError:
+        return '', ['InvalidValue:id']
     except Device.DoesNotExist:
         return '', ['DoesNotExist:Device']
 
@@ -232,6 +239,8 @@ def scenario(request):
             if error == 'ConnectionError':
                 return_errors.append('DeviceConnectionError:%i' % scenario_device.device.id)
         return '', return_errors
+    except ValueError:
+        return '', ['InvalidValue:id']
     except Scenario.DoesNotExist:
         return '', ['DoesNotExist:Scenario']
 
