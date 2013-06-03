@@ -130,5 +130,6 @@
         $.post('{% url 'room_plan' %}', {'id': id}, function () {
             get_floor();
         });
+        return false;
     }
 </script>
