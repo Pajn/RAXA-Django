@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 import os
+from backend.io.connector import ConnectorNotUsable, ConnectorConnectionError
 
 
 def supported_types():
@@ -71,8 +72,13 @@ class Protocol(object):
             action = self.device.action
         try:
             self.SUPPORTED_ACTIONS[action](self, **kwargs)
-        except IOError:
-            return 'ConnectionError'
+        except DeviceConnectionError:
+            return 'DeviceConnectionError'
+        except ConnectorConnectionError:
+            return 'ConnectorConnectionError'
+        except ConnectorNotUsable:
+            return 'ConnectorNotUsable'
+        return None
 
     @property
     def is_off(self):
@@ -93,17 +99,18 @@ class DimLevelProtocol(Protocol):
             action = self.device.action
         try:
             dim_level = int(action)
-            action = 'dim_level'
+            kwargs['action'] = 'dim_level'
             kwargs['dim_level'] = dim_level
         except ValueError:
             pass
-        try:
-            self.SUPPORTED_ACTIONS[action](self, **kwargs)
-        except IOError:
-            return 'ConnectionError'
+        return super(DimLevelProtocol, self).action(**kwargs)
 
     def getSteps(self):
         steps = []
         for step in range(self.DIM_MIN, self.DIM_MAX, self.DIM_STEP):
             steps.append(step)
         return steps
+
+
+class DeviceConnectionError(Exception):
+    pass

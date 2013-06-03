@@ -56,3 +56,11 @@ class Connector(object):
 
     def scan(self):
         pass
+
+
+class ConnectorNotUsable(Exception):
+    pass
+
+
+class ConnectorConnectionError(Exception):
+    pass

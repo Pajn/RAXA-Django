@@ -22,7 +22,7 @@ from django.forms import Widget, TextInput
 from django.utils.safestring import mark_safe
 
 from backend.models.Device import Device
-from backend.io.protocol import Protocol
+from backend.io.protocol import Protocol, DeviceConnectionError
 
 
 class ColorWheelWidget(Widget):
@@ -123,7 +123,7 @@ class SunricherRGB(Protocol):
         if action.startswith('CW'):
             kwargs['angle'] = action[2:]
             kwargs['action'] = 'color_wheel'
-        super(SunricherRGB, self).action(**kwargs)
+        return super(SunricherRGB, self).action(**kwargs)
 
     def _send(self, data, ip, port):
         datarow = bytearray.fromhex(u'55 39 38 32')
@@ -136,8 +136,11 @@ class SunricherRGB(Protocol):
         datarow.insert(10, 0xAA)
         datarow.insert(11, 0xAA)
 
-        print(''.join("0x%0.2X" % byte for byte in datarow))
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ip, port))
-        s.sendall(datarow)
-        s.close()
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((ip, port))
+            s.sendall(datarow)
+            s.close()
+            print(''.join("0x%0.2X" % byte for byte in datarow))
+        except IOError:
+            raise DeviceConnectionError

@@ -23,7 +23,7 @@ from backend.models.Scenario import Scenario
 from backend.models.Room import Floor
 import version
 
-API_VERSION = 2.1
+API_VERSION = 2.11
 RAXA_VERSION = version.__version__
 
 
@@ -205,8 +205,9 @@ def device(request):
         device = Device.objects.get(pk=pk)
         try:
             error = device.object.action(**request.REQUEST)
-            if error == 'ConnectionError':
-                return '', ['DeviceConnectionError:%i' % device.id]
+            print error
+            if error is not None:
+                return '', ['%s:%i' % (error, device.id)]
         except ValueError:
             return '', ['InvalidValue:action']
         except KeyError:
@@ -236,8 +237,8 @@ def scenario(request):
         return_errors = []
         scenario_errors = scenario.execute()
         for scenario_device, error in scenario_errors.items():
-            if error == 'ConnectionError':
-                return_errors.append('DeviceConnectionError:%i' % scenario_device.device.id)
+            if error is not None:
+                return_errors.append('%s:%i' % (error, scenario_device.device.id))
         return '', return_errors
     except ValueError:
         return '', ['InvalidValue:id']

@@ -18,7 +18,7 @@ import os
 import socket
 import time
 from RAXA.settings import PROJECT_ROOT
-from backend.io.connector import Connector
+from backend.io.connector import Connector, ConnectorNotUsable, ConnectorConnectionError
 
 
 class Tellstick(Connector):
@@ -43,6 +43,8 @@ class Tellstick(Connector):
         time.sleep(10)
 
     def send(self, string):
+        if not self.is_usable():
+            raise ConnectorNotUsable
         string = '{%s,"tellstick":"%s"}' % (string, self.connector.code)
         print string
         self._send('send%s' % string)
@@ -51,7 +53,10 @@ class Tellstick(Connector):
         self._send('broadcastD')
 
     def _send(self, message):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(('127.0.0.1', 9001))
-        s.send(message)
-        s.close()
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect(('127.0.0.1', 9001))
+            s.send(message)
+            s.close()
+        except IOError:
+            raise ConnectorConnectionError
