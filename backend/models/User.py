@@ -37,8 +37,6 @@ class User(models.Model):
         app_label = 'backend'
 
     def check_password(self, password):
-        print 'Set: ' + self.password
-        print 'Check: ' + salted_hmac(self.username, password).hexdigest()
         return salted_hmac(self.username, password).hexdigest() == self.password
 
     def set_password(self, password):
