@@ -14,5 +14,5 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-__version_info__ = 0.22
+__version_info__ = 0.3
 __version__ = str(__version_info__)
