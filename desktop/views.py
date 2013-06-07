@@ -632,7 +632,12 @@ def widget_action(request):
             widget = OnOffDimLevel(device=device)
         else:
             widget = OnOff()
+
+        if 'value' in request.POST:
+            value = request.POST['value']
+        else:
+            value = 'off'
+
+        return HttpResponse(widget.render('action', value))
     else:
         raise Http404('No device specified')
-
-    return HttpResponse(widget.render('action', 'off'))
