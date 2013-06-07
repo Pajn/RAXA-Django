@@ -1,0 +1,334 @@
+{% load i18n %}
+{% for key, label in logic_helpers.LogicBlockTypes.name.items %}
+    <input type="button" id="block_type_{{ key }}" value="{{ label }}" onclick="settype('{{ key }}')"
+           class="button round horisontal border biggestbutton type" style="margin-bottom: 0.7%" />
+{% endfor %}
+<input type="button" id="link" value="{% trans "Link" %}" onclick="settype('link')"
+       class="button round horisontal border biggestbutton type" style="margin-bottom: 0.7%" />
+{% for block_key, block_plugins in logic_helpers.LogicBlockTypes.children.items %}
+    <div id="block_type_{{ block_key }}_childrens" style="Display: None" class="subtypes">
+        {% for plugin in block_plugins %}
+            <input type="button" id="block_type_{{ block_key }}_function_{{ plugin.identifier }}"
+                   onclick="setsubtype('{{ plugin.identifier }}', '{{ plugin.settings_url }}')"
+                   value="{{ plugin.label }}" class="button round horisontal border biggestbutton subtype"
+                   style="margin-bottom: 0.7%; white-space: normal;" />
+        {% endfor %}
+    </div>
+{% endfor %}
+<div id="block_function_settings" style="display: none"></div>
+<div id="snapgriddiv">
+    <input id="snapgrid" type="checkbox" checked="checked" />
+    <label for="snapgrid">{% blocktrans %}Snap to grid{% endblocktrans %}</label><br />
+</div>
+
+<div id="drawingboard"></div>
+
+<script type='text/javascript'>
+    // jQuery cache
+    var $drawingboard = $('#drawingboard');
+    var $block_function_settings = $('#block_function_settings');
+    var $svg;
+
+    // Menu
+    var activetype = 0;
+    var activesubtype = 0;
+    var $types = $('.type');
+    var $subtype = $('.subtype');
+    var $subtypes = $('.subtypes');
+    function settype(type) {
+        activetype = type;
+        $types.removeClass('verticalSelected');
+        $subtypes.hide();
+        activesubtype = 0;
+        $subtype.removeClass('verticalSelected');
+        $('#block_type_'+type).addClass('verticalSelected');
+        $('#block_type_'+type+'_childrens').show();
+        $block_function_settings.hide();
+    }
+    function setsubtype(type, settings_url) {
+        activesubtype = type;
+        $subtype.removeClass('verticalSelected');
+        $('#block_type_'+activetype+'_function_'+type).addClass('verticalSelected');
+        $block_function_settings.hide();
+        $.get('{% url 'automation_function_settings' %}',
+              {type: activetype, function: activesubtype},
+              function(data) {
+            $block_function_settings.html(data);
+            $block_function_settings.show();
+        });
+    }
+    $drawingboard.load('{% url 'automation_drawingboard' id=program.id %}', function() {
+        $svg = $drawingboard.children('svg').get(0);
+    });
+
+    // Drawingboard
+    var x = 0;
+    var y = 0;
+    var gridX = 20;
+    var gridY = 20;
+    var link_first = true;
+    var link_first_x, link_first_y, link_first_id;
+    var svgNamespace = 'http://www.w3.org/2000/svg';
+    $drawingboard.on('click', 'svg', function(e) {
+        if (activetype != "link" && activesubtype != 0) {
+            if ($("#snapgrid").attr('checked')) {
+                x = (Math.round((e.pageX - $(this).offset().left) / gridX) * gridX);
+                y = (Math.round((e.pageY - $(this).offset().top) / gridY) * gridY);
+            } else {
+                x = Math.round(e.pageX - $(this).offset().left);
+                y = Math.round(e.pageY - $(this).offset().top);
+            }
+            $('.hover').remove();
+            if (activetype == {{ logic_helpers.LogicBlockTypes.input }}) {
+                x = x - 65;
+                y = y - 40;
+                var width = '130px';
+                var height = '80px';
+                var poly = '10,0 0,10 0,55 10,65 50,65 65,80 80,65 120,65 130,55 130,10 120,0';
+                var input = 0;
+                var ouput = 1;
+                var fill = 'input';
+                var textx = '65px';
+                var text1y = '20px';
+                var text2y = '35px';
+                var text3y = '50px';
+            } else if (activetype == {{ logic_helpers.LogicBlockTypes.gate }}) {
+                x = x - 30;
+                y = y - 30;
+                var width = '60px';
+                var height = '60px';
+                var poly = '0,0 0,45 30,60 60,45 60,0 30,15';
+                var input = 1;
+                var ouput = 1;
+                var fill = 'gate';
+                var textx = '30px';
+                var text2y = '30px';
+            } else if (activetype == {{ logic_helpers.LogicBlockTypes.output }}) {
+                x = x - 65;
+                y = y - 30;
+                var width = '130px';
+                var height = '70px';
+                var poly = '10,0 0,10 0,60 10,70 120,70 130,60 130,10 120,0 80,0 65,15 50,0';
+                var input = 1;
+                var ouput = 0;
+                var fill = 'output';
+                var textx = '65px';
+                var text1y = '30px';
+                var text2y = '45px';
+                var text3y = '60px';
+            } else {
+                return;
+            }
+            var locx = x;
+            var locy = y;
+            var that = this;
+
+            var $form = $('#block_function_settings_form');
+            var $form_x = $('#id_x');
+            var $form_y = $('#id_y');
+            var $form_program = $('#id_program');
+            var $form_type = $('#id_type');
+            var $form_function = $('#id_function');
+
+            $form_x.val(locx);
+            $form_y.val(locy);
+            $form_program.val({{ program.id }});
+            $form_type.val(activetype);
+            $form_function.val(activesubtype);
+            $.post('{% url 'automation_function_settings' %}', $form.serialize(), function(data) {
+                $block_function_settings.html(data.html);
+                if (data.saved) {
+                    var text1 = '';
+                    var text2 = '';
+                    var text3 = '';
+                    switch(data.label.length) {
+                        case 1:
+                            text2 = data.label[0];
+                            break;
+                        case 2:
+                            text1 = data.label[0];
+                            text2 = data.label[1];
+                            break;
+                        case 3:
+                            text1 = data.label[0];
+                            text2 = data.label[1];
+                            text3 = data.label[2];
+                            break;
+                    }
+                    var svg = e.target.ownerDocument.createElementNS(svgNamespace, 'svg');
+                    svg.setAttributeNS(null, 'class', 'object');
+                    svg.setAttributeNS(null, 'data-id', data.id);
+                    svg.setAttributeNS(null, 'data-in', input);
+                    svg.setAttributeNS(null, 'data-out', ouput);
+                    svg.setAttributeNS(null, 'x', locx + 'px');
+                    svg.setAttributeNS(null, 'y', locy + 'px');
+                    svg.setAttributeNS(null, 'width', width);
+                    svg.setAttributeNS(null, 'height', height);
+                    var pri = svg.ownerDocument.createElementNS(svgNamespace, 'polygon');
+                    pri.setAttributeNS(null, 'points', poly);
+                    pri.setAttributeNS(null, 'fill', 'url(#' + fill + 'gradient)');
+                    svg.appendChild(pri);
+                    if (text1 != '') {
+                        var textelement = svg.ownerDocument.createElementNS(svgNamespace, 'text');
+                        textelement.setAttributeNS(null, 'x', textx);
+                        textelement.setAttributeNS(null, 'y', text1y);
+                        textelement.setAttributeNS(null, 'text-anchor', 'middle');
+                        textelement.setAttributeNS(null, 'dy', '0.5ex');
+                        textelement.setAttributeNS(null, 'fill', '#fff');
+                        var text = svg.ownerDocument.createTextNode(text1);
+                        textelement.appendChild(text);
+                        svg.appendChild(textelement);
+                    }
+                    if (text2 != '') {
+                        var textelement = svg.ownerDocument.createElementNS(svgNamespace, 'text');
+                        textelement.setAttributeNS(null, 'x', textx);
+                        textelement.setAttributeNS(null, 'y', text2y);
+                        textelement.setAttributeNS(null, "text-anchor", "middle");
+                        textelement.setAttributeNS(null, 'dy', '0.5ex');
+                        textelement.setAttributeNS(null, 'fill', '#fff');
+                        var text = svg.ownerDocument.createTextNode(text2);
+                        textelement.appendChild(text);
+                        svg.appendChild(textelement);
+                    }
+                    if (text3 != '') {
+                        var textelement = svg.ownerDocument.createElementNS(svgNamespace, 'text');
+                        textelement.setAttributeNS(null, 'x', textx);
+                        textelement.setAttributeNS(null, 'y', text3y);
+                        textelement.setAttributeNS(null, "text-anchor", "middle");
+                        textelement.setAttributeNS(null, 'dy', '0.5ex');
+                        textelement.setAttributeNS(null, 'fill', '#fff');
+                        var text = svg.ownerDocument.createTextNode(text3);
+                        textelement.appendChild(text);
+                        svg.appendChild(textelement);
+                    }
+                    that.appendChild(svg);
+                }
+            });
+        } else {
+        }
+    });
+    $drawingboard.on('click', 'svg [class~=object]', function(e) {
+        if (activetype == "link") {
+            if (link_first) {
+                if ($(this).attr('data-out') == 1) {
+                    link_first = false;
+                    $('.hover').remove();
+                    x = $(this).attr('x');
+                    y = $(this).attr('y');
+                    x = x.substring(0, x.length-2);
+                    y = y.substring(0, y.length-2);
+                    var width = $(this).attr('width');
+                    var height = $(this).attr('height');
+                    width = width.substring(0, width.length-2);
+                    height = height.substring(0, height.length-2);
+                    link_first_x = parseInt(x) + parseInt(width) / 2;
+                    link_first_y = parseInt(y) + parseInt(height);
+                    link_first_id = $(this).attr('data-id');
+                    var poly = $(this).find(':first-child').attr('points');
+                    var pri = $svg.ownerDocument.createElementNS(svgNamespace, 'polygon');
+                    pri.setAttributeNS(null, 'id', 'tmp');
+                    pri.setAttributeNS(null, 'class', 'tmp');
+                    pri.setAttributeNS(null, 'points', poly);
+                    pri.setAttributeNS(null, 'fill', '#ddd');
+                    pri.setAttributeNS(null, 'opacity', '0.8');
+                    var anim = $svg.ownerDocument.createElementNS(svgNamespace, 'animate');
+                    anim.setAttributeNS(null, 'attributeName', 'opacity');
+                    anim.setAttributeNS(null, 'from', '0.8');
+                    anim.setAttributeNS(null, 'to', '0.1');
+                    anim.setAttributeNS(null, 'dur', '1s');
+                    anim.setAttributeNS(null, 'repeatCount', 'indefinite');
+                    pri.appendChild(anim);
+                    this.appendChild(pri);
+                }
+            } else {
+                if ($(this).attr('data-in') == 1) {
+                    link_first = true;
+                    $('.tmp').remove();
+                    var x = $(this).attr('x');
+                    var y = $(this).attr('y');
+                    x = x.substring(0, x.length-2);
+                    y = y.substring(0, y.length-2);
+                    var width = $(this).attr('width');
+                    var height = $(this).attr('height');
+                    var endID = $(this).attr('data-id');
+                    width = width.substring(0, width.length-2);
+                    height = height.substring(0, height.length-2);
+                    var that = this;
+                    x = parseInt(x) + parseInt(width) / 2;
+                    y = parseInt(y) + 15;
+                    $.post('{% url 'automation_logic_link' %}', {'start': link_first_id, 'end': endID}, function(data) {
+                        x = x - link_first_x;
+                        y = y - link_first_y;
+                        link = $svg.ownerDocument.createElementNS(svgNamespace, 'path');
+                        link.setAttributeNS(null, 'class', 'wire object' + link_first_id + ' object' + endID);
+                        link.setAttributeNS(null, 'data-id', data.id);
+                        link.setAttributeNS(null, 'd', 'M ' + link_first_x + ' ' + link_first_y + 'c 0 50 ' + x + ' ' + (y - 50) + ' ' + x + ' ' + y);
+                        link.setAttributeNS(null, 'style', 'stroke:rgb(255,0,0);stroke-width:2');
+                        link.setAttributeNS(null, 'fill', 'none');
+                        that.parentNode.appendChild(link);
+                    });
+                }
+            }
+        }
+    });
+    $drawingboard.on('contextmenu', 'svg [class~=object]', function(e) {
+        $.post('{% url 'automation_logic_block_delete' %}', {'id': $(this).attr('data-id')});
+        $('.object' + $(this).attr('data-id')).remove();
+        this.parentNode.removeChild(this);
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    });
+    $drawingboard.on('mousemove', 'svg', function(e) {
+        if (activetype != "link" && activesubtype != 0) {
+            if ($("#snapgrid").attr('checked')) {
+                x = (Math.round((e.pageX - $(this).offset().left) / gridX) * gridX);
+                y = (Math.round((e.pageY - $(this).offset().top) / gridY) * gridY);
+            } else {
+                x = Math.round(e.pageX - $(this).offset().left);
+                y = Math.round(e.pageY - $(this).offset().top);
+            }
+            $('.hover').remove();
+            if (activetype == {{ logic_helpers.LogicBlockTypes.input }}) {
+                x = x - 65;
+                y = y - 40;
+                var width = '130px';
+                var height = '80px';
+                var poly = '10,0 0,10 0,55 10,65 50,65 65,80 80,65 120,65 130,55 130,10 120,0';
+            } else if (activetype == {{ logic_helpers.LogicBlockTypes.gate }}) {
+                x = x - 30;
+                y = y - 30;
+                var width = '60px';
+                var height = '60px';
+                var poly = '0,0 0,45 30,60 60,45 60,0 30,15';
+            } else if (activetype == {{ logic_helpers.LogicBlockTypes.output }}) {
+                x = x - 65;
+                y = y - 30;
+                var width = '130px';
+                var height = '70px';
+                var poly = '10,0 0,10 0,60 10,70 120,70 130,60 130,10 120,0 80,0 65,15 50,0';
+            } else {
+                return;
+            }
+            var svg = e.target.ownerDocument.createElementNS(svgNamespace, 'svg');
+            svg.setAttributeNS(null, 'id', 'hover');
+            svg.setAttributeNS(null, 'class', 'hover');
+            svg.setAttributeNS(null, 'x', x + 'px');
+            svg.setAttributeNS(null, 'y', y + 'px');
+            svg.setAttributeNS(null, 'width', width);
+            svg.setAttributeNS(null, 'height', height);
+            svg.setAttributeNS(null, 'pointer-events', "none");
+            var pri = svg.ownerDocument.createElementNS(svgNamespace, 'polygon');
+            pri.setAttributeNS(null, 'points', poly);
+            pri.setAttributeNS(null, 'fill', '#333');
+            pri.setAttributeNS(null, 'opacity', '0.8');
+            svg.appendChild(pri);
+            this.appendChild(svg);
+        }
+    });
+    $drawingboard.on('mouseout', 'svg', function() {
+        $('.hover').remove();
+    });
+    $drawingboard.on('click', 'svg', function() {
+    });
+</script>

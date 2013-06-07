@@ -1,0 +1,20 @@
+{% extends "desktop/subsettings.html" %}
+{% load i18n %}
+{% block subsettingsmenu %}
+    <li>
+        <button class="button biggerbutton vertical submenu top
+                       {% if subsetting == 'programs' %}verticalSelected{% endif %}"
+                data-id="edit" data-url="{% url 'automation_programs' %}">
+            {% trans "Edit Programs" %}
+        </button>
+    </li>
+    {% for program_loop in programs %}
+        <li>
+            <button class="button biggerbutton vertical submenu {% if forloop.last %}bottom{% endif %}
+                           {% if program_loop.id == program.id %}verticalSelected{% endif %}"
+                    data-id="{{ program_loop.id }}" data-url="{% url 'automation_program' program_loop.id %}">
+                {{ program_loop.name }}
+            </button>
+        </li>
+    {% endfor %}
+{% endblock %}
