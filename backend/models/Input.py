@@ -64,6 +64,9 @@ class Input(models.Model):
     class Meta:
         app_label = 'backend'
 
+    def __unicode__(self):
+        return self.name
+
     def execute(self):
         timedelta = datetime.datetime.now(pytz.utc) - self.timestamp
         if timedelta.total_seconds() > 2:
