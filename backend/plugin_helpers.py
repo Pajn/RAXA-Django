@@ -14,6 +14,8 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+
+
 class PluginMount(type):
     def __init__(cls, name, bases, attrs):
         if not hasattr(cls, 'plugins'):
@@ -21,12 +23,15 @@ class PluginMount(type):
             # So, since this is a new plugin type, not an implementation, this
             # class shouldn't be registered as a plugin. Instead, it sets up a
             # list where plugins can be registered later.
-            cls.plugins = []
+            cls.plugins = {}
         else:
             # This must be a plugin implementation, which should be registered.
             # Simply appending it to the list is all that's needed to keep
             # track of it later.
-            cls.plugins.append(cls)
+            cls.plugins[cls.identifier] = cls
 
     def get_plugins(cls, *args, **kwargs):
-        return [p(*args, **kwargs) for p in cls.plugins]
+        return [p(*args, **kwargs) for i, p in cls.plugins.iteritems()]
+
+    def get_plugin(cls, identifier, *args, **kwargs):
+        return cls.plugins[identifier]()
