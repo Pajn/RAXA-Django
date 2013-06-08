@@ -258,12 +258,6 @@ class EditScenariosSettingsView(ScenariosSettingsView):
 class ScenarioSettingsView(ScenariosSettingsView):
     setting = 'scenario'
 
-    def __init__(self, **kwargs):
-        super(ScenarioSettingsView, self).__init__(**kwargs)
-        self.template_args['scenario'] = get_object_or_404(Scenario, id=kwargs['id'])
-        self.template_args['scenariodevices'] = ScenarioDevice.objects.select_related().filter(scenario=kwargs['id'])
-        self.template_args['form'] = ScenarioDeviceFormNew()
-
     def post(self, request, *args, **kwargs):
         if 'add' in request.POST:
             form = ScenarioDeviceFormNew(request.POST)
@@ -273,10 +267,18 @@ class ScenarioSettingsView(ScenariosSettingsView):
                     action = request.POST['action']
                 else:
                     action = 'off'
-                newinstance = ScenarioDevice(device=device, scenario=self.template_args['scenario'], action=action)
+                newinstance = ScenarioDevice(device=device,
+                                             scenario=get_object_or_404(Scenario, id=kwargs['id']), action=action)
                 newinstance.save()
                 return HttpResponseRedirect(reverse('settings_scenario', kwargs={'id': kwargs['id']}))
         return super(ScenarioSettingsView, self).post(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ScenarioSettingsView, self).get_context_data(**kwargs)
+        context['scenario'] = get_object_or_404(Scenario, id=kwargs['id'])
+        context['scenariodevices'] = ScenarioDevice.objects.select_related().filter(scenario=kwargs['id'])
+        context['form'] = ScenarioDeviceFormNew()
+        return context
 
 
 class ScenarioDeviceSettingsView(SettingsView):
