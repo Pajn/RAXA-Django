@@ -118,3 +118,41 @@ class ThermometerHelperWidget(Widget):
                 }
                 show_hide_fields();
             </script>''')
+
+
+class CounterHelperWidget(Widget):
+    is_hidden = True
+
+    def render(self, name, value, attrs=None):
+
+        return mark_safe('''
+            <script>
+                $('input[name=trigger]').on('change', function() {
+                    show_hide_fields();
+                });
+                function show_hide_fields() {
+                    var val = parseInt($('input[name=trigger]:checked').val());
+                    switch(val) {
+                        case 0:
+                        case 1:
+                        case 2:
+                            $('#id_value').parent().show();
+                            $('#id_start').parent().hide();
+                            $('#id_end').parent().hide();
+                            break;
+                        case 3:
+                            $('#id_value').parent().hide();
+                            $('#id_start').parent().show();
+                            $('#id_end').parent().show();
+                            break;
+                        case 4:
+                        case 5:
+                        case 6:
+                            $('#id_value').parent().hide();
+                            $('#id_start').parent().hide();
+                            $('#id_end').parent().hide();
+                            break;
+                    }
+                }
+                show_hide_fields();
+            </script>''')

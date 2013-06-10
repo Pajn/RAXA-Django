@@ -34,13 +34,24 @@
                 <path class="wire object{{ link.start.id }} object{{ link.end.id }}" data-id="{{ link.id }}"
                       d="M {{ link.start_x }} {{ link.start_y }} c 0 50 {{ link.end_x }} {{ link.end_y_50 }}
                          {{ link.end_x }} {{ link.end_y }}"
-                      style="stroke:rgb(255,0,0);stroke-width:2" fill="none" />
+                      {% if block.active %}
+                          style="stroke:rgb(0,255,0);stroke-width:2"
+                      {% else %}
+                          style="stroke:rgb(255,0,0);stroke-width:2"
+                      {% endif %}
+                      fill="none" />
             {% endfor %}
         {% elif block.type == block_types.gate %}
-            <svg class="object" data-id="{{ block.id }}" data-in="1" data-out="1" width="60px" height="60px"
+            <svg class="object" data-id="{{ block.id }}" data-in="1" data-out="1" width="130px" height="80px"
                  x="{{ block.x }}px" y="{{ block.y }}px">
-                <polygon points="0,0 0,45 30,60 60,45 60,0 30,15" fill="url(#gategradient)" />
-                <text x="30px" y="33px" text-anchor="middle" dy="0.5ex" fill="#fff">{{ block.label.0 }}</text>
+                <polygon points="10,0 0,10 0,55 10,65 50,65 65,80 80,65 120,65 130,55 130,10 120,0 80,0 65,15 50,0"
+                         fill="url(#gategradient)" />
+                {% if block.label|length == 2 %}
+                    <text x="65px" y="30px" text-anchor="middle" dy="0.5ex" fill="#fff">{{ block.label.0 }}</text>
+                    <text x="65px" y="48px" text-anchor="middle" dy="0.5ex" fill="#fff">{{ block.label.1 }}</text>
+                {% else %}
+                    <text x="65px" y="38px" text-anchor="middle" dy="0.5ex" fill="#fff">{{ block.label.0 }}</text>
+                {% endif %}
             </svg>
             {% for link in block.outputs.all %}
                 <path class="wire object{{ link.start.id }} object{{ link.end.id }}" data-id="{{ link.id }}"

@@ -29,7 +29,6 @@ class LogicBlock(models.Model):
 
     @property
     def data(self):
-        print self._data
         return json.loads(self._data)
 
     @data.setter
@@ -72,24 +71,15 @@ class Link(models.Model):
 
     @property
     def start_x(self):
-        if self.start.type == logic_helpers.LogicBlockTypes.input:
-            return self.start.x + 65
-        elif self.start.type == logic_helpers.LogicBlockTypes.gate:
-            return self.start.x + 30
+        return self.start.x + 65
 
     @property
     def start_y(self):
-        if self.start.type == logic_helpers.LogicBlockTypes.input:
-            return self.start.y + 80
-        elif self.start.type == logic_helpers.LogicBlockTypes.gate:
-            return self.start.y + 60
+        return self.start.y + 80
 
     @property
     def end_x(self):
-        if self.end.type == logic_helpers.LogicBlockTypes.gate:
-            return self.end.x + 30 - self.start_x
-        elif self.end.type == logic_helpers.LogicBlockTypes.output:
-            return self.end.x + 65 - self.start_x
+        return self.end.x + 65 - self.start_x
 
     @property
     def end_y(self):

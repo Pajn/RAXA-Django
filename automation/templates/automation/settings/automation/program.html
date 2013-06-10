@@ -93,16 +93,18 @@
                 var text2y = '35px';
                 var text3y = '50px';
             } else if (activetype == {{ logic_helpers.LogicBlockTypes.gate }}) {
-                x = x - 30;
-                y = y - 30;
-                var width = '60px';
-                var height = '60px';
-                var poly = '0,0 0,45 30,60 60,45 60,0 30,15';
+                x = x - 65;
+                y = y - 40;
+                var width = '130px';
+                var height = '80px';
+                var poly = '10,0 0,10 0,55 10,65 50,65 65,80 80,65 120,65 130,55 130,10 120,0 80,0 65,15 50,0';
                 var input = 1;
                 var ouput = 1;
                 var fill = 'gate';
-                var textx = '30px';
-                var text2y = '30px';
+                var textx = '65px';
+                var text1y = '30px';
+                var text2y = '38px';
+                var text3y = '48px';
             } else if (activetype == {{ logic_helpers.LogicBlockTypes.output }}) {
                 x = x - 65;
                 y = y - 30;
@@ -146,8 +148,13 @@
                             text2 = data.label[0];
                             break;
                         case 2:
-                            text1 = data.label[0];
-                            text2 = data.label[1];
+                            if (activetype == {{ logic_helpers.LogicBlockTypes.gate }}) {
+                                text1 = data.label[0];
+                                text3 = data.label[1];
+                            } else {
+                                text1 = data.label[0];
+                                text2 = data.label[1];
+                            }
                             break;
                         case 3:
                             text1 = data.label[0];
@@ -296,11 +303,11 @@
                 var height = '80px';
                 var poly = '10,0 0,10 0,55 10,65 50,65 65,80 80,65 120,65 130,55 130,10 120,0';
             } else if (activetype == {{ logic_helpers.LogicBlockTypes.gate }}) {
-                x = x - 30;
-                y = y - 30;
-                var width = '60px';
-                var height = '60px';
-                var poly = '0,0 0,45 30,60 60,45 60,0 30,15';
+                x = x - 65;
+                y = y - 40;
+                var width = '130px';
+                var height = '80px';
+                var poly = '10,0 0,10 0,55 10,65 50,65 65,80 80,65 120,65 130,55 130,10 120,0 80,0 65,15 50,0';
             } else if (activetype == {{ logic_helpers.LogicBlockTypes.output }}) {
                 x = x - 65;
                 y = y - 30;

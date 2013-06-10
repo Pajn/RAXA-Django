@@ -33,8 +33,8 @@ class InputBlockFunction:
     Plugins implementing this reference should provide the following methods:
 
     get_label(model)
-        model LogicBlock the model the block should represent
-        returns tuple with up to three string for each row
+        model LogicBlock the model the block represent
+        returns string with up to three rows separated by \n
     """
     __metaclass__ = PluginMount
 
@@ -55,11 +55,12 @@ class LogicBlockFunction:
     Plugins implementing this reference should provide the following methods:
 
     get_label(model)
-        model LogicBlock the model the block should represent
-        returns string the label. Split up to three lines using ;
+        model LogicBlock the model the block represent
+        returns string with up to two rows separated by \n
 
-    check_logic(inputs)
+    check_logic(inputs, model)
         attribute inputs list<boolean> a list of the active state of all inputs
+        model LogicBlock the model the block represent
         returns boolean a boolean of the active state based on the state of the inputs
     """
     __metaclass__ = PluginMount
@@ -81,7 +82,10 @@ class OutputBlockFunction:
     Plugins implementing this reference should provide the following methods:
 
     get_label(model)
-        model LogicBlock the model the block should represent
-        returns string the label. Split up to three lines using ;
+        model LogicBlock the model the block represent
+        returns string with up to three rows separated by \n
+
+    do_action(model)
+        model LogicBlock the model the block represent
     """
     __metaclass__ = PluginMount

@@ -1,9 +1,12 @@
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 import operator
+import time
 from automation.plugin_mounts import InputBlockFunction, LogicBlockFunction, OutputBlockFunction
+from automation.signals import rs_memory_change, counter_change
 from automation.views import InputDeviceStstusChangeView, InputScenarioExecutedView, InputInputExecutedView,\
-    InputTimerExecutedView, OutputDeviceStstusChangeView, InputTemperatureChangedView
+    InputTimerExecutedView, OutputDeviceStstusChangeView, InputTemperatureChangedView, OutputRSMemoryView,\
+    InputRSMemoryView, InputCounterView, OutputCounterView, LogicDelayView
 import desktop.plugin_mounts as desktop_mounts
 
 NAME = ('automation', _('Automation'))
@@ -111,6 +114,97 @@ class InputTimertExecuted(InputBlockFunction):
         return _('Timer\nExecuted\n%(model)s') % {'model': model.action_object.name}
 
 
+class InputRSMemory(InputBlockFunction):
+    label = _('Memory')
+    identifier = 'automation_input_rs_memory'
+
+    settings_view = InputRSMemoryView
+
+    triggers = {
+        0: (_('Output active state'), ''),
+        1: (_('Pulse on change'), _('changed')),
+        2: (_('Pulse on high'), _('set')),
+        3: (_('Pulse on low'), _('reset')),
+    }
+
+    def get_label(self, model):
+        trigger = model.get_data('trigger', 0)
+        return _('Memory\n%(memory)s\n%(trigger)s') %\
+            {'memory': model.action_object.name,
+             'trigger': self.triggers[trigger][1]}
+
+    def check_status(self, model, state):
+        trigger = model.get_data('trigger', 0)
+        memory = model.action_object
+
+        if trigger == 0:
+            return memory.get_data('active', False), True
+        if trigger == 1:
+            return True, False
+        if trigger == 2:
+            return state, False
+        if trigger == 3:
+            return not state, False
+
+
+class InputCounter(InputBlockFunction):
+    label = _('Counter')
+    identifier = 'automation_input_counter'
+
+    settings_view = InputCounterView
+
+    triggers = {
+        0: (_('Output high at value'), _('==')),
+        1: (_('Output high above value'), _('>=')),
+        2: (_('Output high below value'), _('<=')),
+        3: (_('Output high between'), _('-')),
+        4: (_('Pulse on change'), _('changed')),
+        5: (_('Pulse on increase'), _('increased')),
+        6: (_('Pulse on decrease'), _('decreased')),
+    }
+
+    def get_label(self, model):
+        trigger = model.get_data('trigger', 0)
+        if trigger <= 2:
+            value = model.get_data('value', 0)
+            return _('Counter\n%(counter)s\n%(trigger)s %(value)i') %\
+                {'counter': model.action_object.name,
+                 'trigger': self.triggers[trigger][1],
+                 'value': value}
+        if trigger == 3:
+            start = model.get_data('start', 0)
+            end = model.get_data('end', 0)
+            return _('Counter\n%(counter)s\n%(start)i %(trigger)s %(end)i') %\
+                {'counter': model.action_object.name,
+                 'trigger': self.triggers[trigger][1],
+                 'start': start,
+                 'end': end}
+        else:
+            return _('Counter\n%(counter)s\n%(trigger)s') %\
+                {'counter': model.action_object.name,
+                 'trigger': self.triggers[trigger][1]}
+
+    def check_status(self, model, value, change):
+        trigger = model.get_data('trigger', 0)
+
+        if trigger == 0:
+            return model.get_data('value', 0) == value, True
+        if trigger == 1:
+            return value >= model.get_data('value', 0), True
+        if trigger == 2:
+            return value <= model.get_data('value', 0), True
+        if trigger == 3:
+            start = model.get_data('start', 0)
+            end = model.get_data('end', 0)
+            return (start <= value <= end), True
+        if trigger == 4:
+            return True, False
+        if trigger == 5:
+            return change > 0, False
+        if trigger == 6:
+            return change < 0, False
+
+
 class LogicAnd(LogicBlockFunction):
     label = _('AND')
     identifier = 'automation_and'
@@ -118,7 +212,7 @@ class LogicAnd(LogicBlockFunction):
     def get_label(self, model):
         return _('AND')
 
-    def check_logic(self, inputs):
+    def check_logic(self, inputs, model):
         return reduce(operator.and_, inputs)
 
 
@@ -129,7 +223,7 @@ class LogicOr(LogicBlockFunction):
     def get_label(self, model):
         return _('OR')
 
-    def check_logic(self, inputs):
+    def check_logic(self, inputs, model):
         return reduce(operator.or_, inputs)
 
 
@@ -140,7 +234,7 @@ class LogicNand(LogicBlockFunction):
     def get_label(self, model):
         return _('NAND')
 
-    def check_logic(self, inputs):
+    def check_logic(self, inputs, model):
         return not reduce(operator.and_, inputs)
 
 
@@ -151,8 +245,24 @@ class LogicNor(LogicBlockFunction):
     def get_label(self, model):
         return _('NOR')
 
-    def check_logic(self, inputs):
+    def check_logic(self, inputs, model):
         return not reduce(operator.or_, inputs)
+
+
+class LogicDelay(LogicBlockFunction):
+    label = _('Delay')
+    identifier = 'automation_delay'
+
+    settings_view = LogicDelayView
+
+    def get_label(self, model):
+        return _('Delay\n%(seconds)is') % {'seconds': model.get_data('seconds', 0)}
+
+    def check_logic(self, inputs, model):
+        print inputs
+        time.sleep(model.get_data('seconds', 0))
+        print 'woke'
+        return reduce(operator.or_, inputs)
 
 
 class OutputExecuteDevice(OutputBlockFunction):
@@ -199,3 +309,85 @@ class OutputExecuteScenario(OutputBlockFunction):
     def do_action(self, model):
         scenario = model.action_object
         scenario.execute()
+
+
+class OutputRSMemory(OutputBlockFunction):
+    label = _('Memory')
+    identifier = 'automation_output_rs_memory'
+
+    settings_view = OutputRSMemoryView
+
+    actions = {
+        0: _('Set'),
+        1: _('Reset'),
+        2: _('Toggle'),
+    }
+
+    def get_label(self, model):
+        return _('%(action)s\nMemory\n%(memory)s') % {'action': self.actions[model.get_data('action', 0)],
+                                                      'memory': model.action_object.name}
+
+    def do_action(self, model):
+        action = model.get_data('action', 0)
+        memory = model.action_object
+
+        if action == 0:
+            status = True
+        elif action == 1:
+            status = False
+        elif action == 2:
+            status = not memory.get_data('active', False)
+        else:
+            status = False
+
+        memory.put_data('active', status)
+
+        rs_memory_change.send_robust(sender=self, memory=memory, status=status)
+
+
+class OutputCounter(OutputBlockFunction):
+    label = _('Counter')
+    identifier = 'automation_output_counter'
+
+    settings_view = OutputCounterView
+
+    actions = {
+        0: (_('Set value')),
+        1: (_('Change by')),
+    }
+
+    def get_label(self, model):
+        action = model.get_data('action', 0)
+        value = model.get_data('value', 0)
+        if action == 0:
+            action = '='
+        else:
+            if value < 0:
+                action = '-'
+                value *= -1
+            else:
+                action = '+'
+        return _('Counter\n%(counter)s\n%(action)s %(value)i') % {'action': action,
+                                                                  'counter': model.action_object.name,
+                                                                  'value': value}
+
+    def do_action(self, model):
+        action = model.get_data('action', 0)
+        counter = model.action_object
+
+        function_value = model.get_data('value', 0)
+        counter_value = counter.get_data('value', 0)
+
+        if action == 0:
+            value = function_value
+            change = function_value - counter_value
+        elif action == 1:
+            value = counter_value + function_value
+            change = function_value
+        else:
+            value = False
+            change = 0
+
+        counter.put_data('value', value)
+
+        counter_change.send_robust(sender=self, counter=counter, value=value, change=change)

@@ -1,5 +1,7 @@
 from django.dispatch import receiver
-from automation.program_threads import PulseBlock, CheckDeviceStatusBlock, CheckThermometerStatusBlock
+from automation.program_threads import PulseBlock, CheckDeviceStatusBlock, CheckThermometerStatusBlock,\
+    CheckMemoryStatusBlock, CheckCounterStatusBlock
+from automation.signals import rs_memory_change, counter_change
 from backend.models import device_status_change, input_executed, scenario_executed, temperature_changed, timer_executed
 
 
@@ -45,4 +47,24 @@ def timer_executed(sender, **kwargs):
 
     thread = PulseBlock(function='automation_timer_executed',
                         action_object=timer)
+    thread.start()
+
+@receiver(rs_memory_change)
+def rs_memory_change(sender, **kwargs):
+    memory = kwargs['memory']
+    status = kwargs['status']
+
+    thread = CheckMemoryStatusBlock(action_object=memory,
+                                    status=status)
+    thread.start()
+
+@receiver(counter_change)
+def counter_change(sender, **kwargs):
+    counter = kwargs['counter']
+    value = kwargs['value']
+    change = kwargs['change']
+
+    thread = CheckCounterStatusBlock(action_object=counter,
+                                     value=value,
+                                     change=change)
     thread.start()
