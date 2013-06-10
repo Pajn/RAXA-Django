@@ -1,27 +1,25 @@
+from django.db import connection
 from automation.logic_helpers import LogicBlockTypes
-from automation.models import LogicBlock
 
 
 def check_down(block):
-    assert isinstance(block, LogicBlock)
-    for link in block.outputs.all():
-        end = link.end
-        if end.type == LogicBlockTypes.output:
-            if link.start.active:
-                end.plugin.do_action(end)
-        elif end.type == LogicBlockTypes.gate:
-            check_gate(end)
+    print connection.queries
+    for output in block.output_list:
+        if output.type == LogicBlockTypes.output:
+            if block.active:
+                output.plugin.do_action(output)
+        elif output.type == LogicBlockTypes.gate:
+            check_down(check_gate(output))
 
 
 def check_gate(block):
     inputs = []
 
-    for input in block.inputs.all():
-        start = input.start
-        if start.type == LogicBlockTypes.input:
-            start.append(start.active)
-        elif start.type == LogicBlockTypes.gate:
-            start.append(check_gate(start))
+    for input in block.input_list:
+        if input.type == LogicBlockTypes.input:
+            inputs.append(input.active)
+        elif input.type == LogicBlockTypes.gate:
+            inputs.append(check_gate(input))
 
-    block.active = block.plugin.check_logic(inputs)
-    return block.active
+    block.active = block.plugin.check_logic(inputs, block)
+    return block
