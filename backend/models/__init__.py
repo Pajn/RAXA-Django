@@ -22,3 +22,4 @@ from Input import *
 from Thermometer import *
 from Timer import *
 from User import User
+from Storage import Storage
