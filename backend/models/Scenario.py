@@ -102,7 +102,6 @@ def ScenarioDeviceFormSet(*args, **kwargs):
     formset = scenario_device_form_set(*args, **kwargs)
     for form in formset:
         if 'device' in form.initial:
-            print form.initial['device']
             form.fields['action'].widget = getWidget(form.instance.device)
     return formset
 

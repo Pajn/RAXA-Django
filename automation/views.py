@@ -6,7 +6,8 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, View
 from automation import models, logic_helpers
 from automation.forms import InputDeviceStstusChangeForm, NoSettingsForm, InputScenarioExecutedForm,\
-    InputInputExecutedForm, InputTimerExecutedForm, OutputDeviceStstusChangeForm, InputTemperatureChangedForm, OutputRSMemoryForm, InputRSMemoryForm, InputCounterForm, OutputCounterForm, LogicDelayForm
+    InputInputExecutedForm, InputTimerExecutedForm, OutputDeviceStstusChangeForm, InputTemperatureChangedForm,\
+    OutputRSMemoryForm, InputRSMemoryForm, InputCounterForm, OutputCounterForm, LogicDelayForm
 from automation.models import LogicBlock, Link
 from automation.plugin_mounts import InputBlockFunction, LogicBlockFunction, OutputBlockFunction
 from automation.program_helpers import ProgramFormSet

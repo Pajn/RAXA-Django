@@ -1,9 +1,7 @@
-from django.db import connection
 from automation.logic_helpers import LogicBlockTypes
 
 
 def check_down(block):
-    print connection.queries
     for output in block.output_list:
         if output.type == LogicBlockTypes.output:
             if block.active:

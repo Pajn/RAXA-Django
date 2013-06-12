@@ -126,14 +126,12 @@ class TimerForm(ModelForm):
             self.fields['action'].widget = HiddenInput()
 
     def clean_action_object(self):
-        print 'action_object'
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Timer)
         if instance and instance.action_object:
             return instance.action_object
         else:
             if 'device_scenario' in self.fields:
-                print self._raw_value('device_scenario')
                 instance.action_object = self._raw_value('device_scenario')
                 instance.action = 'off'
                 return self._raw_value('device_scenario')
@@ -141,7 +139,6 @@ class TimerForm(ModelForm):
                 raise ValidationError('Bad')
 
     def clean_content_type(self):
-        print 'content_type'
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Timer)
         if instance and instance.action_object:
@@ -153,7 +150,6 @@ class TimerForm(ModelForm):
                 raise ValidationError('Bad')
 
     def clean_object_id(self):
-        print 'object_id'
         instance = getattr(self, 'instance', None)
         assert isinstance(instance, Timer)
         if instance and instance.object_id:

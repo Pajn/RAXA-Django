@@ -205,7 +205,6 @@ def device(request):
         device = Device.objects.get(pk=pk)
         try:
             error = device.object.action(**request.REQUEST)
-            print error
             if error is not None:
                 return '', ['%s:%i' % (error, device.id)]
         except ValueError:

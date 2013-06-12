@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from django.core.exceptions import ValidationError
 from django.forms.models import ModelForm
-from django.forms.fields import CharField, ChoiceField
+from django.forms.fields import CharField
 from django.forms.widgets import PasswordInput, RadioSelect
 from django.forms.forms import Form
 from django.db import models

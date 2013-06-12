@@ -28,7 +28,6 @@ from common.models.Plan import Plan
 
 def login(request, template='common/login.html', **kwargs):
     if request.method == 'POST':
-        print request.POST['password']
         if get_user().check_password(request.POST['password']):
             request.session['auth'] = 1
             return HttpResponseRedirect(request.session.get('url', default=reverse('desktop.views.index')))

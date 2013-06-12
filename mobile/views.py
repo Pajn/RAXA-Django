@@ -36,7 +36,6 @@ def index(request):
 
 def login(request, **kwargs):
     if request.method == 'POST':
-        print request.POST['password']
         if get_user().check_password(request.POST['password']):
             request.session['auth'] = 1
             return HttpResponseRedirect(request.session.get('url', default=reverse('mobile.views.index')))
@@ -107,7 +106,6 @@ def edit_device(request, id=0, type=None):
 
     if request.method == 'POST': # If the form has been submitted...
         if 'delete' in request.POST:
-            print 'delete'
             object.delete()
             return HttpResponseRedirect(reverse('mobile.views.devices_settings'))
 
@@ -134,14 +132,12 @@ def scenarios_settings(request):
 
 def edit_scenario(request, id):
     if id == '0':
-        print 'new'
         object = Scenario()
     else:
         object = get_object_or_404(Scenario, pk=id)
 
     if request.method == 'POST': # If the form has been submitted...
         if 'delete' in request.POST:
-            print 'delete'
             object.delete()
             return HttpResponseRedirect(reverse('mobile.views.scenarios_settings'))
 
@@ -243,7 +239,6 @@ def edit_connector(request, id):
     object = get_object_or_404(Connector, pk=id)
     if request.method == 'POST': # If the form has been submitted...
         if 'delete' in request.POST:
-            print 'delete'
             object.delete()
             return HttpResponseRedirect(reverse('mobile.views.connectors_settings'))
 

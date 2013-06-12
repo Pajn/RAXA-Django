@@ -141,8 +141,6 @@ class NexaSC(Protocol):
         self.device.set_status('on')
 
     def off(self, *args, **kwargs):
-        print self.device.connector
-        print self.device.connector.object
         self.device.connector.object.send(self.connector_string + ',"cmd":"off"')
         self.device.set_status('off')
 

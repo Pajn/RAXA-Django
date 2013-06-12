@@ -37,7 +37,6 @@ class Tellstick(Connector):
         path = os.path.join(PROJECT_ROOT, 'other', 'connector.tellstick', 'TellStickNet.hex')
 
         if ip is not None:
-            print 'atftp -p -l %s --tftp-timeout 1 %s' % (path, ip)
             os.system('atftp -p -l %s --tftp-timeout 1 %s' % (path, ip))
 
         time.sleep(10)
@@ -46,7 +45,6 @@ class Tellstick(Connector):
         if not self.is_usable():
             raise ConnectorNotUsable
         string = '{%s,"tellstick":"%s"}' % (string, self.connector.code)
-        print string
         self._send('send%s' % string)
 
     def scan(self):
