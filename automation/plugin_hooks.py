@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 import operator
 import time
+from functools import reduce
 from automation.plugin_mounts import InputBlockFunction, LogicBlockFunction, OutputBlockFunction
 from automation.signals import rs_memory_change, counter_change
 from automation.views import InputDeviceStstusChangeView, InputScenarioExecutedView, InputInputExecutedView,\
@@ -259,9 +260,7 @@ class LogicDelay(LogicBlockFunction):
         return _('Delay\n%(seconds)is') % {'seconds': model.get_data('seconds', 0)}
 
     def check_logic(self, inputs, model):
-        print inputs
         time.sleep(model.get_data('seconds', 0))
-        print 'woke'
         return reduce(operator.or_, inputs)
 
 

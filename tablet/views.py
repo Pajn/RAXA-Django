@@ -38,7 +38,7 @@ def login(request):
 
 
 def devices(request):
-    if request.REQUEST.has_key('room'):
+    if 'room' in request.REQUEST:
         room = request.REQUEST['room']
         room = get_object_or_404(Room, pk=room)
         list = Device.objects.filter(room=room.id)

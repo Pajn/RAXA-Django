@@ -27,7 +27,7 @@ from backend.models.Input import Input
 def respond_with_json(errors=None, pretty=False, request=None):
     if not errors: errors = []
     if request is not None:
-        if request.REQUEST.has_key('pretty'):
+        if 'pretty'in request.REQUEST:
             pretty = True
     if not errors:
         status = {'status': 'ok', 'errors': errors}
@@ -81,8 +81,8 @@ def connector(request):
 
 def input(request):
     errors = []
-    if request.REQUEST.has_key('protocol'):
-        if request.REQUEST.has_key('data'):
+    if 'protocol' in request.REQUEST:
+        if 'data' in request.REQUEST:
             Input.received(request.REQUEST['protocol'], request.REQUEST['data'])
         else:
             errors.append('NoData')

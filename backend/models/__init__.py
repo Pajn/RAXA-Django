@@ -14,12 +14,12 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from Connector import *
-from Room import *
-from Device import *
-from Scenario import *
-from Input import *
-from Thermometer import *
-from Timer import *
-from User import User
-from Storage import Storage
+from .Connector import *
+from .Room import *
+from .Device import *
+from .Scenario import *
+from .Input import *
+from .Thermometer import *
+from .Timer import *
+from .User import User
+from .Storage import Storage

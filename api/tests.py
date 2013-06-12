@@ -18,7 +18,7 @@ import json
 from django.test.client import Client
 from django.utils import unittest
 from backend.authorization import get_user
-from views import API_VERSION, RAXA_VERSION
+from .views import API_VERSION, RAXA_VERSION
 
 
 class ApiTestCase(unittest.TestCase):

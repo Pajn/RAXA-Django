@@ -135,7 +135,7 @@ def view_auth(request, view='index', render_json=True):
 def index(request):
     response = {}
     errors = []
-    if request.REQUEST.has_key('get'):
+    if 'get' in request.REQUEST:
         get = request.REQUEST['get'].split(',')
         for data in get:
             if data in ['version']:

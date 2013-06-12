@@ -141,6 +141,5 @@ class SunricherRGB(Protocol):
             s.connect((ip, port))
             s.sendall(datarow)
             s.close()
-            print(''.join("0x%0.2X" % byte for byte in datarow))
         except IOError:
             raise DeviceConnectionError

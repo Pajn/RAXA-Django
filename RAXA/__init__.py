@@ -15,7 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from django.utils.importlib import import_module
-from settings import INSTALLED_PLUGINS
+from .settings import INSTALLED_PLUGINS
 
 for plugin in INSTALLED_PLUGINS:
     import_module('%s.plugin_hooks' % plugin)

@@ -85,7 +85,7 @@ class InputTemperatureChangedForm(NoSettingsForm):
 
     def clean_trigger(self):
         trigger = int(self.cleaned_data['trigger'])
-        if trigger in self.plugin.triggers.keys():
+        if trigger in self.plugin.triggers:
             self.instance.put_data('trigger', trigger)
             return trigger
         else:
