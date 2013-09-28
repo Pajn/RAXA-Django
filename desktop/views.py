@@ -373,6 +373,17 @@ class TimersSettingsView(SettingsView):
         self.template_args['timers'] = Timer.objects.all()
         self.template_args['form'] = TimerForm()
 
+    def on_post(self, request, *args, **kwargs):
+        if 'add' in request.POST:
+            postdata = request.POST.copy()
+            postdata['action_object'] = postdata['device_scenario']
+
+            self.template_args['form'] = TimerForm(postdata)
+            if self.template_args['form'].is_valid():
+                self.template_args['form'].save()
+            return True
+        return False
+
 
 class TimerSettingsView(SettingsView):
     setting = 'timer'

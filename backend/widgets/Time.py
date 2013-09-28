@@ -42,7 +42,10 @@ class Time(widgets.MultiWidget):
 
     def decompress(self, value):
         if value:
-            return [value.hour, value.minute]
+            if isinstance(value, unicode):
+                return value.split(':')
+            else:
+                return [value.hour, value.minute]
         return [None, None]
 
     def format_output(self, rendered_widgets):
