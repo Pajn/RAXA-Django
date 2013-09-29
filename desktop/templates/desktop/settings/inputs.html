@@ -54,7 +54,7 @@
     });
     function scan() {
         $("#newcontainer").html('<img src="{{ STATIC_URL }}desktop/images/ajax-loader.gif" alt="{% trans 'scanning' %}..." />');
-        $('#newcontainer').load('', {'scan': true}, function () {
+        $('#newcontainer').load('{% url 'settings_input' %}', {'scan': true}, function () {
             var $action_object = $('#new select[name="action_object"]');
             $action_object.change(function () {
                 get_action_widget($(this).val());

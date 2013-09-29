@@ -35,13 +35,13 @@
         <![endif]-->
     </head>
     <body id="body">
-        <div id="main_container" style="Display: {% block display_container %}block{% endblock %}">
+        <div id="main_container" style="display: {% block display_container %}block{% endblock %}">
             {% for floor in floors %}
                 <div id="floor{{ floor.id }}"></div>
             {% endfor %}
             <div id="devices"></div>
         </div>
-        <div id="settings" style="Display: {% block display_settings %}None{% endblock %}">
+        <div id="settings" style="display: {% block display_settings %}None{% endblock %}">
             <div id="menu">
                 <ul>
                     <li>
@@ -109,7 +109,7 @@
             </div>
         </div>
         <div id="retholder">
-            <div id="ret" style="Display: None" class="border"></div>
+            <div id="ret" style="display: None" class="border"></div>
         </div>
         <div id="footer">
             {% include 'desktop/footer.html' %}
