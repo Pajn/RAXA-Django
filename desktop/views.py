@@ -210,6 +210,7 @@ class DeviceSettingsView(SettingsView):
             form.fields['action'].widget = device.object.ACTION_WIDGET()
             self.template_args['device'] = device
             self.template_args['form'] = form
+            self.template_args['add'] = False
         else:
             device = Device(type=request.POST['type'])
             device.object.new()

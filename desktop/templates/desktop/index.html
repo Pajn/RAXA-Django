@@ -35,7 +35,7 @@
         <![endif]-->
     </head>
     <body id="body">
-        <div id="container" style="Display: {% block display_container %}block{% endblock %}">
+        <div id="main_container" style="Display: {% block display_container %}block{% endblock %}">
             {% for floor in floors %}
                 <div id="floor{{ floor.id }}"></div>
             {% endfor %}
@@ -234,7 +234,7 @@
                 device(id, dim_level);
             }
             var $settings = $('#settings');
-            var $container = $('#container');
+            var $container = $('#main_container');
             function settings() {
                 if ($settings.is(':visible')) {
                     $container.show();
