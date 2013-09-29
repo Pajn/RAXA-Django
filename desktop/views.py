@@ -246,6 +246,16 @@ class EditScenariosSettingsView(ScenariosSettingsView):
         super(EditScenariosSettingsView, self).__init__(**kwargs)
         self.template_args['formset'] = ScenarioFormSet()
 
+    def post(self, request, *args, **kwargs):
+        if 'save' in request.POST:
+            formset = ScenarioFormSet(request.POST)
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect(reverse('settings_scenarios'))
+
+            self.template_args['formset'] = formset
+        return super(ScenarioSettingsView, self).post(request, *args, **kwargs)
+
     def on_post(self, request, *args, **kwargs):
         if 'save' in request.POST:
             formset = ScenarioFormSet(request.POST)
