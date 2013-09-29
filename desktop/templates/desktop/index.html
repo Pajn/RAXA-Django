@@ -234,14 +234,14 @@
                 device(id, dim_level);
             }
             var $settings = $('#settings');
-            var $container = $('#main_container');
+            var $main_container = $('#main_container');
             function settings() {
                 if ($settings.is(':visible')) {
-                    $container.show();
+                    $main_container.show();
                     $settings.hide();
                     window.history.pushState('', 'RAXA', '/{{ LANGUAGE_CODE }}/');
                 } else {
-                    $container.hide();
+                    $main_container.hide();
                     $settings.show();
                     window.history.pushState('', 'RAXA - {% trans "Settings" %}', '/{{ LANGUAGE_CODE }}/settings/');
                 }
